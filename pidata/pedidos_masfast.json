@@ -1,0 +1,22 @@
+[
+    {
+        "folio": "001",
+        "cliente": "Yoanny",
+        "total_mxn": 180,
+        "repartidor": "Mario",
+        "restaurante": "Cars Wings"
+    },
+    {
+        "folio": "002",
+        "cliente": "Oscar",
+        "total_mxn": 250,
+        "repartidor": "Julio",
+        "restaurante": "A la Antiguita"
+    },
+    {
+        "folio": "001",
+        "cliente": "Yoanny",
+        "repartidor": "Mario",
+        "total_mxn": 150.0
+    }
+]

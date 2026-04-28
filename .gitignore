@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# Database and uploads
+pidata/masfast_leads.db
+pidata/uploads/
+*.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
