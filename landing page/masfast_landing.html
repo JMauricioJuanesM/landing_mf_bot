@@ -109,6 +109,9 @@
         .form-group input, select { width: 100%; padding: 12px; border: 1.5px solid #E5E7EB; border-radius: 9px; font-size: 14px; }
         
         .submit-btn { width: 100%; background: #2563EB; color: #fff; padding: 14px; border-radius: 11px; font-weight: 700; border: none; cursor: pointer; }
+        .form-row { display: flex; gap: 15px; }
+        .form-row .form-group { flex: 1; }
+        @media (max-width: 480px) { .form-row { flex-direction: column; gap: 0; } }
 @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(1.2); }
@@ -217,23 +220,23 @@
                 
                 <div class="form-group">
                     <label>Nombre del Restaurante</label>
-                    <input type="text" id="f-rest" placeholder="Ej. Cars Wings">
+                    <input type="text" id="f-rest" placeholder="Ej. Cars Wings" required>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>WhatsApp</label>
-                        <input type="tel" id="f-wa" placeholder="498 123 4567">
+                        <input type="tel" id="f-wa" placeholder="498 123 4567" required>
                     </div>
                     <div class="form-group">
                         <label>Correo Electrónico</label>
-                        <input type="email" id="f-email" placeholder="gerencia@tunegocio.com">
+                        <input type="email" id="f-email" placeholder="gerencia@tunegocio.com" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>¿Cuál es tu mayor problema hoy?</label>
-                    <select id="f-problema">
+                    <select id="f-problema" required>
                         <option value="">Selecciona una opción</option>
                         <option value="atencion">No alcanzo a contestar todos los mensajes</option>
                         <option value="errores">Hay muchos errores en los pedidos</option>
@@ -244,7 +247,7 @@
 
                 <div class="form-group">
                     <label>Sube tu Menú o Lista de Precios (Opcional)</label>
-                    <input type="file" id="f-menu" style="padding: 8px; border: 2px dashed #E5E7EB; background: #F9FAFB;">
+                    <input type="file" id="f-menu" accept=".pdf,image/*" style="padding: 8px; border: 2px dashed #E5E7EB; background: #F9FAFB;">
                     <p style="font-size: 11px; color: #9CA3AF; margin-top: 4px;">Aceptamos PDF, imagen o foto de tu menú físico.</p>
                 </div>
 
@@ -256,7 +259,7 @@
 
             <div id="success-box" style="display:none; text-align: center; padding: 2rem;">
                 <p style="font-size: 50px;">🚀</p>
-                <h3 style="color: #065F46; font-family: 'Sora';">¡Solicitud recibida, Gio!</h3>
+                <h3 style="color: #065F46; font-family: 'Sora';">¡Solicitud recibida!</h3>
                 <p style="color: #047857; margin-top: 10px;">Hemos guardado tus datos. Pronto recibirás un correo y un WhatsApp para revisar la automatización de tu menú.</p>
             </div>
         </div>

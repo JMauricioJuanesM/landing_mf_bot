@@ -41,13 +41,15 @@ async def registro(
     f_problema: str = Form(...),
     f_menu: UploadFile = File(None)
 ):
-    # Guardar el archivo si existe
+    # Guardar el archivo si existe y tiene nombre
     menu_path = ""
-    if f_menu:
+    if f_menu and f_menu.filename:
         os.makedirs("uploads", exist_ok=True)
-        menu_path = f"uploads/{f_menu.filename}"
+        filename = os.path.basename(f_menu.filename)
+        menu_path = f"uploads/{filename}"
         with open(menu_path, "wb") as buffer:
             shutil.copyfileobj(f_menu.file, buffer)
+        print(f"Archivo guardado: {menu_path}")
 
     # Guardar en SQLite
     conn = sqlite3.connect("masfast_leads.db")
