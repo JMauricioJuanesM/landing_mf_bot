@@ -338,7 +338,7 @@ async function handleSubmit() {
 
     // 3. Enviar al servidor FastAPI
     try {
-        const response = await fetch('http://127.0.0.1:8000/registro', {
+        const response = await fetch('/registro', {
             method: 'POST',
             body: formData
         });
