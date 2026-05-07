@@ -49,13 +49,19 @@
             background: rgba(11,20,35,0.85);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
         }
 
         .nav-logo img {
-            width: 160px; 
+            width: 130px; 
             height: auto;
             border-radius: 0;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover img {
+            transform: scale(1.05);
         }
 
         .nav-cta {
@@ -66,6 +72,12 @@
             font-size: 14px;
             font-weight: 600;
             text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: #1D4ED8;
+            transform: translateY(-1px);
         }
 
         .hero { text-align: center; padding: 6rem 2rem 2rem; max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
@@ -140,8 +152,24 @@
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1.5px solid #E5E7EB; border-radius: 9px; font-size: 14px; font-family: inherit; }
         
-        .submit-btn { width: 100%; background: #2563EB; color: #fff; padding: 14px; border-radius: 11px; font-weight: 700; border: none; cursor: pointer; transition: background 0.3s; }
-        .submit-btn:hover { background: #1D4ED8; }
+        .submit-btn { width: 100%; background: #2563EB; color: #fff; padding: 14px; border-radius: 11px; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .submit-btn:hover:not(:disabled) { background: #1D4ED8; transform: translateY(-2px); }
+        .submit-btn:disabled { background: #94A3B8; cursor: not-allowed; opacity: 0.8; }
+
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
@@ -173,6 +201,22 @@
         }
 
         .spots-bar strong { color: #FFFFFF; margin: 0 4px; }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.8rem 1.5rem;
+            }
+            .nav-logo img {
+                width: 100px;
+            }
+            .nav-cta {
+                padding: 8px 18px;
+                font-size: 13px;
+            }
+            .hero {
+                padding-top: 4rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -185,7 +229,7 @@
 </nav>
 
 <section class="hero">
-    <div class="badge">🚀 Prueba piloto exclusiva en Río Grande</div>
+    <div class="badge">🚀 Prueba piloto exclusiva en Zacatecas</div>
     <h1>Deja de perder pedidos por no tener tiempo de contestar</h1>
     <p>O cocinas o respondes el WhatsApp. <span class="brand">MasFast</span> atiende a tus clientes, toma la orden y te envía la comanda lista. Quítate esa carga de encima y dedícate a hacer lo que mejor sabes hacer.</p>
     <div class="hero-btns">
@@ -239,7 +283,7 @@
         <h2 class="section-title" style="margin-top:0;">¿Listo para quitarte esta carga de encima?</h2>
         <div class="spots-bar">
             <span class="pulse-dot"></span>
-            Solo quedan <strong>12 lugares</strong> para la prueba en Río Grande
+            Solo quedan <strong>12 lugares</strong> para la prueba en Zacatecas
         </div>
         
         <div class="form-card">
@@ -284,8 +328,8 @@
                     <input type="file" id="f-menu" style="padding: 8px; border: 2px dashed #E5E7EB; background: #F9FAFB;">
                 </div>
 
-                <button class="submit-btn" onclick="handleSubmit()">
-                    Quiero agendar mi instalación gratuita →
+                <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
+                    <span id="btn-text">Quiero agendar mi instalación gratuita →</span>
                 </button>
                 <p style="font-size: 11px; color: #9CA3AF; text-align: center; margin-top: 10px;">Analizaremos tu menú para proponerte la mejor automatización.</p>
             </div>
@@ -347,6 +391,10 @@
 
 <script>
 async function handleSubmit() {
+    const btn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const originalText = btnText.innerHTML;
+
     const rest = document.getElementById('f-rest').value;
     const wa = document.getElementById('f-wa').value;
     const email = document.getElementById('f-email').value;
@@ -358,6 +406,11 @@ async function handleSubmit() {
         alert('Por favor completa todos los campos obligatorios.');
         return;
     }
+
+    // Prevenir duplicados y mostrar estado de carga
+    btn.disabled = true;
+    const loadingMessage = menuFile ? 'Subiendo menú... 🚀' : 'Enviando registro... ✨';
+    btnText.innerHTML = `<span class="spinner"></span> ${loadingMessage}`;
 
     const formData = new FormData();
     formData.append('f_rest', rest);
@@ -379,11 +432,15 @@ async function handleSubmit() {
             document.getElementById('form-area').style.display = 'none';
             document.getElementById('success-box').style.display = 'block';
         } else {
-            alert('Error al conectar con el servidor. Verifica que PyCharm esté corriendo.');
+            throw new Error('Server response not ok');
         }
     } catch (error) {
         console.error("Error:", error);
-        alert('No se pudo conectar con el servidor de MasFast.');
+        alert('No se pudo conectar con el servidor de MasFast. Por favor intenta de nuevo.');
+        
+        // Restaurar botón en caso de error
+        btn.disabled = false;
+        btnText.innerHTML = originalText;
     }
 }
 </script>
