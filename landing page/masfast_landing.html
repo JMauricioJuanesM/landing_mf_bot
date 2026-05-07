@@ -23,7 +23,7 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            scroll-behavior: smooth; /* Para que el salto sea suave */
+            scroll-behavior: smooth;
         }
 
         /* FONDO TECNOLÓGICO */
@@ -31,7 +31,7 @@
             content: '';
             position: fixed;
             inset: 0;
-            background:
+            background: 
                 radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37,99,235,0.25) 0%, transparent 65%),
                 radial-gradient(ellipse 50% 40% at 80% 30%, rgba(59,130,246,0.1) 0%, transparent 60%);
             pointer-events: none;
@@ -51,7 +51,6 @@
             border-bottom: 1px solid var(--border);
         }
 
-        /* AJUSTE DE TU LOGO */
         .nav-logo img {
             width: 160px; 
             height: auto;
@@ -69,7 +68,7 @@
             text-decoration: none;
         }
 
-        .hero { text-align: center; padding: 6rem 2rem; max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+        .hero { text-align: center; padding: 6rem 2rem 2rem; max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
         
         .badge {
             display: inline-flex;
@@ -82,69 +81,98 @@
             margin-bottom: 2rem;
         }
 
-        .hero h1 { font-family: 'Sora', sans-serif; font-size: clamp(38px, 6vw, 68px); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero h1 { font-family: 'Sora', sans-serif; font-size: clamp(32px, 5vw, 58px); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
         .hero h1 .brand { color: var(--blue-bright); }
-        .hero p { color: var(--muted); font-size: 18px; line-height: 1.7; max-width: 580px; margin: 0 auto 2.5rem; }
+        .hero p { color: var(--muted); font-size: 18px; line-height: 1.7; max-width: 650px; margin: 0 auto 2.5rem; }
 
         .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
         
         .btn-primary { background: var(--blue); color: #fff; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; }
         .btn-ghost { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.18); padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; }
 
+        .video-container {
+            position: relative;
+            max-width: 320px; /* Tamaño optimizado para formato vertical de celular */
+            margin: 4rem auto 2rem;
+            text-align: center;
+            z-index: 1;
+        }
+
+       .video-container video {
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+            /* Aquí está el efecto del brillo neón */
+            box-shadow: 0 0 60px rgba(96, 165, 250, 0.4), 0 0 120px rgba(37, 99, 235, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
         .section-title { font-family: 'Sora', sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 800; text-align: center; margin-bottom: 3rem; margin-top: 4rem; }
 
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
-        .feat-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
+        .feat-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; transition: transform 0.3s ease; }
+        .feat-card:hover { transform: translateY(-5px); }
         .feat-title { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; margin: 1rem 0; }
         .feat-desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 900px; margin: 4rem auto; text-align: center; padding: 0 2rem; }
-        .stat-card { background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.2); border-radius: 16px; padding: 2rem; }
-        .stat-num { font-family: 'Sora', sans-serif; font-size: 42px; font-weight: 800; color: var(--blue-bright); }
-
+        .stat-card { 
+            background: #E0F2FE; /* Fondo azul pastel clarito */
+            border-radius: 16px; 
+            padding: 2rem; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .stat-num { 
+            font-family: 'Sora', sans-serif; 
+            font-size: 48px; /* Un poquito más grandes */
+            font-weight: 800; 
+            color: #3B82F6; /* Azul vibrante para el número */
+        }
+        .stat-label { 
+            color: #1E293B; /* Texto oscuro para que contraste bien */
+            font-weight: 600;
+            margin-top: 8px; 
+            font-size: 15px; 
+        }
         .register-section { padding: 5rem 2rem; border-top: 1px solid var(--border); position: relative; z-index: 1; }
         .form-card { background: #fff; border-radius: 18px; padding: 2.5rem; max-width: 520px; margin: 0 auto; color: #111; box-shadow: 0 25px 60px rgba(0,0,0,0.35); }
         .form-group { margin-bottom: 1.2rem; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-        .form-group input, select { width: 100%; padding: 12px; border: 1.5px solid #E5E7EB; border-radius: 9px; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1.5px solid #E5E7EB; border-radius: 9px; font-size: 14px; font-family: inherit; }
         
-        .submit-btn { width: 100%; background: #2563EB; color: #fff; padding: 14px; border-radius: 11px; font-weight: 700; border: none; cursor: pointer; }
-        .form-row { display: flex; gap: 15px; }
-        .form-row .form-group { flex: 1; }
-        @media (max-width: 480px) { .form-row { flex-direction: column; gap: 0; } }
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.2); }
-}
+        .submit-btn { width: 100%; background: #2563EB; color: #fff; padding: 14px; border-radius: 11px; font-weight: 700; border: none; cursor: pointer; transition: background 0.3s; }
+        .submit-btn:hover { background: #1D4ED8; }
 
-.pulse-dot {
-    width: 10px;
-    height: 10px;
-    background-color: #22C55E; /* Verde brillante */
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 12px;
-    box-shadow: 0 0 10px #22C55E;
-    animation: pulse 2s infinite;
-}
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
 
-.spots-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(37, 99, 235, 0.1);
-    border: 1px solid rgba(37, 99, 235, 0.3);
-    padding: 12px 20px;
-    border-radius: 12px;
-    margin-bottom: 2rem;
-    font-size: 14px;
-    color: #93C5FD;
-}
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #22C55E;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 12px;
+            box-shadow: 0 0 10px #22C55E;
+            animation: pulse 2s infinite;
+        }
 
-.spots-bar strong {
-    color: #FFFFFF;
-    margin: 0 4px;
-}
+        .spots-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            font-size: 14px;
+            color: #93C5FD;
+        }
+
+        .spots-bar strong { color: #FFFFFF; margin: 0 4px; }
     </style>
 </head>
 <body>
@@ -157,110 +185,115 @@
 </nav>
 
 <section class="hero">
-    <div class="badge">🚀 Lanzamiento exclusivo en Zacatecas</div>
-    <h1>Multiplica tus pedidos por WhatsApp con el Asistente Inteligente <span class="brand">MasFast</span></h1>
-    <p>Atención 24/7, toma de pedidos sin errores y coordinación automática con repartidores. ¡Libera a tu personal y no pierdas ni una venta más!</p>
+    <div class="badge">🚀 Prueba piloto exclusiva en Río Grande</div>
+    <h1>Deja de perder pedidos por no tener tiempo de contestar</h1>
+    <p>O cocinas o respondes el WhatsApp. <span class="brand">MasFast</span> atiende a tus clientes, toma la orden y te envía la comanda lista. Quítate esa carga de encima y dedícate a hacer lo que mejor sabes hacer.</p>
     <div class="hero-btns">
-        <button class="btn-primary" onclick="document.getElementById('registro').scrollIntoView({behavior:'smooth'})">Apartar mi lugar</button>
-        <a href="#demo-site" class="btn-ghost">Ver demostración</a>
+        <button class="btn-primary" onclick="document.getElementById('registro').scrollIntoView({behavior:'smooth'})">Quiero dejar de estresarme</button>
+        <a href="#demo-video" class="btn-ghost">Ver cómo funciona</a>
+    </div>
+
+    <div id="demo-video" class="video-container">
+        <video src="videopublicitario.mp4" autoplay loop muted playsinline controls>
+            Tu navegador no soporta la reproducción de video.
+        </video>
     </div>
 </section>
 
 <section class="features-section">
-    <h2 class="section-title">¿Por qué automatizar tu restaurante con MasFast?</h2>
+    <h2 class="section-title">¿Por qué dejarle el trabajo pesado a MasFast?</h2>
     <div class="features-grid">
         <div class="feat-card">
             <div style="font-size: 24px;">💬</div>
-            <div class="feat-title">Atención 24/7</div>
-            <div class="feat-desc">Responde a tus clientes a cualquier hora, sin días de descanso ni tiempo de espera.</div>
+            <div class="feat-title">Respuestas en segundos</div>
+            <div class="feat-desc">Atiende a tus clientes al instante, 24/7. Olvídate de los carritos abandonados porque tardaste en mandar el menú.</div>
         </div>
         <div class="feat-card">
             <div style="font-size: 24px;">✅</div>
-            <div class="feat-title">Pedidos sin errores</div>
-            <div class="feat-desc">Confirma cada orden automáticamente y elimina malentendidos con el cliente.</div>
+            <div class="feat-title">Cero confusiones</div>
+            <div class="feat-desc">La IA toma la orden exacta y confirma los detalles. Se acabaron los errores de dedo por contestar a las prisas.</div>
         </div>
         <div class="feat-card">
             <div style="font-size: 24px;">🛵</div>
-            <div class="feat-title">Coordinación de repartidores</div>
-            <div class="feat-desc">Asigna y notifica entregas automáticamente sin que tu equipo intervenga.</div>
+            <div class="feat-title">Repartidores en automático</div>
+            <div class="feat-desc">Tan pronto está lista la orden, el sistema avisa a tu equipo de entrega sin que tú tengas que triangular llamadas.</div>
         </div>
         <div class="feat-card">
             <div style="font-size: 24px;">📈</div>
-            <div class="feat-title">Más ventas, menos esfuerzo</div>
-            <div class="feat-desc">Tu restaurante crece mientras tú te concentras en lo importante: la cocina.</div>
+            <div class="feat-title">Tú cocinas, nosotros vendemos</div>
+            <div class="feat-desc">Recupera la paz en tu cocina. Tu asistente virtual se encarga de vender mientras tú te enfocas en la calidad de tus platillos.</div>
         </div>
     </div>
 </section>
 
 <section class="stats-section">
     <div class="stats-grid">
-        <div class="stat-card"><div class="stat-num">3×</div><div class="stat-label">más pedidos sin personal extra</div></div>
-        <div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label">disponibilidad sin descanso</div></div>
-        <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">pedidos perdidos por falta de atención</div></div>
-    </div>
-
-    <div id="demo-site" style="position: relative; max-width: 480px; margin: 2rem auto; text-align: center; z-index: 1;">
-        <img src="demo.png" alt="Demostración MasFast Bot" style="width: 100%; height: auto; border-radius: 30px; box-shadow: 0 20px 50px rgba(0, 209, 255, 0.2);">
+        <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">mensajes ignorados</div></div>
+        <div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label">disponibilidad total</div></div>
+        <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">enfoque en tu cocina</div></div>
     </div>
 </section>
 
 <section id="registro" class="register-section">
-    <div class="register-inner">
-        <h2 class="section-title" style="margin-top:0;">Únete a la Lista de Espera</h2>
-        <p style="text-align:center; color:var(--muted); margin-bottom:2rem;">Sé de los primeros en Zacatecas en automatizar tu restaurante</p>
-<div class="register-inner" style="max-width: 520px; margin: 0 auto;">
-    <div class="spots-bar">
-        <span class="pulse-dot"></span>
-        Solo quedan <strong>12 lugares</strong> disponibles para acceso anticipado
-    </div>
-    
-   <div class="form-card">
+    <div class="register-inner" style="max-width: 520px; margin: 0 auto;">
+        <h2 class="section-title" style="margin-top:0;">¿Listo para quitarte esta carga de encima?</h2>
+        <div class="spots-bar">
+            <span class="pulse-dot"></span>
+            Solo quedan <strong>12 lugares</strong> para la prueba en Río Grande
+        </div>
+        
+        <div class="form-card">
             <div id="form-area">
-                <h2 style="text-align: center; margin-bottom: 1.5rem; font-family: 'Sora';">Lista de Espera Pro</h2>
                 
                 <div class="form-group">
                     <label>Nombre del Restaurante</label>
-                    <input type="text" id="f-rest" placeholder="Ej. Cars Wings" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>WhatsApp</label>
-                        <input type="tel" id="f-wa" placeholder="498 123 4567" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="f-email" placeholder="gerencia@tunegocio.com" required>
-                    </div>
+                    <input type="text" id="f-rest" placeholder="Ej. Cars Wings">
                 </div>
 
                 <div class="form-group">
-                    <label>¿Cuál es tu mayor problema hoy?</label>
-                    <select id="f-problema" required>
-                        <option value="">Selecciona una opción</option>
-                        <option value="atencion">No alcanzo a contestar todos los mensajes</option>
-                        <option value="errores">Hay muchos errores en los pedidos</option>
-                        <option value="tiempo">Tardo mucho en coordinar repartidores</option>
-                        <option value="otro">Otro</option>
+                    <label>WhatsApp</label>
+                    <input type="tel" id="f-wa" placeholder="498 123 4567">
+                </div>
+
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="f-email" placeholder="gerencia@tunegocio.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Municipio (Zacatecas)</label>
+                    <select id="f-municipio">
+                        <option value="" selected disabled>Selecciona tu ciudad</option>
+                        <option value="Río Grande">Río Grande</option>
+                        <option value="Zacatecas Capital">Zacatecas Capital</option>
+                        <option value="Guadalupe">Guadalupe</option>
+                        <option value="Fresnillo">Fresnillo</option>
+                        <option value="Jerez">Jerez</option>
+                        <option value="Sombrerete">Sombrerete</option>
+                        <option value="Otro">Otro</option>
                     </select>
                 </div>
 
                 <div class="form-group">
+                    <label>¿Qué es lo que más te estresa de recibir pedidos?</label>
+                    <textarea id="f-problema" rows="2" placeholder="Ej. Se me amontonan los mensajes en horas pico..."></textarea>
+                </div>
+
+                <div class="form-group">
                     <label>Sube tu Menú o Lista de Precios (Opcional)</label>
-                    <input type="file" id="f-menu" accept=".pdf,image/*" style="padding: 8px; border: 2px dashed #E5E7EB; background: #F9FAFB;">
-                    <p style="font-size: 11px; color: #9CA3AF; margin-top: 4px;">Aceptamos PDF, imagen o foto de tu menú físico.</p>
+                    <input type="file" id="f-menu" style="padding: 8px; border: 2px dashed #E5E7EB; background: #F9FAFB;">
                 </div>
 
                 <button class="submit-btn" onclick="handleSubmit()">
-                    Apartar mi lugar y agendar revisión →
+                    Quiero agendar mi instalación gratuita →
                 </button>
-                <p class="privacy-note">Analizaremos tu menú para proponerte la mejor automatización.</p>
+                <p style="font-size: 11px; color: #9CA3AF; text-align: center; margin-top: 10px;">Analizaremos tu menú para proponerte la mejor automatización.</p>
             </div>
 
             <div id="success-box" style="display:none; text-align: center; padding: 2rem;">
                 <p style="font-size: 50px;">🚀</p>
-                <h3 style="color: #065F46; font-family: 'Sora';">¡Solicitud recibida!</h3>
-                <p style="color: #047857; margin-top: 10px;">Hemos guardado tus datos. Pronto recibirás un correo y un WhatsApp para revisar la automatización de tu menú.</p>
+                <h3 style="color: #2563EB; font-family: 'Sora';">¡Solicitud recibida, Masfaster!</h3>
+                <p style="color: #475569; margin-top: 10px;">Hemos guardado tus datos. Pronto recibirás un correo y un WhatsApp para revisar la automatización de tu menú.</p>
             </div>
         </div>
     </div>
@@ -314,29 +347,28 @@
 
 <script>
 async function handleSubmit() {
-    // 1. Obtener los datos
     const rest = document.getElementById('f-rest').value;
     const wa = document.getElementById('f-wa').value;
     const email = document.getElementById('f-email').value;
+    const municipio = document.getElementById('f-municipio').value;
     const problema = document.getElementById('f-problema').value;
     const menuFile = document.getElementById('f-menu').files[0];
 
-    if (!rest || !wa || !email || !problema) {
-        alert('Por favor completa los campos obligatorios.');
+    if (!rest || !wa || !email || !municipio || !problema) {
+        alert('Por favor completa todos los campos obligatorios.');
         return;
     }
 
-    // 2. Preparar el envío (FormData es necesario para archivos)
     const formData = new FormData();
     formData.append('f_rest', rest);
     formData.append('f_wa', wa);
     formData.append('f_email', email);
+    formData.append('f_municipio', municipio);
     formData.append('f_problema', problema);
     if (menuFile) {
         formData.append('f_menu', menuFile);
     }
 
-    // 3. Enviar al servidor FastAPI
     try {
         const response = await fetch('http://127.0.0.1:8000/registro', {
             method: 'POST',
@@ -347,11 +379,11 @@ async function handleSubmit() {
             document.getElementById('form-area').style.display = 'none';
             document.getElementById('success-box').style.display = 'block';
         } else {
-            alert('Error al conectar con el servidor de MasFast.');
+            alert('Error al conectar con el servidor. Verifica que PyCharm esté corriendo.');
         }
     } catch (error) {
         console.error("Error:", error);
-        alert('¿Olvidaste encender el servidor de Python en PyCharm?');
+        alert('No se pudo conectar con el servidor de MasFast.');
     }
 }
 </script>
