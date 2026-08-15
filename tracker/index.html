@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rastreo de Pedido en Vivo — ComandaFlow AI</title>
+    <meta name="description" content="Rastreo en tiempo real y estado de tu comanda con ComandaFlow AI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --bg-base: #090d16;
+            --bg-surface: #111726;
+            --bg-card: #182238;
+            --border-subtle: #24324f;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --brand-primary: #10b981;
+            --brand-primary-glow: rgba(16, 185, 129, 0.2);
+            --accent-amber: #f59e0b;
+            --accent-blue: #0ea5e9;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 12px;
+        }
+
+        .tracker-app {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        /* Header */
+        .app-header {
+            padding: 16px 20px;
+            background: linear-gradient(180deg, #162035 0%, #111726 100%);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .restaurant-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .restaurant-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .restaurant-info h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.2px;
+        }
+
+        .restaurant-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .order-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--brand-primary);
+        }
+
+        /* Map Container */
+        .map-section {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            background: #1a2333;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-overlay-eta {
+            position: absolute;
+            bottom: 14px;
+            left: 14px;
+            right: 14px;
+            background: rgba(17, 23, 38, 0.92);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .eta-time {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--brand-primary);
+        }
+
+        .eta-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .eta-status {
+            text-align: right;
+        }
+
+        .eta-status-pill {
+            display: inline-block;
+            background: var(--brand-primary-glow);
+            color: var(--brand-primary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Stepper */
+        .stepper-section {
+            padding: 20px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .stepper-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .stepper-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 30px;
+            bottom: -16px;
+            width: 2px;
+            background: var(--border-subtle);
+            z-index: 1;
+        }
+
+        .step-item.completed:not(:last-child)::before {
+            background: var(--brand-primary);
+        }
+
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            z-index: 2;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step-item.completed .step-icon {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            color: #000;
+        }
+
+        .step-item.active .step-icon {
+            background: var(--accent-amber);
+            border-color: var(--accent-amber);
+            color: #000;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        .step-content h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .step-content p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Rider Info Card */
+        .rider-section {
+            padding: 16px 20px;
+            background: var(--bg-card);
+            margin: 16px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rider-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rider-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #25334d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: 2px solid var(--brand-primary);
+        }
+
+        .rider-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .rider-vehicle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .rider-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #1e293b;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            padding: 16px 20px;
+            background: var(--bg-surface);
+        }
+
+        .summary-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .item-name {
+            color: #cbd5e1;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 12px 0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .total-price {
+            color: var(--brand-primary);
+        }
+
+        /* Footer */
+        .app-footer {
+            padding: 14px 20px;
+            text-align: center;
+            background: #0d121c;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 11px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tracker-app">
+    <!-- Header -->
+    <header class="app-header">
+        <div class="restaurant-badge">
+            <div class="restaurant-avatar">🍕</div>
+            <div class="restaurant-info">
+                <h1 id="restaurantName">Lucky Pizza & Grill</h1>
+                <p>Zacatecas - Guadalupe</p>
+            </div>
+        </div>
+        <div class="order-badge" id="orderIdBadge">#1042</div>
+    </header>
+
+    <!-- Live GPS Map -->
+    <section class="map-section">
+        <div id="map"></div>
+        <div class="map-overlay-eta">
+            <div>
+                <div class="eta-label">Tiempo Estimado</div>
+                <div class="eta-time" id="etaMinutes">18 min</div>
+            </div>
+            <div class="eta-status">
+                <span class="eta-status-pill" id="liveStatusText">🛵 En Camino</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stepper Status -->
+    <section class="stepper-section">
+        <div class="stepper-title">Progreso de la Comanda</div>
+        <div class="stepper-steps">
+            <div class="step-item completed" id="step1">
+                <div class="step-icon">✓</div>
+                <div class="step-content">
+                    <h3>Pedido Recibido</h3>
+                    <p>Confirmado automáticamente vía WhatsApp</p>
+                </div>
+            </div>
+            <div class="step-item completed" id="step2">
+                <div class="step-icon">✓</div>
+                <div class="step-content">
+                    <h3>En Cocina & Preparación</h3>
+                    <p>Comanda impresa en cocina (ESC/POS)</p>
+                </div>
+            </div>
+            <div class="step-item active" id="step3">
+                <div class="step-icon">3</div>
+                <div class="step-content">
+                    <h3>Repartidor en Camino</h3>
+                    <p>El repartidor va en dirección a tu domicilio</p>
+                </div>
+            </div>
+            <div class="step-item" id="step4">
+                <div class="step-icon">4</div>
+                <div class="step-content">
+                    <h3>Entregado</h3>
+                    <p>¡Buen provecho!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rider Card -->
+    <section class="rider-section">
+        <div class="rider-profile">
+            <div class="rider-avatar">🛵</div>
+            <div>
+                <div class="rider-name" id="riderName">Carlos Mendoza</div>
+                <div class="rider-vehicle">Italika FT150 • Smart Dispatch</div>
+            </div>
+        </div>
+        <div class="rider-actions">
+            <a href="https://wa.me/524981007875" class="btn-action" title="WhatsApp" target="_blank">💬</a>
+            <a href="tel:+524981007875" class="btn-action" title="Llamar">📞</a>
+        </div>
+    </section>
+
+    <!-- Order Summary -->
+    <section class="order-summary">
+        <div class="summary-header">Resumen de Cuenta</div>
+        <div class="items-list" id="itemsContainer">
+            <div class="item-row">
+                <span class="item-name">2x Hamburguesa Doble Queso</span>
+                <span class="item-price">$260.00</span>
+            </div>
+            <div class="item-row">
+                <span class="item-name">1x Papas a la Francesa Grandes</span>
+                <span class="item-price">$65.00</span>
+            </div>
+            <div class="item-row">
+                <span class="item-name">2x Refresco Coca-Cola 600ml</span>
+                <span class="item-price">$70.00</span>
+            </div>
+            <div class="item-row">
+                <span class="item-name">Costo de Envío</span>
+                <span class="item-price">$35.00</span>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="total-row">
+            <span>Total a Pagar (Efectivo)</span>
+            <span class="total-price" id="totalAmount">$430.00 MXN</span>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        ComandaFlow AI ⚡ Tecnología de Alta Velocidad para Restaurantes
+    </footer>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Inicialización del Mapa con Coordenadas de Zacatecas / Guadalupe
+    const restaurantPos = [22.7562, -102.5284]; // García Salinas
+    const destinationPos = [22.7485, -102.5180]; // Guadalupe Centro
+
+    const map = L.map('map', {
+        zoomControl: false,
+        attributionControl: false
+    }).setView([22.7523, -102.5232], 14);
+
+    // Tiles oscuros elegantes
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19
+    }).addTo(map);
+
+    // Marcador Restaurante
+    const restaurantIcon = L.divIcon({
+        className: 'custom-pin',
+        html: '<div style="background:#10b981;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 0 10px #10b981;font-size:14px;">🍕</div>',
+        iconSize: [28, 28]
+    });
+    L.marker(restaurantPos, { icon: restaurantIcon }).addTo(map);
+
+    // Marcador Destino Comensal
+    const destinationIcon = L.divIcon({
+        className: 'custom-pin',
+        html: '<div style="background:#0284c7;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 0 10px #0284c7;font-size:14px;">🏠</div>',
+        iconSize: [28, 28]
+    });
+    L.marker(destinationPos, { icon: destinationIcon }).addTo(map);
+
+    // Marcador Repartidor en Movimiento
+    const riderIcon = L.divIcon({
+        className: 'custom-pin',
+        html: '<div style="background:#f59e0b;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 0 15px #f59e0b;font-size:16px;">🛵</div>',
+        iconSize: [32, 32]
+    });
+    
+    // Posición inicial del repartidor entre el restaurante y el destino
+    let currentRiderLat = restaurantPos[0] + (destinationPos[0] - restaurantPos[0]) * 0.4;
+    let currentRiderLng = restaurantPos[1] + (destinationPos[1] - restaurantPos[1]) * 0.4;
+    
+    const riderMarker = L.marker([currentRiderLat, currentRiderLng], { icon: riderIcon }).addTo(map);
+
+    // Ruta en línea discontinua
+    const polyline = L.polyline([restaurantPos, destinationPos], {
+        color: '#10b981',
+        weight: 3,
+        dashArray: '6, 8',
+        opacity: 0.7
+    }).addTo(map);
+
+    // Simulación suave de telemetría GPS
+    let progress = 0.4;
+    setInterval(() => {
+        if (progress < 0.95) {
+            progress += 0.015;
+            currentRiderLat = restaurantPos[0] + (destinationPos[0] - restaurantPos[0]) * progress;
+            currentRiderLng = restaurantPos[1] + (destinationPos[1] - restaurantPos[1]) * progress;
+            riderMarker.setLatLng([currentRiderLat, currentRiderLng]);
+        }
+    }, 2000);
+</script>
+</body>
+</html>

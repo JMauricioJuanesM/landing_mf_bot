@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — Simulador Interactivo Safari & Live Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --paper-bg: #fffdfa;
+      --paper-text: #18181b;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Selector de Restaurantes */
+    .restaurant-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .rest-chip {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      padding: 0.6rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-muted);
+    }
+
+    .rest-chip.active {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    /* WhatsApp Simulator */
+    .chat-box {
+      background: #0b141a;
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 260px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 0.6rem 0.85rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      position: relative;
+    }
+
+    .chat-msg.customer {
+      align-self: flex-start;
+      background: #202c33;
+      color: #e9edef;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-msg.bot {
+      align-self: flex-end;
+      background: #005c4b;
+      color: #e9edef;
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-time {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.5);
+      text-align: right;
+      margin-top: 0.25rem;
+    }
+
+    .audio-player-sim {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0,0,0,0.2);
+      padding: 0.4rem 0.6rem;
+      border-radius: 20px;
+      margin-bottom: 0.3rem;
+    }
+
+    .audio-wave {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .audio-wave::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 65%;
+      background: var(--primary);
+    }
+
+    /* Menu Items Quick Pick */
+    .dish-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .dish-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .dish-card:hover {
+      border-color: var(--primary);
+      background: var(--bg-card-hover);
+    }
+
+    .dish-info h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .dish-info p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .dish-price {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.85rem;
+    }
+
+    .btn-fire-demo {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-fire-demo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Thermal Receipt View */
+    .receipt-container {
+      background: #111827;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-y: auto;
+      max-height: 520px;
+    }
+
+    .thermal-paper {
+      background-color: var(--paper-bg);
+      color: var(--paper-text);
+      font-family: var(--font-mono);
+      width: 320px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      border-top: 4px dashed #cbd5e1;
+      border-bottom: 4px dashed #cbd5e1;
+      font-size: 0.75rem;
+      line-height: 1.35;
+      animation: printFeed 0.6s ease-out;
+    }
+
+    @keyframes printFeed {
+      0% { transform: translateY(-20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .thermal-center {
+      text-align: center;
+    }
+
+    .thermal-bold {
+      font-weight: 700;
+    }
+
+    .thermal-double {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .thermal-divider {
+      border-top: 1px dashed #71717a;
+      margin: 0.5rem 0;
+    }
+
+    .thermal-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Mini Map Live Tracker */
+    #live-map {
+      height: 160px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .metric-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.6rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">CF</div>
+      <div>
+        <div class="brand-title">ComandaFlow AI</div>
+      </div>
+      <div class="brand-badge">⚡ Safari Live Demo Engine</div>
+    </div>
+    <div class="header-actions">
+      <a href="/tracker/" target="_blank" class="btn-outline">📍 Live PWA Tracker</a>
+      <a href="/" class="btn-outline">🌐 Ver Landing</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Panel Izquierdo: Entrada y WhatsApp Simulator -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📱 1. Conversación WhatsApp & Nota de Voz</div>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Zacatecas-Guadalupe</span>
+      </div>
+
+      <!-- Selector de Restaurante -->
+      <div>
+        <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.3rem; display:block;">Seleccionar Negocio:</label>
+        <div class="restaurant-selector">
+          <div class="rest-chip active" onclick="selectRest('lucky')">🍕 Lucky Pizza (Gpe)</div>
+          <div class="rest-chip" onclick="selectRest('rey')">🌮 El Rey del Taco</div>
+          <div class="rest-chip" onclick="selectRest('burger')">🍔 Black Burger</div>
+        </div>
+      </div>
+
+      <!-- Simulador de Chat -->
+      <div class="chat-box" id="chat-container">
+        <div class="chat-msg customer">
+          <div class="audio-player-sim">
+            <span>▶️</span>
+            <div class="audio-wave"></div>
+            <span style="font-size:0.65rem;">0:06</span>
+          </div>
+          <em>"Hola buenas noches, me mandas una pizza familiar de pepperoni con orilla de queso y una coca de dos litros a Bernárdez por favor?"</em>
+          <div class="chat-time">9:14 PM · Audio WhatsApp</div>
+        </div>
+        <div class="chat-msg bot">
+          ¡Listo! 🍕 Tu pedido para entrega en *Fracc. Bernárdez #104* quedó registrado.<br><br>
+          • 1x Pizza Familiar Pepperoni ($260)<br>
+          • 1x Refresco Coca-Cola 2L ($45)<br>
+          • Envío Express MasFast ($25)<br>
+          *Total: $330 MXN*<br><br>
+          💳 [Pagar con Mercado Pago / SPEI](https://mpago.la/pos/cmd-lucky)<br>
+          📍 [Rastrear Repartidor en Vivo](https://comanda.masfast.shop/tracker/)
+          <div class="chat-time">9:14 PM · ComandaFlow Bot ⚡</div>
+        </div>
+      </div>
+
+      <!-- Botón de Disparo de Demo -->
+      <button class="btn-fire-demo" onclick="triggerSimulation()">
+        <span>⚡</span> Dictar Pedido & Emitir Comanda Térmica (< 250ms)
+      </button>
+
+      <!-- Mini Mapa -->
+      <div>
+        <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.3rem; display:block;">📍 Smart Dispatch en Tiempo Real (Guadalupe, Zac.):</label>
+        <div id="live-map"></div>
+      </div>
+    </div>
+
+    <!-- Panel Derecho: Comanda Térmica & Métricas -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🖨️ 2. Salida Térmica ESC/POS (Cocina & Entrega)</div>
+        <span style="font-size:0.75rem; color:var(--primary); font-family:var(--font-mono);">TCP Socket 9100</span>
+      </div>
+
+      <div class="receipt-container">
+        <div class="thermal-paper" id="thermal-receipt">
+          <div class="thermal-center thermal-double" id="rcpt-rest-name">LUCKY PIZZA GUADALUPE</div>
+          <div class="thermal-center thermal-bold">*** COMANDA DE COCINA ***</div>
+          <div class="thermal-center" style="font-size:0.65rem;">Av. García Salinas 312 · Tel: 492-923-4567</div>
+          <div class="thermal-divider"></div>
+          <div class="thermal-row">
+            <span class="thermal-bold" id="rcpt-folio">ORDEN: #CMD-9042</span>
+            <span id="rcpt-time">21:14:02</span>
+          </div>
+          <div class="thermal-row">
+            <span>TIPO: 🛵 A DOMICILIO</span>
+            <span class="thermal-bold">MESA: N/A</span>
+          </div>
+          <div class="thermal-divider"></div>
+          <div class="thermal-row thermal-bold">
+            <span>CANT / DESCRIPCION</span>
+            <span>TOTAL</span>
+          </div>
+          <div class="thermal-divider"></div>
+          
+          <div id="rcpt-items">
+            <div style="font-size:0.95rem; font-weight:800;">1x PIZZA FAMILIAR PEPPERONI</div>
+            <div style="font-size:0.65rem; color:#4b5563;">  * Orilla rellena de queso</div>
+            <div class="thermal-row" style="margin-bottom:0.3rem;">
+              <span>  Precio Unitario</span>
+              <span>$260.00</span>
+            </div>
+            
+            <div style="font-size:0.95rem; font-weight:800;">1x COCA-COLA 2 LITROS</div>
+            <div class="thermal-row">
+              <span>  Precio Unitario</span>
+              <span>$45.00</span>
+            </div>
+          </div>
+
+          <div class="thermal-divider"></div>
+          <div class="thermal-row">
+            <span>Subtotal:</span>
+            <span id="rcpt-subtotal">$305.00</span>
+          </div>
+          <div class="thermal-row">
+            <span>Costo de Envío MasFast:</span>
+            <span>$25.00</span>
+          </div>
+          <div class="thermal-row thermal-double" style="margin-top:0.25rem;">
+            <span>GRAN TOTAL:</span>
+            <span id="rcpt-total">$330.00</span>
+          </div>
+          <div class="thermal-divider"></div>
+          <div style="font-size:0.7rem;">
+            <div><strong>Cliente:</strong> Mauricio Juanes</div>
+            <div><strong>Dirección:</strong> Fracc. Bernárdez #104, Guadalupe</div>
+            <div><strong>Pago:</strong> MERCADO PAGO (PROCESADO ✅)</div>
+          </div>
+          <div class="thermal-divider"></div>
+          <div class="thermal-center" style="font-size:0.65rem;">
+            ⚡ COMANDAFLOW AI · CERO COMISIONES<br>
+            [ CORTE DE PAPEL AUTOMÁTICO ]
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Métricas de la Demo -->
+      <div class="metrics-bar">
+        <div class="metric-card">
+          <div class="metric-value" id="val-lat">42 ms</div>
+          <div class="metric-label">Latencia Inferencia</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Margen Directo</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">$99.00</div>
+          <div class="metric-label">Ahorro vs Uber/DiDi</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value" id="val-socket">9100 TCP</div>
+          <div class="metric-label">Salida KDS</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Inicialización del Mapa
+    let map = L.map('live-map').setView([22.7538, -102.5186], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    let restMarker = L.marker([22.7538, -102.5186]).addTo(map).bindPopup('<b>Lucky Pizza Guadalupe</b>').openPopup();
+    let clientMarker = L.marker([22.7512, -102.5120]).addTo(map).bindPopup('Cliente (Fracc. Bernárdez)');
+
+    function selectRest(type) {
+      document.querySelectorAll('.rest-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const nameEl = document.getElementById('rcpt-rest-name');
+      if (type === 'lucky') {
+        nameEl.innerText = 'LUCKY PIZZA GUADALUPE';
+        map.setView([22.7538, -102.5186], 14);
+      } else if (type === 'rey') {
+        nameEl.innerText = 'EL REY DEL TACO ZACATECAS';
+        map.setView([22.7680, -102.5700], 14);
+      } else if (type === 'burger') {
+        nameEl.innerText = 'BLACK BURGER ARROYO';
+        map.setView([22.7490, -102.5100], 14);
+      }
+      triggerSimulation();
+    }
+
+    function triggerSimulation() {
+      const receipt = document.getElementById('thermal-receipt');
+      receipt.style.animation = 'none';
+      void receipt.offsetWidth; // trigger reflow
+      receipt.style.animation = 'printFeed 0.5s ease-out';
+
+      const randomFolio = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('rcpt-folio').innerText = `ORDEN: #CMD-${randomFolio}`;
+      
+      const now = new Date();
+      document.getElementById('rcpt-time').innerText = now.toTimeString().split(' ')[0];
+
+      const lat = Math.floor(35 + Math.random() * 25);
+      document.getElementById('val-lat').innerText = `${lat} ms`;
+    }
+  </script>
+</body>
+</html>
