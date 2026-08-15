@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComandaFlow AI - Automatiza tus Pedidos por WhatsApp y Ahorra en Comisiones</title>
+    <meta name="description" content="Automatiza pedidos por WhatsApp con IA, conecta comandas de cocina y ahorra hasta el 30% en comisiones de Uber Eats y DiDi Food. Implementación llave en mano en 7 días.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #070d18;
+            --bg-secondary: #0c1527;
+            --bg-card: rgba(15, 26, 48, 0.7);
+            --bg-card-hover: rgba(22, 38, 68, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(16, 185, 129, 0.4);
+            
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.25);
+            --emerald-light: #34d399;
+            --blue: #3b82f6;
+            --blue-light: #60a5fa;
+            --cyan: #06b6d4;
+            --amber: #f59e0b;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 30px rgba(16, 185, 129, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Ambient Glow Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle 800px at 50% -10%, rgba(59, 130, 246, 0.12), transparent 70%),
+                radial-gradient(circle 600px at 90% 40%, rgba(16, 185, 129, 0.08), transparent 60%),
+                radial-gradient(circle 700px at 10% 80%, rgba(6, 182, 212, 0.06), transparent 65%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header / Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 13, 24, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 76px;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            color: #fff;
+            box-shadow: 0 4px 14px var(--emerald-glow);
+        }
+
+        .logo-text {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .logo-text span {
+            color: var(--emerald);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 11px 24px;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 16px var(--emerald-glow);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(16, 185, 129, 0.35);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 11px 24px;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 90px 0 60px;
+            text-align: center;
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: var(--emerald-light);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5.5vw, 62px);
+            line-height: 1.12;
+            max-width: 960px;
+            margin: 0 auto 24px;
+            color: #ffffff;
+        }
+
+        .hero h1 .highlight {
+            color: var(--emerald-light);
+            text-decoration: underline;
+            text-decoration-color: rgba(16, 185, 129, 0.35);
+            text-underline-offset: 6px;
+        }
+
+        .hero p.subtitle {
+            font-size: clamp(17px, 2vw, 20px);
+            color: var(--text-secondary);
+            max-width: 740px;
+            margin: 0 auto 36px;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(12px);
+        }
+
+        .stat-item h4 {
+            font-size: 28px;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .stat-item h4 span {
+            color: var(--emerald);
+        }
+
+        .stat-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Interactive Savings Calculator */
+        .calculator-section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 48px;
+        }
+
+        .section-tag {
+            color: var(--emerald);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-header h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            color: #ffffff;
+            margin-bottom: 14px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .calc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .slider-group {
+            margin-bottom: 32px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .slider-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--emerald-light);
+            background: rgba(16, 185, 129, 0.12);
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 10px var(--emerald-glow);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .calc-result-box {
+            background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calc-result-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .result-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--emerald-light);
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .result-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 42px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .result-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 13px;
+        }
+
+        .breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-row span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .breakdown-row span:last-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Demo / WhatsApp Simulator */
+        .demo-section {
+            padding: 80px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .chat-simulator {
+            background: #0d1624;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-header {
+            background: #142236;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .bot-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--emerald);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .chat-info h5 {
+            font-size: 15px;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .chat-info p {
+            font-size: 12px;
+            color: var(--emerald-light);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--emerald);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .chat-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 440px;
+            overflow-y: auto;
+            background: rgba(13, 22, 36, 0.75);
+        }
+
+        .chat-msg {
+            max-width: 82%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            position: relative;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: #056162;
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-bot {
+            align-self: flex-start;
+            background: #1f2c40;
+            color: #f1f5f9;
+            border-bottom-left-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .msg-bot strong {
+            color: var(--emerald-light);
+        }
+
+        .msg-time {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: right;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-size: 17px;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .feature-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* How It Works Section */
+        .how-section {
+            padding: 80px 0;
+            background: rgba(12, 21, 39, 0.4);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 28px 24px;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(16, 185, 129, 0.3);
+            background: var(--bg-card-hover);
+        }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .step-card h4 {
+            font-size: 17px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .step-card p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 90px 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 36px 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--emerald);
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 26, 48, 0.9) 100%);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+            transform: scale(1.03);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--emerald);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            box-shadow: 0 4px 12px var(--emerald-glow);
+        }
+
+        .pricing-header h4 {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .pricing-header p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            min-height: 40px;
+            margin-bottom: 20px;
+        }
+
+        .pricing-price {
+            margin-bottom: 24px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .price-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .price-period {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .price-setup {
+            font-size: 13px;
+            color: var(--emerald-light);
+            font-weight: 600;
+            margin-top: -16px;
+            margin-bottom: 24px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li.check::before {
+            content: '✓';
+            color: var(--emerald);
+            font-weight: bold;
+        }
+
+        /* Lead Form & CTA */
+        .cta-section {
+            padding: 80px 0 100px;
+        }
+
+        .cta-card {
+            background: linear-gradient(145deg, rgba(16, 185, 129, 0.08) 0%, rgba(12, 21, 39, 0.95) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(7, 13, 24, 0.7);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--emerald);
+            background: rgba(7, 13, 24, 0.9);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0;
+            background: #040810;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .calc-card, .demo-grid, .pricing-grid, .steps-grid, .cta-card {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="logo-wrap">
+                <div class="logo-badge">C</div>
+                <div class="logo-text">Comanda<span>Flow</span> <small style="font-size: 12px; color: var(--text-muted); font-weight: normal;">AI by MasFast</small></div>
+            </a>
+            <div class="nav-links">
+                <a href="#calculadora" class="nav-link">Calculadora de Ahorro</a>
+                <a href="#demo" class="nav-link">Cómo Funciona</a>
+                <a href="#precios" class="nav-link">Planes</a>
+                <a href="#registro" class="btn-primary">Agendar Piloto 🚀</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="pill-badge">
+                <span>⚡</span> Programa Piloto Zacatecas & Regional 2026
+            </div>
+            <h1>
+                Deja de regalarle el 30% a Uber Eats.<br>
+                Automatiza tus pedidos por <span class="highlight">WhatsApp con IA</span>.
+            </h1>
+            <p class="subtitle">
+                Atiende comensales al instante, envía órdenes directas a cocina y despacha con tus repartidores o choferes on-demand. Todo sin comisiones abusivas sobre tus platillos.
+            </p>
+            <div class="hero-actions">
+                <a href="#registro" class="btn-primary" style="font-size: 16px; padding: 14px 32px;">
+                    Solicitar Piloto Done-For-You 🍕
+                </a>
+                <a href="#calculadora" class="btn-secondary" style="font-size: 16px; padding: 14px 28px;">
+                    Calcular Mi Ahorro Mensual 📊
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <h4>0<span>%</span></h4>
+                    <p>Comisión sobre venta de platillos</p>
+                </div>
+                <div class="stat-item">
+                    <h4>&lt; 5 <span>seg</span></h4>
+                    <p>Respuesta automática en WhatsApp</p>
+                </div>
+                <div class="stat-item">
+                    <h4>7 <span>días</span></h4>
+                    <p>Implementación llave en mano</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive ROI Calculator -->
+    <section id="calculadora" class="calculator-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Calculadora de Impacto Financiero</span>
+                <h2>¿Cuánto dinero estás perdiendo cada mes?</h2>
+                <p>Mueve los deslizadores con los datos promedio de tu restaurante y descubre tu ahorro real con ComandaFlow AI.</p>
+            </div>
+
+            <div class="calc-card">
+                <div class="calc-inputs">
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">Pedidos a domicilio al mes</span>
+                            <span class="slider-value" id="pedidosVal">300 pedidos</span>
+                        </div>
+                        <input type="range" id="pedidosSlider" min="50" max="1500" step="25" value="300">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">Ticket promedio por orden</span>
+                            <span class="slider-value" id="ticketVal">$250 MXN</span>
+                        </div>
+                        <input type="range" id="ticketSlider" min="100" max="800" step="25" value="250">
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <p style="font-size: 13px; color: var(--text-secondary);">
+                            ℹ️ Basado en una comisión estándar de plataformas de delivery (30% + retenciones) frente a la tarifa plana fija de ComandaFlow.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="calc-result-box">
+                    <div class="result-label">Tu Ahorro Neto Mensual Estimado</div>
+                    <div class="result-amount" id="ahorroMensual">$21,501 MXN</div>
+                    <div class="result-sub">que se quedan íntegros en tu cuenta de banco</div>
+
+                    <div class="breakdown-row">
+                        <span>Venta mensual delivery:</span>
+                        <span id="ventaTotal">$75,000 MXN</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Comisión que pagas a Uber/DiDi (30%):</span>
+                        <span id="comisionPlataformas" style="color: #f87171;">-$22,500 MXN</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span>Suscripción mensual ComandaFlow:</span>
+                        <span style="color: var(--emerald);">$999 MXN</span>
+                    </div>
+                    <div class="breakdown-row" style="margin-top: 8px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
+                        <span style="color: #ffffff;">Ahorro Proyectado al Año:</span>
+                        <span id="ahorroAnual" style="color: var(--emerald-light); font-size: 16px;">$258,012 MXN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo / How It Works -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <div class="demo-grid">
+                <!-- Chat Mockup -->
+                <div class="chat-simulator">
+                    <div class="chat-header">
+                        <div class="bot-avatar">🤖</div>
+                        <div class="chat-info">
+                            <h5>ComandaFlow Asistente 🟢</h5>
+                            <p><span class="status-dot"></span> En línea (Respuesta en 1s)</p>
+                        </div>
+                    </div>
+                    <div class="chat-body" id="chatBody">
+                        <div class="chat-msg msg-user">
+                            ¡Buenas noches! Quiero pedir una pizza grande de pepperoni y unas alitas BBQ a domicilio porfa.
+                            <span class="msg-time">20:14</span>
+                        </div>
+                        <div class="chat-msg msg-bot">
+                            ¡Hola! 👋 Con gusto te tomo la orden de <strong>Pizzería La Toscana</strong> 🍕:
+                            <br><br>
+                            • 1x Pizza Grande Pepperoni ($220)<br>
+                            • 1x Alitas BBQ 10 pzas ($160)<br>
+                            <strong>Subtotal: $380 MXN</strong>
+                            <br><br>
+                            ¿Me compartes tu ubicación o dirección de entrega para calcular el envío?
+                            <span class="msg-time">20:14</span>
+                        </div>
+                        <div class="chat-msg msg-user">
+                            📍 Av. García Salinas #302, Guadalupe, Zac.
+                            <span class="msg-time">20:15</span>
+                        </div>
+                        <div class="chat-msg msg-bot">
+                            ¡Excelente! Estás a 2.4 km del restaurante. 🛵<br>
+                            • Envío: $35 MXN<br>
+                            <strong>Total a pagar: $415 MXN</strong>
+                            <br><br>
+                            ¿Deseas pagar en efectivo al recibir o por transferencia?
+                            <span class="msg-time">20:15</span>
+                        </div>
+                        <div class="chat-msg msg-user">
+                            Efectivo, pago con billete de $500.
+                            <span class="msg-time">20:16</span>
+                        </div>
+                        <div class="chat-msg msg-bot">
+                            ✅ <strong>¡Orden #2049 confirmada y enviada a cocina!</strong> 👨🍳<br>
+                            Llevamos cambio de $85 MXN.<br>
+                            Tu pedido llegará en aprox. 28 min.<br><br>
+                            Sigue a tu repartidor en vivo aquí: <span style="text-decoration: underline; color: #38bdf8;">masfast.app/track/2049</span>
+                            <span class="msg-time">20:16</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Description -->
+                <div>
+                    <span class="section-tag">Experiencia de Usuario Fluida</span>
+                    <h2 style="font-size: 34px; margin-bottom: 20px;">Vende más por WhatsApp sin saturar a tu equipo</h2>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <div class="feature-icon">🧠</div>
+                            <div class="feature-content">
+                                <h4>Inteligencia Artificial Especializada</h4>
+                                <p>Entiende lenguaje natural, resuelve dudas del menú, ofrece complementos (upselling) y nunca deja a un cliente en "visto".</p>
+                            </div>
+                        </li>
+                        <li class="feature-item">
+                            <div class="feature-icon">🗺️</div>
+                            <div class="feature-content">
+                                <h4>Cálculo Geoespacial Automático</h4>
+                                <p>Calcula distancias exactas con GPS para cobrar la tarifa de envío correcta y asignar al chofer más cercano.</p>
+                            </div>
+                        </li>
+                        <li class="feature-item">
+                            <div class="feature-icon">🖥️</div>
+                            <div class="feature-content">
+                                <h4>Comanda Digital para Cocina</h4>
+                                <p>Tu personal de cocina recibe la comanda limpia en una pantalla o impresora térmica sin tener que transcribir chats.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4-Step Onboarding -->
+    <section class="how-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Metodología Service-First</span>
+                <h2>Implementación "Llave en Mano" en 7 Días</h2>
+                <p>Nosotros hacemos todo el trabajo técnico pesado. Tú solo te encargas de cocinar y atender a tus clientes.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h4>1. Envíanos tu Menú</h4>
+                    <p>Mándanos fotos o PDF de tu carta. Nuestra IA y equipo digitalizan precios, opciones y fotos en menos de 24h.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h4>2. Escanea el QR</h4>
+                    <p>Escaneas el código QR desde tu WhatsApp comercial en 10 segundos para vincular la línea de atención del restaurante.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h4>3. Configuración de Cocina</h4>
+                    <p>Te entregamos el acceso a la comanda web en tiempo real y conectamos tus repartidores o motos on-demand.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <h4>4. Lanzamiento & Ventas</h4>
+                    <p>Tus clientes empiezan a pedir por WhatsApp en automático y tú comienzas a ahorrar miles de pesos cada mes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="precios" class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Transparente & Sin Letras Chiquitas</span>
+                <h2>Planes Simples que se Pagan Solos</h2>
+                <p>Cero porcentaje sobre tus platillos. Solo pagas una tarifa plana fija.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Starter -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h4>SaaS Básico</h4>
+                        <p>Para restaurantes con menú sencillo que desean autoservicio.</p>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-val">$999</span>
+                        <span class="price-period">MXN / mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="check">Atención por WhatsApp con IA</li>
+                        <li class="check">Hasta 400 pedidos al mes</li>
+                        <li class="check">Comanda web para cocina</li>
+                        <li class="check">0% de comisión por venta</li>
+                        <li class="check">Soporte por correo y chat</li>
+                    </ul>
+                    <a href="#registro" class="btn-secondary" style="justify-content: center;">Elegir Básico</a>
+                </div>
+
+                <!-- Done For You Pilot (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="card-tag">⭐ Oferta Piloto Zacatecas</div>
+                    <div class="pricing-header">
+                        <h4>Piloto Done-For-You</h4>
+                        <p>Configuración integral y acompañamiento total en tu local.</p>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-val">$999</span>
+                        <span class="price-period">MXN / mes</span>
+                    </div>
+                    <div class="price-setup">+ $3,500 MXN Setup Único (Llave en mano)</div>
+                    <ul class="pricing-features">
+                        <li class="check"><strong>Digitalización completa de tu menú por nuestro equipo</strong></li>
+                        <li class="check"><strong>Pedidos ILIMITADOS sin comisiones</strong></li>
+                        <li class="check"><strong>Capacitación presencial/videollamada a cocina y repartidores</strong></li>
+                        <li class="check"><strong>Ruteo híbrido (Choferes propios + Uber Direct)</strong></li>
+                        <li class="check"><strong>Reporte ejecutivo semanal de ventas y métricas</strong></li>
+                        <li class="check"><strong>Soporte prioritario 24/7 por WhatsApp</strong></li>
+                    </ul>
+                    <a href="#registro" class="btn-primary" style="justify-content: center; font-size: 15px;">Solicitar Piloto VIP 🚀</a>
+                </div>
+
+                <!-- Pro Multi-Branch -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h4>Multi-Sucursales</h4>
+                        <p>Para cadenas y restaurantes consolidados con alto volumen.</p>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-val">$1,899</span>
+                        <span class="price-period">MXN / mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="check">Todo lo del Plan Piloto</li>
+                        <li class="check">Multi-sucursal con derivación inteligente de pedidos</li>
+                        <li class="check">Integración con sistemas POS / Facturación</li>
+                        <li class="check">Métricas avanzadas de comensales y retención</li>
+                        <li class="check">Gerente de cuenta dedicado</li>
+                    </ul>
+                    <a href="#registro" class="btn-secondary" style="justify-content: center;">Contactar Ventas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Generation Form -->
+    <section id="registro" class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div>
+                    <span class="section-tag">Cupos Limitados para Piloto</span>
+                    <h2 style="font-size: 32px; margin-bottom: 16px;">Comienza a ahorrar en comisiones esta misma semana</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                        Estamos seleccionando solo <strong>5 restaurantes en la zona metropolitana de Zacatecas-Guadalupe</strong> para el programa piloto con acompañamiento exclusivo y setup preferencial.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: var(--text-secondary);">
+                        <div>✅ Sin contratos forzosos. Cancela cuando quieras.</div>
+                        <div>✅ Conservas el 100% de la información de tus clientes.</div>
+                        <div>✅ Demostración en vivo en menos de 24 horas.</div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="leadForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="f_rest">Nombre del Restaurante *</label>
+                        <input type="text" id="f_rest" name="f_rest" class="form-control" placeholder="Ej. Pizzería Roma, Tacos El Güero" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f_wa">Número de WhatsApp (con lada) *</label>
+                        <input type="tel" id="f_wa" name="f_wa" class="form-control" placeholder="Ej. 492 123 4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f_email">Correo Electrónico *</label>
+                        <input type="email" id="f_email" name="f_email" class="form-control" placeholder="tu@restaurante.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f_problema">¿Cuál es tu principal reto actual?</label>
+                        <textarea id="f_problema" name="f_problema" class="form-control" placeholder="Ej: Pagamos mucho a Uber, se satura el WhatsApp en fines de semana..."></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn" class="btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 15px;">
+                        Solicitar Demostración y Piloto 🚀
+                    </button>
+                    <div id="formStatus" style="margin-top: 14px; text-align: center; font-size: 13px; display: none;"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados.</p>
+            <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
+                Plataforma de comercio conversacional y logística inteligente para restaurantes en México.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Savings Calculator Logic
+        const pedidosSlider = document.getElementById('pedidosSlider');
+        const ticketSlider = document.getElementById('ticketSlider');
+        const pedidosVal = document.getElementById('pedidosVal');
+        const ticketVal = document.getElementById('ticketVal');
+        
+        const ahorroMensualEl = document.getElementById('ahorroMensual');
+        const ventaTotalEl = document.getElementById('ventaTotal');
+        const comisionPlataformasEl = document.getElementById('comisionPlataformas');
+        const ahorroAnualEl = document.getElementById('ahorroAnual');
+
+        function formatCurrency(val) {
+            return '$' + Math.round(val).toLocaleString('es-MX') + ' MXN';
+        }
+
+        function calculateSavings() {
+            const pedidos = parseInt(pedidosSlider.value);
+            const ticket = parseInt(ticketSlider.value);
+
+            pedidosVal.innerText = pedidos + ' pedidos';
+            ticketVal.innerText = '$' + ticket + ' MXN';
+
+            const ventaTotal = pedidos * ticket;
+            const comisionPlataformas = ventaTotal * 0.30; // 30% promedio
+            const costoComandaFlow = 999; // mensualidad fija
+            const ahorroNeto = Math.max(0, comisionPlataformas - costoComandaFlow);
+            const ahorroAnual = ahorroNeto * 12;
+
+            ventaTotalEl.innerText = formatCurrency(ventaTotal);
+            comisionPlataformasEl.innerText = '-' + formatCurrency(comisionPlataformas);
+            ahorroMensualEl.innerText = formatCurrency(ahorroNeto);
+            ahorroAnualEl.innerText = formatCurrency(ahorroAnual);
+        }
+
+        pedidosSlider.addEventListener('input', calculateSavings);
+        ticketSlider.addEventListener('input', calculateSavings);
+        calculateSavings();
+
+        // Lead Form Handler with Fallback
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('formStatus');
+            
+            const rest = document.getElementById('f_rest').value;
+            const wa = document.getElementById('f_wa').value;
+            const email = document.getElementById('f_email').value;
+            const prob = document.getElementById('f_problema').value;
+
+            btn.disabled = true;
+            btn.innerText = 'Enviando solicitud...';
+            status.style.display = 'block';
+            status.style.color = '#38bdf8';
+            status.innerText = '⏳ Procesando tu registro...';
+
+            const formData = new FormData();
+            formData.append('f_rest', rest);
+            formData.append('f_wa', wa);
+            formData.append('f_email', email);
+            formData.append('f_problema', prob);
+
+            try {
+                // Intentar enviar al backend FastAPI local/producción
+                const response = await fetch('/registro', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    status.style.color = '#34d399';
+                    status.innerText = '✅ ¡Registro exitoso! Nos pondremos en contacto contigo por WhatsApp en breve.';
+                    document.getElementById('leadForm').reset();
+                } else {
+                    throw new Error('Endpoint no disponible');
+                }
+            } catch (err) {
+                // Fallback inteligente: Redirigir a WhatsApp con los datos listos
+                status.style.color = '#34d399';
+                status.innerHTML = '✅ ¡Excelente! Redirigiendo a WhatsApp para coordinar tu piloto...';
+                
+                const mensajeWA = encodeURIComponent(`¡Hola! Me interesa el programa piloto de ComandaFlow AI para mi restaurante.\n\n🍽️ Restaurante: ${rest}\n📱 WhatsApp: ${wa}\n✉️ Correo: ${email}\n💬 Reto actual: ${prob || 'Ahorrar comisiones de delivery'}`);
+                
+                setTimeout(() => {
+                    window.open(`https://wa.me/528086086177?text=${mensajeWA}`, '_blank');
+                }, 1200);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Solicitar Demostración y Piloto 🚀';
+            }
+        }
+    </script>
+</body>
+</html>
