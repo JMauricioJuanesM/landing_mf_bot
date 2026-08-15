@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RestoFlow AI - Automatiza tus Pedidos por WhatsApp y Ahorra en Comisiones</title>
+    <title>ComandaFlow AI - Automatiza tus Pedidos por WhatsApp y Ahorra en Comisiones</title>
     <meta name="description" content="Automatiza pedidos por WhatsApp con IA, conecta comandas de cocina y ahorra hasta el 30% en comisiones de Uber Eats y DiDi Food. Implementación llave en mano en 7 días.">
     
     <!-- Google Fonts -->
@@ -843,8 +843,8 @@
     <nav>
         <div class="container nav-inner">
             <a href="#" class="logo-wrap">
-                <div class="logo-badge">R</div>
-                <div class="logo-text">Resto<span>Flow</span> <small style="font-size: 12px; color: var(--text-muted); font-weight: normal;">by MasFast</small></div>
+                <div class="logo-badge">C</div>
+                <div class="logo-text">Comanda<span>Flow</span> <small style="font-size: 12px; color: var(--text-muted); font-weight: normal;">AI by MasFast</small></div>
             </a>
             <div class="nav-links">
                 <a href="#calculadora" class="nav-link">Calculadora de Ahorro</a>
@@ -901,7 +901,7 @@
             <div class="section-header">
                 <span class="section-tag">Calculadora de Impacto Financiero</span>
                 <h2>¿Cuánto dinero estás perdiendo cada mes?</h2>
-                <p>Mueve los deslizadores con los datos promedio de tu restaurante y descubre tu ahorro real con RestoFlow AI.</p>
+                <p>Mueve los deslizadores con los datos promedio de tu restaurante y descubre tu ahorro real con ComandaFlow AI.</p>
             </div>
 
             <div class="calc-card">
@@ -924,7 +924,7 @@
 
                     <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
                         <p style="font-size: 13px; color: var(--text-secondary);">
-                            ℹ️ Basado en una comisión estándar de plataformas de delivery (30% + retenciones) frente a la tarifa plana fija de RestoFlow.
+                            ℹ️ Basado en una comisión estándar de plataformas de delivery (30% + retenciones) frente a la tarifa plana fija de ComandaFlow.
                         </p>
                     </div>
                 </div>
@@ -943,7 +943,7 @@
                         <span id="comisionPlataformas" style="color: #f87171;">-$22,500 MXN</span>
                     </div>
                     <div class="breakdown-row">
-                        <span>Suscripción mensual RestoFlow:</span>
+                        <span>Suscripción mensual ComandaFlow:</span>
                         <span style="color: var(--emerald);">$999 MXN</span>
                     </div>
                     <div class="breakdown-row" style="margin-top: 8px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
@@ -964,7 +964,7 @@
                     <div class="chat-header">
                         <div class="bot-avatar">🤖</div>
                         <div class="chat-info">
-                            <h5>RestoFlow Asistente 🟢</h5>
+                            <h5>ComandaFlow Asistente 🟢</h5>
                             <p><span class="status-dot"></span> En línea (Respuesta en 1s)</p>
                         </div>
                     </div>
@@ -1198,7 +1198,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>© 2026 RestoFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados.</p>
+            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados.</p>
             <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
                 Plataforma de comercio conversacional y logística inteligente para restaurantes en México.
             </p>
@@ -1231,8 +1231,8 @@
 
             const ventaTotal = pedidos * ticket;
             const comisionPlataformas = ventaTotal * 0.30; // 30% promedio
-            const costoRestoFlow = 999; // mensualidad fija
-            const ahorroNeto = Math.max(0, comisionPlataformas - costoRestoFlow);
+            const costoComandaFlow = 999; // mensualidad fija
+            const ahorroNeto = Math.max(0, comisionPlataformas - costoComandaFlow);
             const ahorroAnual = ahorroNeto * 12;
 
             ventaTotalEl.innerText = formatCurrency(ventaTotal);
@@ -1287,7 +1287,7 @@
                 status.style.color = '#34d399';
                 status.innerHTML = '✅ ¡Excelente! Redirigiendo a WhatsApp para coordinar tu piloto...';
                 
-                const mensajeWA = encodeURIComponent(`¡Hola! Me interesa el programa piloto de RestoFlow AI para mi restaurante.\n\n🍽️ Restaurante: ${rest}\n📱 WhatsApp: ${wa}\n✉️ Correo: ${email}\n💬 Reto actual: ${prob || 'Ahorrar comisiones de delivery'}`);
+                const mensajeWA = encodeURIComponent(`¡Hola! Me interesa el programa piloto de ComandaFlow AI para mi restaurante.\n\n🍽️ Restaurante: ${rest}\n📱 WhatsApp: ${wa}\n✉️ Correo: ${email}\n💬 Reto actual: ${prob || 'Ahorrar comisiones de delivery'}`);
                 
                 setTimeout(() => {
                     window.open(`https://wa.me/528086086177?text=${mensajeWA}`, '_blank');
