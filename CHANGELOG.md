@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-08-15
+
+### Added
+- **Business Intelligence & Franchising Demand Forecasting Hub PWA (`bi/index.html`):**
+  - Dashboard web corporativo para visualización consolidada de cadenas y franquicias (Guadalupe, Zacatecas Centro, Fresnillo).
+  - KPIs en tiempo real: GMV de red, comisiones ahorradas frente a UberEats (30%), órdenes activas y tiempos medios de cocina.
+  - Predictor estacional de demanda interactivo con factores exógenos combinables (Quincena, Lluvia, Clásicos de Fútbol).
+  - Wizard automatizado de preparación de stock en cocina (kilogramos de masa madurada, queso, carnes preparadas, cajas y porciones de aderezo).
+  - Monitor de saturación y capacidad KDS por sucursal con detección de cuellos de botella.
+
 ## [1.3.0] - 2026-08-15
 
 ### Added

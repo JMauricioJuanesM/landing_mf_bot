@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — BI & Franchising Demand Forecasting Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --purple: #8b5cf6;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .logo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary);
+    }
+
+    .tag-hub {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .branch-select {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #070b14;
+    }
+    .btn-primary:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+    .kpi-card.green::before { background: var(--primary); }
+    .kpi-card.purple::before { background: var(--purple); }
+    .kpi-card.amber::before { background: var(--warning); }
+
+    .kpi-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+
+    .kpi-sub {
+      font-size: 0.8rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Section Containers */
+    .dashboard-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* Multi-Branch Cards */
+    .branches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .branch-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .branch-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .branch-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .branch-address {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+    }
+    .status-pill.open {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+    }
+    .status-pill.busy {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+    }
+
+    .progress-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .progress-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .progress-fill.high {
+      background: var(--warning);
+    }
+
+    /* Forecast & Simulator Controls */
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.75rem;
+    }
+
+    @media (max-width: 900px) {
+      .forecast-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .control-panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .control-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .slider {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .toggles-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .toggle-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .toggle-chip.active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* SVG Chart */
+    .chart-container {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .svg-chart {
+      width: 100%;
+      height: 220px;
+    }
+
+    /* Checklist Table */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    th {
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .unit-tag {
+      background: #1e293b;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <a href="../index.html" class="logo-badge">
+        <span class="logo-dot"></span>
+        ComandaFlow AI
+      </a>
+      <span class="tag-hub">Enterprise Franchising & BI Hub</span>
+    </div>
+    <div class="header-actions">
+      <select id="branchFilter" class="branch-select" onchange="updateDashboard()">
+        <option value="ALL">🌐 Red Completa (3 Sucursales)</option>
+        <option value="br-guadalupe-salinas">🍕 Guadalupe García Salinas</option>
+        <option value="br-zacatecas-centro">🏰 Zacatecas Centro Histórico</option>
+        <option value="br-fresnillo-centro">⛏️ Fresnillo Plateros</option>
+      </select>
+      <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir Reporte</button>
+      <a href="../kds/index.html" class="btn btn-primary">🍳 Ir a KDS Cocina</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Master KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card green">
+        <span class="kpi-title">Ventas Brutas Red (GMV Hoy)</span>
+        <span class="kpi-value" id="kpiGmv">$38,450 MXN</span>
+        <span class="kpi-sub">📈 +24% vs semana anterior</span>
+      </div>
+      <div class="kpi-card amber">
+        <span class="kpi-title">Órdenes Activas en Red</span>
+        <span class="kpi-value" id="kpiOrders">28 comandas</span>
+        <span class="kpi-sub">⚡ Capacidad usada: 37%</span>
+      </div>
+      <div class="kpi-card green">
+        <span class="kpi-title">Comisiones Ahorradas vs Uber</span>
+        <span class="kpi-value" id="kpiUberSaved">$11,535 MXN</span>
+        <span class="kpi-sub">💰 30% retenido directamente</span>
+      </div>
+      <div class="kpi-card purple">
+        <span class="kpi-title">Tiempo Promedio de Cocina</span>
+        <span class="kpi-value" id="kpiPrepTime">15.2 min</span>
+        <span class="kpi-sub">🎯 Meta SLA: < 18 min</span>
+      </div>
+    </div>
+
+    <!-- Multi-Branch Status Grid -->
+    <section class="dashboard-section">
+      <div class="section-header">
+        <h2 class="section-title">🏢 Monitor de Capacidad & Sucursales Activas</h2>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Sincronización KDS en tiempo real (< 40ms)</span>
+      </div>
+
+      <div class="branches-grid">
+        <!-- Branch 1 -->
+        <div class="branch-card">
+          <div class="branch-top">
+            <div>
+              <h3 class="branch-name">Guadalupe García Salinas</h3>
+              <p class="branch-address">Av. Pedro Coronel #450</p>
+            </div>
+            <span class="status-pill open">🟢 Normal (28%)</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-labels">
+              <span>7 de 25 comandas/hora</span>
+              <span>Prep: 14 min</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 28%;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+            <span>🛵 Flota: 3 Propios / 1 Uber</span>
+            <span>📍 Polígono: Guadalupe Oriente</span>
+          </div>
+        </div>
+
+        <!-- Branch 2 -->
+        <div class="branch-card">
+          <div class="branch-top">
+            <div>
+              <h3 class="branch-name">Zacatecas Centro Histórico</h3>
+              <p class="branch-address">Av. Hidalgo #720</p>
+            </div>
+            <span class="status-pill busy">🟡 Alta Demanda (90%)</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-labels">
+              <span>18 de 20 comandas/hora</span>
+              <span>Prep: 22 min</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill high" style="width: 90%;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+            <span>🛵 Flota: 2 Propios / 3 Uber Direct</span>
+            <span>⚡ Failover: Activo hacia Guadalupe</span>
+          </div>
+        </div>
+
+        <!-- Branch 3 -->
+        <div class="branch-card">
+          <div class="branch-top">
+            <div>
+              <h3 class="branch-name">Fresnillo Plateros</h3>
+              <p class="branch-address">Av. Plateros #310</p>
+            </div>
+            <span class="status-pill open">🟢 Normal (17%)</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-labels">
+              <span>5 de 30 comandas/hora</span>
+              <span>Prep: 12 min</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: 17%;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+            <span>🛵 Flota: 4 Propios (100% MasFast)</span>
+            <span>📍 Polígono: Urbana Fresnillo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demand Forecasting & Predictive Prep Checklist -->
+    <section class="dashboard-section">
+      <div class="section-header">
+        <h2 class="section-title">🔮 Predictor de Demanda & Wizard de Insumos (Fin de Semana)</h2>
+        <span class="status-pill open">Algoritmo Estacional Activado</span>
+      </div>
+
+      <div class="forecast-grid">
+        <!-- Controls -->
+        <div class="control-panel">
+          <h3 style="font-size: 0.95rem; font-weight: 700;">Parámetros del Pronóstico</h3>
+          
+          <div class="control-row">
+            <label class="control-label">
+              <span>Demanda Base Diaria:</span>
+              <b id="baseOrdersLabel">45 órdenes/día</b>
+            </label>
+            <input type="range" min="20" max="100" value="45" class="slider" id="baseOrdersSlider" oninput="recalcForecast()">
+          </div>
+
+          <div class="control-row">
+            <span class="control-label">Factores Exógenos de Aceleración:</span>
+            <div class="toggles-group">
+              <div class="toggle-chip active" id="chipQuincena" onclick="toggleFactor('chipQuincena')">💵 Quincena (+25%)</div>
+              <div class="toggle-chip active" id="chipLluvia" onclick="toggleFactor('chipLluvia')">🌧️ Lluvia en Zacatecas (+30%)</div>
+              <div class="toggle-chip" id="chipFutbol" onclick="toggleFactor('chipFutbol')">⚽ Clásico de Fútbol (+20%)</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.85rem; border-radius: 8px; font-size: 0.8rem;">
+            <b>💡 Recomendación de Personal para Viernes/Sábado:</b>
+            <div id="staffingSummary" style="margin-top: 0.35rem; color: var(--primary);">
+              4 Horneros de Turno Pico • 2 Expediter • 5 Repartidores en Calle
+            </div>
+          </div>
+        </div>
+
+        <!-- SVG Hourly Chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 style="font-size: 0.95rem; font-weight: 700;">Curva Horaria Proyectada (Viernes Noche)</h3>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Pico estimado: 20:00 hrs</span>
+          </div>
+
+          <svg class="svg-chart" viewBox="0 0 500 180">
+            <!-- Grid lines -->
+            <line x1="40" y1="20" x2="480" y2="20" stroke="rgba(255,255,255,0.06)" />
+            <line x1="40" y1="60" x2="480" y2="60" stroke="rgba(255,255,255,0.06)" />
+            <line x1="40" y1="100" x2="480" y2="100" stroke="rgba(255,255,255,0.06)" />
+            <line x1="40" y1="140" x2="480" y2="140" stroke="rgba(255,255,255,0.06)" />
+
+            <!-- Area Fill -->
+            <polygon id="chartArea" points="40,140 80,130 120,115 160,125 200,110 240,85 280,50 320,30 360,45 400,90 440,135 480,140 480,140 40,140" fill="rgba(16, 185, 129, 0.2)" />
+
+            <!-- Line Path -->
+            <polyline id="chartLine" points="40,140 80,130 120,115 160,125 200,110 240,85 280,50 320,30 360,45 400,90 440,135 480,140" fill="none" stroke="#10b981" stroke-width="3" />
+
+            <!-- Labels X -->
+            <text x="40" y="160" fill="#64748b" font-size="10">13h</text>
+            <text x="120" y="160" fill="#64748b" font-size="10">15h</text>
+            <text x="200" y="160" fill="#64748b" font-size="10">17h</text>
+            <text x="280" y="160" fill="#64748b" font-size="10">19h</text>
+            <text x="320" y="160" fill="#10b981" font-weight="bold" font-size="10">20h (Pico)</text>
+            <text x="400" y="160" fill="#64748b" font-size="10">22h</text>
+            <text x="460" y="160" fill="#64748b" font-size="10">23h</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Prep Table -->
+      <div style="margin-top: 1rem;">
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">📋 Checklist de Preparación en Cocina (Producción Anticipada)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Insumo Crítico</th>
+                <th>Cantidad a Producir</th>
+                <th>Momento de Preparación</th>
+                <th>Buffer de Seguridad</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="prepTableBody">
+              <tr>
+                <td><b>Masa para Pizza Madurada (Bolas 280g)</b></td>
+                <td><span class="unit-tag" id="valMasa">185.2 kg</span></td>
+                <td>Jueves / Viernes Mañana</td>
+                <td>+5%</td>
+                <td><input type="checkbox" checked> Listo en Cámara</td>
+              </tr>
+              <tr>
+                <td><b>Queso Mozzarella Rallado</b></td>
+                <td><span class="unit-tag" id="valQueso">119.1 kg</span></td>
+                <td>Viernes 12:00 PM</td>
+                <td>+5%</td>
+                <td><input type="checkbox" checked> Rallado y Pesado</td>
+              </tr>
+              <tr>
+                <td><b>Proteínas Preparadas (Pepperoni, Pastor, Arrachera)</b></td>
+                <td><span class="unit-tag" id="valCarne">81.9 kg</span></td>
+                <td>Viernes 11:00 AM</td>
+                <td>Exacto</td>
+                <td><input type="checkbox"> En Proceso</td>
+              </tr>
+              <tr>
+                <td><b>Cajas de Pizza 35cm & Papel Grado Alimenticio</b></td>
+                <td><span class="unit-tag" id="valCajas">680 piezas</span></td>
+                <td>Jueves Stock</td>
+                <td>+8%</td>
+                <td><input type="checkbox" checked> Armadas en Anaquel</td>
+              </tr>
+              <tr>
+                <td><b>Vasitos de Chimichurri & Salsa Casera</b></td>
+                <td><span class="unit-tag" id="valSalsas">1,260 porciones</span></td>
+                <td>Viernes 10:00 AM</td>
+                <td>Exacto</td>
+                <td><input type="checkbox" checked> Empacados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    ComandaFlow AI • Sistema Operativo Multi-Sucursal y Predicción de Demanda • Zacatecas / Guadalupe / Fresnillo 2026
+  </footer>
+
+  <script>
+    let factors = {
+      chipQuincena: true,
+      chipLluvia: true,
+      chipFutbol: false
+    };
+
+    function toggleFactor(id) {
+      factors[id] = !factors[id];
+      const el = document.getElementById(id);
+      if (factors[id]) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+      recalcForecast();
+    }
+
+    function recalcForecast() {
+      const base = parseInt(document.getElementById('baseOrdersSlider').value);
+      document.getElementById('baseOrdersLabel').innerText = `${base} órdenes/día`;
+
+      let mult = 1.0;
+      if (factors.chipQuincena) mult *= 1.25;
+      if (factors.chipLluvia) mult *= 1.30;
+      if (factors.chipFutbol) mult *= 1.20;
+
+      // Total weekend orders
+      const totalWeekend = Math.round(base * (1.65 + 2.20 + 2.35) * mult);
+      const weekendGmv = totalWeekend * 285;
+      const uberSaved = Math.round(weekendGmv * 0.30);
+
+      // Insumos
+      const totalPizzas = totalWeekend * 1.25;
+      document.getElementById('valMasa').innerText = `${(totalPizzas * 0.280 * 1.05).toFixed(1)} kg`;
+      document.getElementById('valQueso').innerText = `${(totalPizzas * 0.180 * 1.05).toFixed(1)} kg`;
+      document.getElementById('valCarne').innerText = `${(totalPizzas * 0.130).toFixed(1)} kg`;
+      document.getElementById('valCajas').innerText = `${Math.round(totalPizzas * 1.08)} piezas`;
+      document.getElementById('valSalsas').innerText = `${(totalWeekend * 2.5).toLocaleString()} porciones`;
+
+      document.getElementById('staffingSummary').innerText = totalWeekend > 300 
+        ? '5 Horneros de Turno Pico • 3 Expediter • 7 Repartidores en Calle'
+        : '4 Horneros de Turno Pico • 2 Expediter • 5 Repartidores en Calle';
+    }
+
+    function updateDashboard() {
+      const sel = document.getElementById('branchFilter').value;
+      if (sel === 'br-guadalupe-salinas') {
+        document.getElementById('kpiGmv').innerText = '$14,200 MXN';
+        document.getElementById('kpiOrders').innerText = '7 comandas';
+        document.getElementById('kpiUberSaved').innerText = '$4,260 MXN';
+        document.getElementById('kpiPrepTime').innerText = '14.0 min';
+      } else if (sel === 'br-zacatecas-centro') {
+        document.getElementById('kpiGmv').innerText = '$18,900 MXN';
+        document.getElementById('kpiOrders').innerText = '18 comandas';
+        document.getElementById('kpiUberSaved').innerText = '$5,670 MXN';
+        document.getElementById('kpiPrepTime').innerText = '22.0 min';
+      } else if (sel === 'br-fresnillo-centro') {
+        document.getElementById('kpiGmv').innerText = '$5,350 MXN';
+        document.getElementById('kpiOrders').innerText = '5 comandas';
+        document.getElementById('kpiUberSaved').innerText = '$1,605 MXN';
+        document.getElementById('kpiPrepTime').innerText = '12.0 min';
+      } else {
+        document.getElementById('kpiGmv').innerText = '$38,450 MXN';
+        document.getElementById('kpiOrders').innerText = '28 comandas';
+        document.getElementById('kpiUberSaved').innerText = '$11,535 MXN';
+        document.getElementById('kpiPrepTime').innerText = '15.2 min';
+      }
+    }
+  </script>
+</body>
+</html>
