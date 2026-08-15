@@ -8,10 +8,15 @@ venv/
 ENV/
 
 # Database and uploads
+masfast_leads.db
 pidata/masfast_leads.db
 pidata/uploads/
+uploads/
 *.xlsx
+*.log
+server.log
 
 # OS
 .DS_Store
 Thumbs.db
+
