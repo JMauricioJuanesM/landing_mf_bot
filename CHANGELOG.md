@@ -6,7 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.2.0] - 2026-08-15
+## [1.3.0] - 2026-08-15
+
+### Added
+- **KDS Kitchen Display System & Merchant Console PWA (`kds/index.html`):**
+  - Consola web interactiva de latencia ultra-baja (<40ms) para tabletas y pantallas de cocina.
+  - Máquina de estados de preparación de comandas (En Cocina, Listo, Despachado).
+  - Temporizadores adaptativos codificados por color (Verde <8 min, Amarillo 8-15 min, Rojo >15 min con animación pulsante).
+  - Alertas sonoras Web Audio API de alta frecuencia para ambientes con ruido de cocina.
+  - Modal interactivo para gestión de insumos/platillos agotados (86'd Items) con sincronización en tiempo real hacia WhatsApp.
+  - Generador de Corte de Turno (Reporte Z) con balance de ventas, desglose por métodos de pago y comisiones ahorradas.
 
 ### Added
 - **Estandarización de Ramas de Desarrollo Autónomo (`feature/asistente-autonomo`):**

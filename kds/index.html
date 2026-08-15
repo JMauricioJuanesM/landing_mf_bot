@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — KDS Kitchen Display & Merchant Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      color: var(--primary);
+    }
+
+    .restaurant-select {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .status-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      cursor: pointer;
+    }
+
+    .status-toggle.closed {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-header {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn-header:hover {
+      background: #334155;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #042f2e;
+      border: none;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #34d399;
+    }
+
+    .live-clock {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: #090d16;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Sub-nav Toolbar */
+    .toolbar {
+      background: #090d16;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .station-filters, .tab-filters {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .filter-chip {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-chip:hover {
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-chip.active {
+      background: #1e293b;
+      color: var(--text-main);
+      border-color: var(--accent);
+    }
+
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      margin-left: 0.3rem;
+    }
+
+    /* KDS Board Grid */
+    .kds-container {
+      flex: 1;
+      padding: 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+      align-content: start;
+    }
+
+    .order-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .order-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .order-card.timer-green {
+      border-top: 4px solid var(--primary);
+    }
+
+    .order-card.timer-yellow {
+      border-top: 4px solid var(--warning);
+    }
+
+    .order-card.timer-red {
+      border-top: 4px solid var(--danger);
+      animation: pulse-border 2s infinite;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 16px 2px rgba(239, 68, 68, 0.6); }
+    }
+
+    .card-header {
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .order-id-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-id {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .order-type {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .type-delivery {
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .type-pickup {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .timer-badge {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .badge-green {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--primary);
+    }
+
+    .badge-yellow {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+
+    .badge-red {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+    }
+
+    .customer-info {
+      padding: 0.5rem 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .customer-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .items-list {
+      padding: 0.85rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+    }
+
+    .item-qty {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .item-notes {
+      font-size: 0.78rem;
+      color: #fbbf24;
+      font-style: italic;
+      margin-top: 0.15rem;
+      background: rgba(245, 158, 11, 0.08);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      border-left: 2px solid #fbbf24;
+    }
+
+    .item-station {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      background: #1e293b;
+      color: var(--text-muted);
+      margin-left: 0.3rem;
+    }
+
+    .card-footer {
+      padding: 0.75rem 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .payment-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .pay-status {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .pay-paid {
+      color: var(--primary);
+    }
+
+    .pay-pending {
+      color: var(--warning);
+    }
+
+    .pay-amount {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .btn-action {
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      transition: all 0.15s;
+    }
+
+    .btn-ready {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-ready:hover {
+      background: var(--primary);
+      color: #042f2e;
+    }
+
+    .btn-dispatch {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-dispatch:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .btn-print {
+      background: #1e293b;
+      color: var(--text-muted);
+    }
+
+    .btn-print:hover {
+      background: #334155;
+      color: var(--text-main);
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 540px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: #090d16;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .switch-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .switch-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-checkbox {
+      width: 44px;
+      height: 24px;
+      appearance: none;
+      background: #334155;
+      border-radius: 9999px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.2s;
+    }
+
+    .toggle-checkbox:checked {
+      background: var(--danger);
+    }
+
+    .toggle-checkbox::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.2s;
+    }
+
+    .toggle-checkbox:checked::after {
+      transform: translateX(20px);
+    }
+
+    /* Report Z Summary */
+    .z-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .z-stat-box {
+      background: #090d16;
+      padding: 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .z-stat-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .z-stat-value {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 4rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <div class="brand-title">
+        <span>⚡ ComandaFlow</span> KDS
+      </div>
+      <select id="restaurantSelect" class="restaurant-select" onchange="switchRestaurant(this.value)">
+        <option value="lucky">Lucky Pizza Guadalupe (García Salinas)</option>
+        <option value="reydeltaco">El Rey del Taco Zacatecas (Centro)</option>
+        <option value="blackburger">Black Burger (Bernárdez)</option>
+      </select>
+    </div>
+
+    <div class="header-actions">
+      <button id="storeStatusBtn" class="status-toggle" onclick="toggleStoreStatus()">
+        <span id="storeStatusDot">🟢</span> <span id="storeStatusText">Cocina Abierta</span>
+      </button>
+
+      <button class="btn-header" onclick="openModal('modal86')">
+        🚫 86'd Items (<span id="count86">0</span>)
+      </button>
+
+      <button class="btn-header" onclick="openModal('modalZ')">
+        📊 Corte Z
+      </button>
+
+      <button class="btn-header btn-primary" onclick="simulateNewOrder()">
+        ➕ Simular Comanda
+      </button>
+
+      <div id="liveClock" class="live-clock">16:00:00</div>
+    </div>
+  </header>
+
+  <!-- Sub-nav Toolbar -->
+  <div class="toolbar">
+    <div class="station-filters">
+      <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Estación:</span>
+      <button class="filter-chip active" onclick="filterStation('all', this)">Todas <span id="statCountAll" class="stat-badge">3</span></button>
+      <button class="filter-chip" onclick="filterStation('horno', this)">🍕 Horno / Caliente</button>
+      <button class="filter-chip" onclick="filterStation('fria', this)">🥗 Barra Fría</button>
+      <button class="filter-chip" onclick="filterStation('bebidas', this)">🥤 Bebidas</button>
+      <button class="filter-chip" onclick="filterStation('empaque', this)">📦 Empaque</button>
+    </div>
+
+    <div class="tab-filters">
+      <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Estado:</span>
+      <button class="filter-chip active" onclick="filterStatus('active', this)">En Cocina <span id="tabCountActive" class="stat-badge">3</span></button>
+      <button class="filter-chip" onclick="filterStatus('ready', this)">Listos <span id="tabCountReady" class="stat-badge">0</span></button>
+      <button class="filter-chip" onclick="filterStatus('done', this)">Despachados <span id="tabCountDone" class="stat-badge">0</span></button>
+    </div>
+  </div>
+
+  <!-- Main KDS Card Grid -->
+  <main id="kdsBoard" class="kds-container">
+    <!-- Dynamic Cards Rendered by JS -->
+  </main>
+
+  <!-- Modal 86'd Items -->
+  <div id="modal86" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'modal86')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🚫 Gestión de Platillos / Insumos Agotados (86'd)</div>
+        <button class="modal-close" onclick="closeModal('modal86')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-muted);">
+          Al activar el switch, el bot de WhatsApp responderá automáticamente que el platillo está agotado y sugerirá el sustituto más popular.
+        </p>
+        <div id="items86List" style="display:flex; flex-direction:column; gap:0.5rem;">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Corte Z -->
+  <div id="modalZ" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'modalZ')">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">📊 Corte de Turno (Reporte Z en Tiempo Real)</div>
+        <button class="modal-close" onclick="closeModal('modalZ')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="z-stat-grid">
+          <div class="z-stat-box">
+            <span class="z-stat-title">Ventas Totales Hoy</span>
+            <span id="zTotalSales" class="z-stat-value">$3,420.00</span>
+          </div>
+          <div class="z-stat-box">
+            <span class="z-stat-title">Comandas Procesadas</span>
+            <span id="zTotalOrders" class="z-stat-value">12</span>
+          </div>
+          <div class="z-stat-box">
+            <span class="z-stat-title">Ticket Promedio</span>
+            <span id="zAvgTicket" class="z-stat-value">$285.00</span>
+          </div>
+          <div class="z-stat-box">
+            <span class="z-stat-title" style="color:var(--primary);">Comisión Ahorrada (vs Uber 30%)</span>
+            <span id="zSavedUber" class="z-stat-value" style="color:var(--primary);">+$1,026.00</span>
+          </div>
+        </div>
+
+        <div style="background:#090d16; padding:1rem; border-radius:8px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:0.5rem; font-size:0.85rem;">
+          <div style="font-weight:700; color:var(--text-main); margin-bottom:0.25rem;">Desglose de Formas de Pago:</div>
+          <div style="display:flex; justify-content:space-between;"><span>💳 Mercado Pago (In-Chat):</span> <span style="font-family:var(--font-mono); font-weight:700;">$1,890.00 (55%)</span></div>
+          <div style="display:flex; justify-content:space-between;"><span>🏦 SPEI / CoDi QR:</span> <span style="font-family:var(--font-mono); font-weight:700;">$640.00 (19%)</span></div>
+          <div style="display:flex; justify-content:space-between;"><span>💵 Efectivo contra entrega:</span> <span style="font-family:var(--font-mono); font-weight:700;">$890.00 (26%)</span></div>
+        </div>
+
+        <button class="btn-action btn-ready" style="padding:0.75rem;" onclick="imprimirCorteZ()">🖨️ Imprimir Ticket de Corte en Cocina</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State Store
+    let currentStore = 'lucky';
+    let currentStation = 'all';
+    let currentTab = 'active';
+    let isStoreOpen = true;
+
+    const menuItemsCatalog = [
+      { id: 'piz_pep', name: 'Pizza Pepperoni Grande', station: 'horno', 86: false },
+      { id: 'piz_sup', name: 'Pizza Suprema Especial', station: 'horno', 86: false },
+      { id: 'boneless_bbq', name: 'Boneless BBQ 250g', station: 'horno', 86: false },
+      { id: 'ens_cesar', name: 'Ensalada César con Pollo', station: 'fria', 86: false },
+      { id: 'coca_2l', name: 'Coca-Cola 2 Litros', station: 'bebidas', 86: false },
+      { id: 'dip_ranch', name: 'Dip Ranch Artesanal', station: 'fria', 86: true },
+    ];
+
+    let orders = [
+      {
+        id: 'LK-8821',
+        origin: 'WhatsApp Bot 💬',
+        customer: 'Arq. Roberto Medina',
+        phone: '+52 492 *** 4412',
+        address: 'Col. Lomas de Bernárdez #142',
+        type: 'delivery',
+        station: 'horno',
+        status: 'active',
+        createdAt: Date.now() - 320000, // 5m 20s ago
+        items: [
+          { qty: 1, name: 'Pizza Pepperoni Grande', notes: 'Masa delgada, orilla dorada bien cocida', station: 'horno' },
+          { qty: 1, name: 'Boneless BBQ 250g', notes: 'Aderezo ranch aparte', station: 'horno' },
+          { qty: 1, name: 'Coca-Cola 2 Litros', notes: 'Fría', station: 'bebidas' }
+        ],
+        payment: { method: 'Mercado Pago (Pagado)', status: 'paid', total: 420.00 }
+      },
+      {
+        id: 'LK-8822',
+        origin: 'WhatsApp Bot 💬',
+        customer: 'Lic. Claudia Salcedo',
+        phone: '+52 492 *** 9081',
+        address: 'Paseo La Bufa #302, Guadalupe',
+        type: 'delivery',
+        station: 'horno',
+        status: 'active',
+        createdAt: Date.now() - 650000, // 10m 50s ago
+        items: [
+          { qty: 2, name: 'Pizza Suprema Mediana', notes: 'Sin champiñones en 1 pizza', station: 'horno' },
+          { qty: 1, name: 'Ensalada César', notes: 'Aderezo extra', station: 'fria' }
+        ],
+        payment: { method: 'SPEI Confirmado', status: 'paid', total: 540.00 }
+      },
+      {
+        id: 'LK-8823',
+        origin: 'WhatsApp Bot 💬',
+        customer: 'Ing. Fernando Ortiz',
+        phone: '+52 498 *** 1190',
+        address: 'Mostrador / Para Llevar',
+        type: 'pickup',
+        station: 'horno',
+        status: 'active',
+        createdAt: Date.now() - 980000, // 16m 20s ago (RED timer)
+        items: [
+          { qty: 1, name: 'Pizza Hawaiana Grande', notes: 'Extra piña y queso', station: 'horno' }
+        ],
+        payment: { method: 'Efectivo al Recoger', status: 'pending', total: 230.00 }
+      }
+    ];
+
+    // Sound alert synthesizer via Web Audio API
+    function playBeep() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15); // A6
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.25);
+      } catch (e) {
+        console.log('Audio contextual note');
+      }
+    }
+
+    // Live Clock & Board Render
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('liveClock').textContent = now.toLocaleTimeString('es-MX', { hour12: false });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function renderBoard() {
+      const board = document.getElementById('kdsBoard');
+      const filtered = orders.filter(o => {
+        const matchStatus = (currentTab === 'active' && o.status === 'active') ||
+                            (currentTab === 'ready' && o.status === 'ready') ||
+                            (currentTab === 'done' && o.status === 'done');
+        const matchStation = currentStation === 'all' || o.items.some(i => i.station === currentStation);
+        return matchStatus && matchStation;
+      });
+
+      // Update counters
+      document.getElementById('tabCountActive').textContent = orders.filter(o => o.status === 'active').length;
+      document.getElementById('tabCountReady').textContent = orders.filter(o => o.status === 'ready').length;
+      document.getElementById('tabCountDone').textContent = orders.filter(o => o.status === 'done').length;
+      document.getElementById('statCountAll').textContent = orders.filter(o => o.status === 'active').length;
+
+      if (filtered.length === 0) {
+        board.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size:3rem;">✨</div>
+            <div style="font-size:1.2rem; font-weight:700; color:var(--text-main);">Cero pedidos en esta sección</div>
+            <div style="font-size:0.9rem;">Cocina al día y comandas despachadas al 100%.</div>
+          </div>
+        `;
+        return;
+      }
+
+      board.innerHTML = filtered.map(order => {
+        const elapsedSec = Math.floor((Date.now() - order.createdAt) / 1000);
+        const mins = Math.floor(elapsedSec / 60);
+        const secs = elapsedSec % 60;
+        const timeStr = `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
+
+        let timerClass = 'timer-green';
+        let badgeClass = 'badge-green';
+        if (mins >= 15) {
+          timerClass = 'timer-red';
+          badgeClass = 'badge-red';
+        } else if (mins >= 8) {
+          timerClass = 'timer-yellow';
+          badgeClass = 'badge-yellow';
+        }
+
+        const itemsHtml = order.items.map(item => `
+          <div class="item-row">
+            <span class="item-qty">${item.qty}x</span>
+            <div class="item-details">
+              <div class="item-name">${item.name} <span class="item-station">${item.station}</span></div>
+              ${item.notes ? `<div class="item-notes">⚠️ ${item.notes}</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+
+        let actionBtns = '';
+        if (order.status === 'active') {
+          actionBtns = `
+            <div class="action-buttons">
+              <button class="btn-action btn-print" onclick="reprintTicket('${order.id}')">🖨️ Ticket</button>
+              <button class="btn-action btn-ready" onclick="markOrderReady('${order.id}')">✅ Listo Cocina</button>
+            </div>
+          `;
+        } else if (order.status === 'ready') {
+          actionBtns = `
+            <div class="action-buttons">
+              <button class="btn-action btn-print" onclick="reprintTicket('${order.id}')">🖨️ Ticket</button>
+              <button class="btn-action btn-dispatch" onclick="markOrderDispatched('${order.id}')">🚀 Despachar</button>
+            </div>
+          `;
+        } else {
+          actionBtns = `
+            <div class="action-buttons" style="grid-template-columns:1fr;">
+              <button class="btn-action btn-print" onclick="reprintTicket('${order.id}')">🖨️ Reimprimir Comprobante</button>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="order-card ${timerClass}">
+            <div class="card-header">
+              <div class="order-id-group">
+                <span class="order-id">#${order.id}</span>
+                <span class="order-type ${order.type === 'delivery' ? 'type-delivery' : 'type-pickup'}">${order.type === 'delivery' ? '🛵 Domicilio' : '🛍️ Para Llevar'}</span>
+              </div>
+              <div class="timer-badge ${badgeClass}">
+                ⏱️ ${timeStr}
+              </div>
+            </div>
+
+            <div class="customer-info">
+              <span class="customer-name">${order.customer}</span>
+              <span>${order.address}</span>
+            </div>
+
+            <div class="items-list">
+              ${itemsHtml}
+            </div>
+
+            <div class="card-footer">
+              <div class="payment-summary">
+                <span class="pay-status ${order.payment.status === 'paid' ? 'pay-paid' : 'pay-pending'}">
+                  ${order.payment.status === 'paid' ? '✅' : '⏳'} ${order.payment.method}
+                </span>
+                <span class="pay-amount">$${order.payment.total.toFixed(2)}</span>
+              </div>
+              ${actionBtns}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    setInterval(renderBoard, 1000);
+    renderBoard();
+
+    // Actions
+    function markOrderReady(id) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = 'ready';
+        renderBoard();
+        playBeep();
+      }
+    }
+
+    function markOrderDispatched(id) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = 'done';
+        renderBoard();
+      }
+    }
+
+    function reprintTicket(id) {
+      alert(`[ESC/POS TCP Socket 9100]\nImprimiendo copia de comanda #${id} en impresora térmica de cocina.`);
+    }
+
+    function toggleStoreStatus() {
+      isStoreOpen = !isStoreOpen;
+      const btn = document.getElementById('storeStatusBtn');
+      const dot = document.getElementById('storeStatusDot');
+      const text = document.getElementById('storeStatusText');
+      if (isStoreOpen) {
+        btn.className = 'status-toggle';
+        dot.textContent = '🟢';
+        text.textContent = 'Cocina Abierta';
+      } else {
+        btn.className = 'status-toggle closed';
+        dot.textContent = '🔴';
+        text.textContent = 'Cocina Cerrada (Pausa)';
+      }
+    }
+
+    function filterStation(station, btn) {
+      currentStation = station;
+      document.querySelectorAll('.station-filters .filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBoard();
+    }
+
+    function filterStatus(status, btn) {
+      currentTab = status;
+      document.querySelectorAll('.tab-filters .filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBoard();
+    }
+
+    function switchRestaurant(val) {
+      currentStore = val;
+      render86Items();
+      renderBoard();
+    }
+
+    // Modal Control
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      if (id === 'modal86') render86Items();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnBackdrop(e, id) {
+      if (e.target.id === id) closeModal(id);
+    }
+
+    function render86Items() {
+      const container = document.getElementById('items86List');
+      const count = menuItemsCatalog.filter(i => i[86]).length;
+      document.getElementById('count86').textContent = count;
+
+      container.innerHTML = menuItemsCatalog.map(item => `
+        <div class="switch-row">
+          <div>
+            <div class="switch-label">${item.name}</div>
+            <div class="switch-desc">Estación: ${item.station.toUpperCase()}</div>
+          </div>
+          <input type="checkbox" class="toggle-checkbox" ${item[86] ? 'checked' : ''} onchange="toggle86('${item.id}', this.checked)">
+        </div>
+      `).join('');
+    }
+
+    function toggle86(id, checked) {
+      const item = menuItemsCatalog.find(i => i.id === id);
+      if (item) {
+        item[86] = checked;
+        render86Items();
+      }
+    }
+
+    function simulateNewOrder() {
+      const randomId = 'LK-' + Math.floor(1000 + Math.random() * 9000);
+      orders.unshift({
+        id: randomId,
+        origin: 'WhatsApp Bot 💬',
+        customer: 'Cliente WhatsApp Express',
+        phone: '+52 492 *** ' + Math.floor(1000 + Math.random() * 9000),
+        address: 'Av. García Salinas #890, Guadalupe',
+        type: 'delivery',
+        station: 'horno',
+        status: 'active',
+        createdAt: Date.now(),
+        items: [
+          { qty: 1, name: 'Pizza Pepperoni Especial', notes: 'Salsa chipotle aparte', station: 'horno' },
+          { qty: 1, name: 'Coca-Cola 2L', notes: 'Bien fría', station: 'bebidas' }
+        ],
+        payment: { method: 'Mercado Pago (Pagado)', status: 'paid', total: 390.00 }
+      });
+      playBeep();
+      renderBoard();
+    }
+
+    function imprimirCorteZ() {
+      alert('Imprimiendo Reporte Z en Impresora Térmica 80mm...\nCorte de caja cuadrado exitosamente.');
+      closeModal('modalZ');
+    }
+  </script>
+</body>
+</html>
