@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+.venv/
+
+# Database and logs
+*.db
+*.sqlite
+*.log
+server.log
+
+# Uploads and temporary data
+uploads/
+pidata/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
