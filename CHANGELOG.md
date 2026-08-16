@@ -6,7 +6,24 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.5.0] - 2026-08-15
+## [1.7.0] - 2026-08-15
+
+### Added
+- **Kitchen Inventory, Auto-Replenishment & Waste AI PWA (`inventory/index.html`):**
+  - Consola web interactiva para control de stock en tiempo real y valuación de almacén en Zacatecas.
+  - Simulador de deducción atómica de materias primas por orden mediante explosión de recetas BOM.
+  - Generador de órdenes de compra (PO) estructuradas para WhatsApp con PIN criptográfico de recepción.
+  - Dial de Food Cost % (Target < 28%) y generador de campañas Flash Yield para liquidación rentable de perecederos.
+
+## [1.6.0] - 2026-08-15
+
+### Added
+- **Dine-In QR, Split Bill & Loyalty Hub PWA (`dine-in/index.html`):**
+  - Consola web interactiva para mesas con QR criptográfico HMAC-SHA256 y comensales en vivo.
+  - Simulador colaborativo de orden compartida e individual con división de cuenta (50/50 o por ítem) y propinas.
+  - Wizard de auto-onboarding self-service en 4 pasos con ingestión OCR y pairing de WhatsApp.
+  - Monitor de monedero digital y tiers de cashback gamificado.
+
 
 ### Added
 - **Growth, Dynamic Pricing & Omnichannel Voice Hub PWA (`growth/index.html`):**

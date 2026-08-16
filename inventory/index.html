@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — Kitchen Inventory, Auto-Replenishment & Waste AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --purple: #8b5cf6;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gold: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-weight: 800;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.25rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #070b14;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 1350px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .kpi-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--text-main);
+    }
+
+    .kpi-sub {
+      font-size: 0.8rem;
+      color: var(--primary);
+      margin-top: 0.25rem;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 960px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-purple { background: rgba(139, 92, 246, 0.15); color: var(--purple); border: 1px solid rgba(139, 92, 246, 0.3); }
+
+    /* Inventory Items Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.75rem 0.5rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+
+    td {
+      padding: 0.75rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .progress-bar-bg {
+      background: rgba(255, 255, 255, 0.08);
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 4px;
+      width: 100%;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #070b14;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .recipe-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .recipe-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .bom-tag {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-right: 0.4rem;
+      margin-bottom: 0.4rem;
+      display: inline-block;
+      font-family: var(--font-mono);
+    }
+
+    .terminal-box {
+      background: #040711;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #38bdf8;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .po-card {
+      background: rgba(59, 130, 246, 0.05);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .dial-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .dial-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0% 28%, var(--warning) 28% 33%, var(--danger) 33% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .dial-inner {
+      width: 125px;
+      height: 125px;
+      background: var(--bg-card);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <div class="logo-badge">CF AI</div>
+      <div>
+        <div class="brand-title">ComandaFlow AI — Kitchen Inventory & Waste AI</div>
+        <div class="brand-subtitle">Smart Recipe BOM • Auto-Replenishment WhatsApp • Food Cost Target &lt; 28%</div>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('inventory-tab')">📦 Inventario &amp; Recetas BOM</button>
+      <button class="tab-btn" onclick="switchTab('replenish-tab')">🚚 Auto-Reabastecimiento PO</button>
+      <button class="tab-btn" onclick="switchTab('waste-tab')">📉 Mermas &amp; Flash Yield</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Valuación de Stock Activo</div>
+        <div class="kpi-value" id="kpi-valuation">$8,940 MXN</div>
+        <div class="kpi-sub">9 Insumos Auditados en Zacatecas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Food Cost Real Actual</div>
+        <div class="kpi-value" style="color: var(--primary);">27.4%</div>
+        <div class="kpi-sub">🎯 Target &lt; 28.0% (En Rango Óptimo)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Platillos 86'd (Agotados)</div>
+        <div class="kpi-value" id="kpi-86" style="color: var(--text-muted);">0 / 4</div>
+        <div class="kpi-sub">Menú 100% Disponible en WhatsApp &amp; QR</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Órdenes de Compra Activas</div>
+        <div class="kpi-value" style="color: var(--accent);" id="kpi-pos">1 PO</div>
+        <div class="kpi-sub">Proveedor: Carnicería La Esperanza</div>
+      </div>
+    </div>
+
+    <!-- TAB 1: INVENTARIO & BOM -->
+    <div id="inventory-tab" class="tab-content active">
+      <div class="main-grid">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">📦 Almacén de Insumos &amp; Stock en Tiempo Real</div>
+              <button class="btn btn-secondary" onclick="resetInventory()">🔄 Restaurar Stock</button>
+            </div>
+            <div class="table-container">
+              <table id="inventory-table">
+                <thead>
+                  <tr>
+                    <th>Insumo</th>
+                    <th>Categoría</th>
+                    <th>Stock Actual</th>
+                    <th>Punto Reorden</th>
+                    <th>Costo Unit.</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-tbody">
+                  <!-- Generated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Recipe BOM & Order Simulator -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">🍔 Simulador de Órdenes &amp; Deducción BOM</div>
+              <span class="badge badge-purple">Atomic Explosion</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Al procesar una comanda, ComandaFlow descuenta automáticamente los gramos, piezas y mililitros exactos de cada receta.
+            </p>
+
+            <div class="recipe-card">
+              <div class="recipe-header">
+                <strong>🍔 Hamb. Clásica Artesanal</strong>
+                <span class="badge badge-success">$160 MXN (Food Cost 28.8%)</span>
+              </div>
+              <div style="margin-bottom: 0.5rem;">
+                <span class="bom-tag">🥩 180g Carne Res</span>
+                <span class="bom-tag">🍞 1 Pan Brioche</span>
+                <span class="bom-tag">🧀 40g Gouda</span>
+                <span class="bom-tag">🥫 30ml Salsa</span>
+                <span class="bom-tag">📦 1 Empaque</span>
+              </div>
+              <button class="btn" style="width: 100%;" onclick="simulateOrder('hamb_clasica', 5)">Simular Venta de 5 Clásicas (-900g Carne)</button>
+            </div>
+
+            <div class="recipe-card">
+              <div class="recipe-header">
+                <strong>🥓 Hamb. Doble Tocino &amp; Queso</strong>
+                <span class="badge badge-warning">$245 MXN (Food Cost 36.2%)</span>
+              </div>
+              <div style="margin-bottom: 0.5rem;">
+                <span class="bom-tag">🥩 360g Carne Res</span>
+                <span class="bom-tag">🍞 1 Pan Brioche</span>
+                <span class="bom-tag">🧀 80g Gouda</span>
+                <span class="bom-tag">🥓 60g Tocino</span>
+                <span class="bom-tag">📦 1 Empaque</span>
+              </div>
+              <button class="btn btn-accent" style="width: 100%;" onclick="simulateOrder('hamb_doble_tocino', 5)">Simular Venta de 5 Dobles (-1.8kg Carne)</button>
+            </div>
+
+            <div class="recipe-card">
+              <div class="recipe-header">
+                <strong>🍗 Alitas BBQ (12 Pzas)</strong>
+                <span class="badge badge-success">$185 MXN (Food Cost 32.8%)</span>
+              </div>
+              <div style="margin-bottom: 0.5rem;">
+                <span class="bom-tag">🍗 650g Alitas Frescas</span>
+                <span class="bom-tag">🍯 100ml Salsa BBQ</span>
+              </div>
+              <button class="btn btn-secondary" style="width: 100%;" onclick="simulateOrder('alitas_bbq_12', 4)">Simular Venta de 4 Alitas (-2.6kg)</button>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <div class="panel-title" style="font-size: 0.9rem; margin-bottom: 0.5rem;">📋 Registro de Deducciones en Memoria</div>
+              <div class="terminal-box" id="deduction-log">Esperando órdenes para detonar explosión de recetas BOM...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: AUTO-REABASTECIMIENTO & WHATSAPP PO -->
+    <div id="replenish-tab" class="tab-content">
+      <div class="main-grid">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">🚚 Directorio de Proveedores en Zacatecas &amp; Guadalupe</div>
+              <span class="badge badge-success">5 Proveedores Verificados</span>
+            </div>
+            
+            <div class="po-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <strong>🥩 Carnicería La Esperanza</strong>
+                <span class="badge badge-purple">Lead Time: 4 hrs</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Mercado de Abastos Local 42-B, Zacatecas • Contacto: Don Javier Morales • WhatsApp: +52 492 922 4110
+              </p>
+              <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary);">
+                Insumos: Carne molida 80/20, Tocino ahumado grueso, Alitas frescas
+              </div>
+            </div>
+
+            <div class="po-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <strong>🍞 Panificadora El Sol</strong>
+                <span class="badge badge-purple">Lead Time: 12 hrs</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Av. Heroico Colegio Militar 112, Guadalupe Centro • Contacto: Mtro. Sergio Rivera • WhatsApp: +52 492 923 8840
+              </p>
+              <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary);">
+                Insumos: Pan Brioche Artesanal de Mantequilla
+              </div>
+            </div>
+
+            <div class="po-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <strong>🧀 Distribuidora Lácteos San Marcos</strong>
+                <span class="badge badge-purple">Lead Time: 24 hrs</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Carretera Zacatecas-Trancoso Km 7 • Contacto: Ing. Roberto Méndez • WhatsApp: +52 492 105 7720
+              </p>
+              <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary);">
+                Insumos: Queso Gouda Rebanado de Calidad
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">📱 Generador de Órdenes de Compra (PO) por WhatsApp</div>
+              <button class="btn btn-accent" onclick="generateAutoPOs()">⚡ Generar POs Automáticas</button>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Mensaje listo para envío directo por API Baileys / WhatsApp al proveedor con PIN de verificación para el repartidor:
+            </p>
+
+            <div class="terminal-box" id="wa-po-preview" style="color: #4ade80; max-height: 380px;">
+📦 *ORDEN DE COMPRA: PO-20260816-CAR-9F21*
+Hola *Don Javier Morales* (Carnicería La Esperanza), le enviamos el pedido para entrega el día de hoy:
+
+📋 *Detalle del Pedido:*
+  ▪️ *10 kg* - Carne de Res Molida 80/20 ($140 MXN/kg)
+  ▪️ *4 kg* - Tocino Ahumado Grueso ($160 MXN/kg)
+
+💵 *Total Estimado:* *$2,040 MXN*
+📍 *Destino:* Lucky Pizza &amp; Burgers (Av. García Salinas 312, Guadalupe)
+👤 *Recibe:* Chef en Turno (+52 492 123 4567)
+🔐 *PIN de Recepción para Repartidor:* `7419`
+
+_Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a este mensaje._
+            </div>
+
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+              <button class="btn" style="flex: 1;" onclick="confirmDeliveryPin()">🔐 Validar Entrega con PIN</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: MERMAS & FLASH YIELD -->
+    <div id="waste-tab" class="tab-content">
+      <div class="main-grid">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">📉 Control de Mermas &amp; Food Cost Target &lt; 28%</div>
+              <span class="badge badge-success">Rentabilidad Blindada</span>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.5rem;">
+              <div class="dial-circle">
+                <div class="dial-inner">
+                  <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary);">27.4%</div>
+                  <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Food Cost Real</div>
+                </div>
+              </div>
+              <div style="flex: 1; min-width: 200px;">
+                <div style="margin-bottom: 0.75rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
+                    <span>Costo Teórico (BOM Exacto):</span>
+                    <strong>26.1% ($32,625 MXN)</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 26.1%; background: var(--accent);"></div>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
+                    <span>Varianza de Merma Operativa:</span>
+                    <strong style="color: var(--warning);">+1.3% ($1,625 MXN)</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 1.3%; background: var(--warning);"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
+                    <span>Tope Máximo Permitido:</span>
+                    <strong style="color: var(--text-muted);">28.0% ($35,000 MXN)</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 28%; background: var(--primary);"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-title" style="font-size: 0.95rem; margin-bottom: 0.75rem;">🚨 Insumos con Riesgo de Caducidad (&lt; 48 hrs)</div>
+            <table style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Insumo</th>
+                  <th>Stock Actual</th>
+                  <th>Consumo Diario</th>
+                  <th>Días de Stock</th>
+                  <th>Acción Sugerida</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Alitas de Pollo Frescas</strong></td>
+                  <td>12.0 kg</td>
+                  <td>2.5 kg/día</td>
+                  <td><span class="badge badge-warning">4.8 días</span></td>
+                  <td><span class="badge badge-purple">Flash Promo</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Queso Gouda Rebanado</strong></td>
+                  <td>6.0 kg</td>
+                  <td>0.8 kg/día</td>
+                  <td><span class="badge badge-success">7.5 días</span></td>
+                  <td><span class="badge badge-success">Normal</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">🔥 Promociones Flash Yield (Liquidación Rentable)</div>
+              <span class="badge badge-warning">Conversión de Merma en Ganancia</span>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              En lugar de tirar producto perecedero, ComandaFlow dispara promociones relámpago en WhatsApp con márgenes &gt; 60%:
+            </p>
+
+            <div class="po-card" style="background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.2);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <strong>🔥 Promo Relámpago: Alitas BBQ 12 Pzas</strong>
+                <span class="badge badge-warning">18% OFF</span>
+              </div>
+              <div style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                Precio Normal: <strike>$185 MXN</strike> ➔ <strong>$152 MXN</strong> (Margen Bruto: 60.1%)
+              </div>
+              <div class="terminal-box" style="color: #fbbf24; font-size: 0.75rem; margin-bottom: 0.75rem;">
+🔥 *¡OFERTA RELÁMPAGO DE COCINA!* Solo hoy de 7:00 PM a 10:00 PM: Llévate tu orden de *Alitas BBQ 12 Pzas* con *18% de DESCUENTO* a solo *$152 MXN* (antes $185 MXN). ¡Pide por WhatsApp antes de que se agoten!
+              </div>
+              <button class="btn" style="width: 100%; background: var(--warning); color: #070b14;" onclick="triggerFlashPromo()">Disparar Difusión en WhatsApp (50 Clientes VIP)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const inventoryData = [
+      { id: 'ing_carne_res', name: 'Carne de Res Molida 80/20', cat: 'Proteínas', stock: 15.0, max: 20.0, reorder: 5.0, unit: 'kg', cost: 140 },
+      { id: 'ing_pan_brioche', name: 'Pan Brioche Artesanal', cat: 'Panadería', stock: 80.0, max: 100.0, reorder: 30.0, unit: 'pza', cost: 8.5 },
+      { id: 'ing_queso_gouda', name: 'Queso Gouda Rebanado', cat: 'Lácteos', stock: 6.0, max: 10.0, reorder: 2.5, unit: 'kg', cost: 180 },
+      { id: 'ing_tocino_ahumado', name: 'Tocino Ahumado Grueso', cat: 'Proteínas', stock: 4.0, max: 6.0, reorder: 1.8, unit: 'kg', cost: 160 },
+      { id: 'ing_salsa_especial', name: 'Salsa Especial ComandaFlow', cat: 'Salsas', stock: 5.0, max: 8.0, reorder: 2.0, unit: 'lt', cost: 65 },
+      { id: 'ing_papas_francesa', name: 'Papas Francesas', cat: 'Guarniciones', stock: 25.0, max: 30.0, reorder: 10.0, unit: 'kg', cost: 45 },
+      { id: 'ing_alas_pollo', name: 'Alitas de Pollo Frescas', cat: 'Proteínas', stock: 12.0, max: 15.0, reorder: 4.0, unit: 'kg', cost: 85 },
+      { id: 'ing_salsa_bbq', name: 'Salsa BBQ Ahumada', cat: 'Salsas', stock: 4.0, max: 6.0, reorder: 1.5, unit: 'lt', cost: 55 },
+      { id: 'ing_empaque_kraft', name: 'Caja Kraft Biodegradable', cat: 'Empaque', stock: 120.0, max: 150.0, reorder: 50.0, unit: 'pza', cost: 3.2 }
+    ];
+
+    function renderTable() {
+      const tbody = document.getElementById('inventory-tbody');
+      tbody.innerHTML = '';
+
+      let totalVal = 0;
+      let outOfStockCount = 0;
+
+      inventoryData.forEach(item => {
+        const val = item.stock * item.cost;
+        totalVal += val;
+
+        const pct = Math.min(100, Math.round((item.stock / item.max) * 100));
+        let badgeClass = 'badge-success';
+        let statusText = 'Normal';
+        let barColor = 'var(--primary)';
+
+        if (item.stock <= 0) {
+          badgeClass = 'badge-danger';
+          statusText = 'Agotado (86)';
+          barColor = 'var(--danger)';
+          outOfStockCount++;
+        } else if (item.stock <= item.reorder) {
+          badgeClass = 'badge-warning';
+          statusText = 'Reordenar';
+          barColor = 'var(--warning)';
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.name}</strong></td>
+          <td>${item.cat}</td>
+          <td>
+            <strong>${item.stock} ${item.unit}</strong>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: ${pct}%; background: ${barColor};"></div>
+            </div>
+          </td>
+          <td>${item.reorder} ${item.unit}</td>
+          <td>$${item.cost} MXN</td>
+          <td><span class="badge ${badgeClass}">${statusText}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('kpi-valuation').innerText = `$${Math.round(totalVal).toLocaleString()} MXN`;
+      document.getElementById('kpi-86').innerText = `${outOfStockCount} / 4`;
+      if (outOfStockCount > 0) {
+        document.getElementById('kpi-86').style.color = 'var(--danger)';
+      } else {
+        document.getElementById('kpi-86').style.color = 'var(--text-muted)';
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function simulateOrder(recipeKey, qty) {
+      const log = document.getElementById('deduction-log');
+      const time = new Date().toLocaleTimeString();
+
+      if (recipeKey === 'hamb_clasica') {
+        const carne = inventoryData.find(i => i.id === 'ing_carne_res');
+        const pan = inventoryData.find(i => i.id === 'ing_pan_brioche');
+        const queso = inventoryData.find(i => i.id === 'ing_queso_gouda');
+        const emp = inventoryData.find(i => i.id === 'ing_empaque_kraft');
+
+        carne.stock = Math.max(0, Math.round((carne.stock - (0.18 * qty)) * 100) / 100);
+        pan.stock = Math.max(0, pan.stock - qty);
+        queso.stock = Math.max(0, Math.round((queso.stock - (0.04 * qty)) * 100) / 100);
+        emp.stock = Math.max(0, emp.stock - qty);
+
+        log.innerHTML = `[${time}] ✅ Orden ORD-${Math.floor(1000+Math.random()*9000)} procesada:\n` +
+          `  - Descontados ${(0.18*qty).toFixed(2)}kg Carne (Quedan ${carne.stock}kg)\n` +
+          `  - Descontadas ${qty} pzas Pan Brioche (Quedan ${pan.stock})\n` +
+          `  - Descontados ${(0.04*qty).toFixed(2)}kg Gouda (Quedan ${queso.stock}kg)\n\n` + log.innerHTML;
+      } else if (recipeKey === 'hamb_doble_tocino') {
+        const carne = inventoryData.find(i => i.id === 'ing_carne_res');
+        const tocino = inventoryData.find(i => i.id === 'ing_tocino_ahumado');
+        const pan = inventoryData.find(i => i.id === 'ing_pan_brioche');
+
+        carne.stock = Math.max(0, Math.round((carne.stock - (0.36 * qty)) * 100) / 100);
+        tocino.stock = Math.max(0, Math.round((tocino.stock - (0.06 * qty)) * 100) / 100);
+        pan.stock = Math.max(0, pan.stock - qty);
+
+        log.innerHTML = `[${time}] 🥓 Orden Doble Tocino x${qty} procesada:\n` +
+          `  - Descontados ${(0.36*qty).toFixed(2)}kg Carne (Quedan ${carne.stock}kg)\n` +
+          `  - Descontados ${(0.06*qty).toFixed(2)}kg Tocino (Quedan ${tocino.stock}kg)\n\n` + log.innerHTML;
+      } else if (recipeKey === 'alitas_bbq_12') {
+        const alitas = inventoryData.find(i => i.id === 'ing_alas_pollo');
+        alitas.stock = Math.max(0, Math.round((alitas.stock - (0.65 * qty)) * 100) / 100);
+
+        log.innerHTML = `[${time}] 🍗 Orden Alitas BBQ x${qty} procesada:\n` +
+          `  - Descontados ${(0.65*qty).toFixed(2)}kg Alitas (Quedan ${alitas.stock}kg)\n\n` + log.innerHTML;
+      }
+
+      renderTable();
+    }
+
+    function resetInventory() {
+      inventoryData[0].stock = 15.0;
+      inventoryData[1].stock = 80.0;
+      inventoryData[2].stock = 6.0;
+      inventoryData[3].stock = 4.0;
+      inventoryData[4].stock = 5.0;
+      inventoryData[5].stock = 25.0;
+      inventoryData[6].stock = 12.0;
+      inventoryData[7].stock = 4.0;
+      inventoryData[8].stock = 120.0;
+      renderTable();
+      document.getElementById('deduction-log').innerHTML = 'Inventario restablecido a niveles iniciales.';
+    }
+
+    function generateAutoPOs() {
+      alert('📦 ¡Órdenes de compra generadas! Despachando mensaje WhatsApp a Carnicería La Esperanza.');
+    }
+
+    function confirmDeliveryPin() {
+      const pin = prompt('Ingrese PIN de 4 dígitos proporcionado por el repartidor:', '7419');
+      if (pin === '7419') {
+        alert('✅ ¡Mercancía recibida y verificada exitosamente! Stock actualizado en almacén.');
+        inventoryData[0].stock += 10.0;
+        inventoryData[3].stock += 4.0;
+        renderTable();
+      } else {
+        alert('❌ PIN incorrecto.');
+      }
+    }
+
+    function triggerFlashPromo() {
+      alert('🚀 ¡Campaña Flash Yield enviada por WhatsApp a 50 comensales VIP! 18% OFF activado por 4 horas.');
+    }
+
+    renderTable();
+  </script>
+</body>
+</html>
