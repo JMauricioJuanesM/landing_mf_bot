@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — AI Drive-Thru Voice, Tabletop NFC Tap-to-Order & Dynamic Staff Scheduling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --purple: #8b5cf6;
+      --purple-glow: rgba(139, 92, 246, 0.25);
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.25);
+      --danger: #ef4444;
+      --cyan: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .brand span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.35rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 7px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+    .badge-blue { background: rgba(59, 130, 246, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-purple { background: rgba(139, 92, 246, 0.15); color: var(--purple); border: 1px solid var(--purple); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid var(--amber); }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover {
+      background: #2563eb;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .btn-green { background: var(--primary); }
+    .btn-green:hover { background: #059669; box-shadow: 0 0 15px var(--primary-glow); }
+
+    .btn-purple { background: var(--purple); }
+    .btn-purple:hover { background: #7c3aed; box-shadow: 0 0 15px var(--purple-glow); }
+
+    .btn-amber { background: var(--amber); color: #000; }
+    .btn-amber:hover { background: #d97706; box-shadow: 0 0 15px var(--amber-glow); }
+
+    .terminal-box {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #38bdf8;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .odu-screen {
+      background: #020617;
+      border: 3px solid #1e293b;
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .odu-header {
+      background: #0f172a;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .odu-item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .upsell-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.15));
+      border: 1px solid var(--amber);
+      border-radius: 8px;
+      padding: 0.85rem;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nfc-tap-target {
+      border: 2px dashed var(--purple);
+      border-radius: 20px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      background: rgba(139, 92, 246, 0.05);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nfc-tap-target:hover {
+      background: rgba(139, 92, 246, 0.15);
+      transform: scale(1.02);
+      box-shadow: 0 0 25px var(--purple-glow);
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .stat-val { font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); }
+    .stat-lbl { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.2rem; }
+
+    .schedule-bar {
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+
+    .schedule-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+
+    .schedule-fill.morning { background: var(--cyan); }
+    .schedule-fill.peak { background: var(--primary); }
+    .schedule-fill.closing { background: var(--purple); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      ComandaFlow <span>AI Auto & Staff</span>
+    </a>
+    <div class="nav-tabs">
+      <button class="nav-btn active" onclick="switchTab('drive-thru')">🚗 AI Drive-Thru Voice</button>
+      <button class="nav-btn" onclick="switchTab('nfc')">📱 Tabletop NFC Tap</button>
+      <button class="nav-btn" onclick="switchTab('staff')">👥 Dynamic Staff Scheduling</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: AI Drive-Thru Voice -->
+    <div id="tab-drive-thru" class="tab-pane active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🚗 Ventanilla Drive-Thru & Reconocimiento de Voz</div>
+            <span class="badge badge-green" id="dt-status-badge">AUTO DETECTADO</span>
+          </div>
+
+          <div style="margin-bottom: 1.25rem;">
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 0.75rem;">
+              Simulador de micrófono con cancelación activa de ruido vehicular (ANC) y extracción de comanda en tiempo real (&lt; 280ms).
+            </p>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
+              <button class="btn btn-green" onclick="simulateDriveThruOrder(1)">🗣️ "2 Smash Dobles y Papas Trufa"</button>
+              <button class="btn btn-purple" onclick="simulateDriveThruOrder(2)">🗣️ "1 BBQ Bacon y Boneless"</button>
+              <button class="btn btn-amber" onclick="simulateDriveThruOrder(3)">🗣️ "1 Smash Burger y 1 Malteada"</button>
+            </div>
+            <button class="btn btn-green" style="width:100%; justify-content:center;" onclick="confirmDtOrder()">
+              ✅ Confirmar Pedido y Enviar a KDS Cocina
+            </button>
+          </div>
+
+          <div class="card-title" style="font-size:0.95rem; margin-bottom:0.5rem;">📡 Registro de Audio & Telemetría ANC:</div>
+          <div class="terminal-box" id="dt-log">
+[00:00.00] 🚗 Vehículo detectado en Carril 1 (Loop Inductivo: ON)
+[00:00.12] 🎙️ Micrófono activado con Supresión de Ruido de Motor (68dB -> 12dB)
+[00:00.24] ⏳ Esperando comando de voz del cliente...
+          </div>
+        </div>
+
+        <!-- Pantalla Exterior ODU KDS -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📺 Outdoor Display Unit (ODU) KDS</div>
+            <span class="badge badge-blue">PANTALLA EXTERIOR 4K</span>
+          </div>
+
+          <div class="odu-screen">
+            <div class="odu-header">
+              <div style="font-size:0.8rem; color:var(--accent); font-weight:700; text-transform:uppercase;">Pantalla de Confirmación</div>
+              <div id="odu-headline" style="font-weight:700; font-size:1.05rem;">¡Bienvenido a ComandaFlow Drive-Thru!</div>
+            </div>
+
+            <div id="odu-items" style="min-height: 120px;">
+              <div style="color:var(--text-muted); font-size:0.9rem; text-align:center; padding: 2rem 0;">
+                Escuchando comanda por altavoz...
+              </div>
+            </div>
+
+            <div class="odu-item-row" style="border-top: 2px solid var(--accent); margin-top: 0.75rem; padding-top: 0.75rem;">
+              <span style="font-weight:800; font-size:1.15rem;">TOTAL ESTIMADO:</span>
+              <span id="odu-total" style="font-weight:800; font-size:1.3rem; color:var(--primary); font-family:var(--font-mono);">$0.00 MXN</span>
+            </div>
+
+            <div id="odu-upsell" class="upsell-banner" style="display:none;">
+              <span style="font-size:1.5rem;">🔥</span>
+              <div style="font-size:0.85rem;" id="upsell-text">
+                ¿Desea agrandar su orden a Combo con Papas a la Trufa por $45 más?
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Tabletop NFC Tap-to-Order -->
+    <div id="tab-nfc" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📱 Mesa Física & Chip NFC NTAG213</div>
+            <span class="badge badge-purple">HMAC-SHA256 FIRMADO</span>
+          </div>
+
+          <div class="nfc-tap-target" onclick="simulateNfcTap()">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚡📶</div>
+            <div style="font-weight: 800; font-size: 1.25rem;">TOCAR CHIP NFC EN MESA 05</div>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.5rem;">
+              Haz clic aquí para simular el tap del smartphone en el acrílico NFC de la mesa
+            </p>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn btn-purple" style="flex:1;" onclick="addNfcItem('PROD-BURGER-BBQ', 'BBQ Bacon Smash', 185)">🍔 Pedir BBQ Bacon ($185)</button>
+              <button class="btn btn-purple" style="flex:1;" onclick="addNfcItem('PROD-BEBIDA-MALTEADA', 'Malteada Vainilla', 80)">🥤 Pedir Malteada ($80)</button>
+            </div>
+            <button class="btn btn-amber" style="width:100%; margin-top:0.75rem; justify-content:center;" onclick="callWaiterNfc()">
+              🔔 Llamar al Mesero a Mesa 05
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🧾 Comanda de Salón en Tiempo Real</div>
+            <span class="badge badge-green" id="nfc-session-badge">SIN SESIÓN</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:0.75rem; margin-bottom:1.25rem;">
+            <div class="stat-pill">
+              <div class="stat-val" id="nfc-table-id">TBL-05</div>
+              <div class="stat-lbl">Mesa</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-val" id="nfc-guests-count">0</div>
+              <div class="stat-lbl">Comensales</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-val" id="nfc-total-amount">$0</div>
+              <div class="stat-lbl">Cuenta Total</div>
+            </div>
+          </div>
+
+          <div class="terminal-box" id="nfc-log">
+[NFC] Esperando lectura de tag NTAG213...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Dynamic Staff Scheduling -->
+    <div id="tab-staff" class="tab-pane">
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+          <div class="card-title">👥 Optimizador Algorítmico de Horarios & Labor Cost (LFT)</div>
+          <span class="badge badge-green">LABOR COST: 16.91% (ÓPTIMO)</span>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 1.5rem;">
+          <div class="stat-pill">
+            <div class="stat-val" style="color:var(--primary);">$51,520</div>
+            <div class="stat-lbl">GMV Proyectado (Día)</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-val" style="color:var(--accent);">224</div>
+            <div class="stat-lbl">Órdenes Estimadas</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-val" style="color:var(--purple);">$8,710</div>
+            <div class="stat-lbl">Costo Nómina (< 25%)</div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom:0.75rem; font-size:0.95rem;">Distribución de Turnos & Cumplimiento Ley Federal del Trabajo:</h4>
+
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.3rem;">
+              <span>🌅 <strong>Turno Matutino / Apertura</strong> (10:00 - 16:00 | 6 hrs | DIURNO)</span>
+              <span style="color:var(--cyan); font-weight:700;">2 BOH + 2 FOH (Cumple LFT 8h máx)</span>
+            </div>
+            <div class="schedule-bar"><div class="schedule-fill morning" style="width: 50%;"></div></div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.3rem;">
+              <span>🔥 <strong>Turno Pico / Almuerzo-Cena</strong> (14:00 - 21:30 | 7.5 hrs | MIXTO)</span>
+              <span style="color:var(--primary); font-weight:700;">3 BOH + 4 FOH (Cumple LFT 7.5h máx)</span>
+            </div>
+            <div class="schedule-bar"><div class="schedule-fill peak" style="width: 85%;"></div></div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.3rem;">
+              <span>🌙 <strong>Turno Cierre / Nocturno</strong> (17:00 - 24:00 | 7 hrs | NOCTURNO)</span>
+              <span style="color:var(--purple); font-weight:700;">2 BOH + 2 FOH (Cumple LFT 7h máx)</span>
+            </div>
+            <div class="schedule-bar"><div class="schedule-fill closing" style="width: 60%;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Drive-thru logic
+    let dtOrder = { items: [], total: 0 };
+    function simulateDriveThruOrder(option) {
+      const log = document.getElementById('dt-log');
+      const oduItems = document.getElementById('odu-items');
+      const oduTotal = document.getElementById('odu-total');
+      const oduUpsell = document.getElementById('odu-upsell');
+      const upsellText = document.getElementById('upsell-text');
+
+      if (option === 1) {
+        dtOrder.items = [
+          { name: 'Burger Clásica Smash Doble (x2)', price: 330 },
+          { name: 'Papas Rústicas a la Trufa (x1)', price: 75 }
+        ];
+        dtOrder.total = 405;
+        log.innerHTML += `\n[00:01.45] 🎙️ Audio capturado: "dos hamburguesas smash dobles sin cebolla y unas papas trufa"\n[00:01.68] ⚡ Fast-Path NLP: 2x SMASH ($330) + 1x PAPAS TRUFA ($75) en 230ms\n[00:01.70] 🎯 Upsell Sugerido: Malteada Artesanal de Vainilla (+$80)`;
+        upsellText.innerText = '¿Desea agregar una Malteada Artesanal de Vainilla bien fría por $80?';
+      } else if (option === 2) {
+        dtOrder.items = [
+          { name: 'BBQ Bacon Smash Burger (x1)', price: 185 },
+          { name: 'Boneless Buffalo (8 pzas) (x1)', price: 145 }
+        ];
+        dtOrder.total = 330;
+        log.innerHTML += `\n[00:01.20] 🎙️ Audio capturado: "una bbq bacon y unos boneless buffalo"\n[00:01.42] ⚡ Fast-Path NLP: 1x BBQ ($185) + 1x BONELESS ($145) en 220ms\n[00:01.45] 🎯 Upsell Sugerido: Refresco Lata Helada (+$35)`;
+        upsellText.innerText = '¿Desea agregar una Coca-Cola bien helada por solo $35?';
+      } else {
+        dtOrder.items = [
+          { name: 'Burger Clásica Smash (x1)', price: 165 },
+          { name: 'Malteada de Vainilla (x1)', price: 80 }
+        ];
+        dtOrder.total = 245;
+        log.innerHTML += `\n[00:01.30] 🎙️ Audio capturado: "una smash burger y una malteada de vainilla"\n[00:01.51] ⚡ Fast-Path NLP: 1x SMASH ($165) + 1x MALTEADA ($80) en 210ms`;
+        upsellText.innerText = '¿Le gustaría agregar Papas Rústicas a la Trufa por $75?';
+      }
+
+      oduItems.innerHTML = dtOrder.items.map(it => `
+        <div class="odu-item-row">
+          <span>${it.name}</span>
+          <span style="font-weight:700; color:#fff;">$${it.price.toFixed(2)}</span>
+        </div>
+      `).join('');
+
+      oduTotal.innerText = `$${dtOrder.total.toFixed(2)} MXN`;
+      oduUpsell.style.display = 'flex';
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function confirmDtOrder() {
+      if (dtOrder.items.length === 0) return alert('Primero simule un pedido por voz');
+      const log = document.getElementById('dt-log');
+      const orderId = 'DT-ORD-' + Math.floor(100000 + Math.random()*900000);
+      log.innerHTML += `\n\n✅ [00:02.15] ORDEN ${orderId} CONFIRMADA:\n   - Despachada a KDS Parrilla & Freidoras\n   - Total cobrado en ventanilla: $${dtOrder.total.toFixed(2)} MXN\n   - Tiempo de preparación estimado: 5 min`;
+      document.getElementById('odu-headline').innerText = `¡Orden #${orderId.replace('DT-ORD-', '')} lista para recoger!`;
+      document.getElementById('dt-status-badge').innerText = 'DESPACHADA A KDS';
+      log.scrollTop = log.scrollHeight;
+    }
+
+    // NFC logic
+    let nfcSession = null;
+    let nfcTotal = 0;
+    function simulateNfcTap() {
+      nfcSession = { table: 'TBL-05', guests: 1, items: [] };
+      nfcTotal = 0;
+      document.getElementById('nfc-session-badge').innerText = 'SESIÓN ACTIVA';
+      document.getElementById('nfc-session-badge').className = 'badge badge-green';
+      document.getElementById('nfc-guests-count').innerText = '1';
+      document.getElementById('nfc-total-amount').innerText = '$0 MXN';
+
+      const log = document.getElementById('nfc-log');
+      log.innerHTML = `[NFC] ⚡ TAP DETECTADO en Mesa 05!\n` +
+        `[NFC] URL: https://bot.masfast.shop/tap?b=BRANCH-01&t=TBL-05&sig=c85141a5e26cf1eb\n` +
+        `[NFC] Firma HMAC-SHA256 VÁLIDA (Anti-Replay Nonce: 7718b17c)\n` +
+        `[NFC] Mini PWA de Mesa iniciada instantáneamente sin instalar app.`;
+    }
+
+    function addNfcItem(id, name, price) {
+      if (!nfcSession) return alert('Primero toca el tag NFC para abrir la mesa');
+      nfcSession.items.push({ id, name, price });
+      nfcTotal += price;
+      document.getElementById('nfc-total-amount').innerText = `$${nfcTotal} MXN`;
+      const log = document.getElementById('nfc-log');
+      log.innerHTML += `\n[MESA 05] 🍔 Comensal agregó: ${name} ($${price} MXN). Total acumulado: $${nfcTotal} MXN`;
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function callWaiterNfc() {
+      if (!nfcSession) return alert('Primero toca el tag NFC');
+      const log = document.getElementById('nfc-log');
+      log.innerHTML += `\n[SERVICIO] 🔔 MESERO LLAMADO A MESA 05 (Notificación enviada al reloj smartwatch de Capitán de Meseros)`;
+      log.scrollTop = log.scrollHeight;
+    }
+  </script>
+</body>
+</html>
