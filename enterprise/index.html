@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — Facturación CFDI 4.0, Propinas Digitales & Franchise Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --purple: #8b5cf6;
+      --purple-glow: rgba(139, 92, 246, 0.25);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gold: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group { display: flex; align-items: center; gap: 1rem; }
+    .brand-badge {
+      background: linear-gradient(135deg, #10b981, #3b82f6);
+      color: white;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      letter-spacing: 0.05em;
+    }
+    .brand-title { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-sub { font-size: 0.75rem; color: var(--text-muted); }
+
+    .nav-tabs { display: flex; gap: 0.5rem; }
+    .nav-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.05); }
+    .nav-btn.active {
+      color: #fff;
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .hero-banner {
+      background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
+                  radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 60%),
+                  var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.35rem; }
+    .hero-text p { color: var(--text-muted); font-size: 0.9rem; max-width: 700px; }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      width: 100%;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: var(--accent);
+    }
+    .kpi-card.success::before { background: var(--primary); }
+    .kpi-card.purple::before { background: var(--purple); }
+    .kpi-card.warning::before { background: var(--warning); }
+    .kpi-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+    .kpi-val { font-size: 1.45rem; font-weight: 800; font-family: var(--font-mono); margin: 0.25rem 0; }
+    .kpi-sub { font-size: 0.75rem; color: var(--text-muted); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: grid; gap: 1.5rem; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+    .panel-title { font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+    .form-input, .form-select, .form-textarea {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .btn-success { background: var(--primary); }
+    .btn-purple { background: var(--purple); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+
+    .code-box {
+      background: #040711;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      max-height: 280px;
+    }
+
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+    td {
+      padding: 0.65rem 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .tag-success { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .tag-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .tag-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .tag-purple { background: rgba(139, 92, 246, 0.15); color: #c084fc; }
+
+    .sat-preview-card {
+      background: #ffffff;
+      color: #1e293b;
+      border-radius: 10px;
+      padding: 1.25rem;
+      font-size: 0.78rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .sat-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .sat-title { font-weight: 800; font-size: 0.95rem; color: #0f172a; }
+    .sat-uuid { font-family: var(--font-mono); font-size: 0.7rem; color: #64748b; }
+    .sat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .sat-total-row {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 0.5rem;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #0f172a;
+    }
+
+    .wa-bubble {
+      background: #064e3b;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      padding: 1rem;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #ecfdf5;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <div class="brand-badge">CFDI & ENTERPRISE</div>
+      <div>
+        <div class="brand-title">ComandaFlow AI Enterprise</div>
+        <div class="brand-sub">Facturación CFDI 4.0 SAT • Tronco de Propinas • Portal Franquicias</div>
+      </div>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" onclick="switchTab('invoicing')">🧾 Facturación CFDI 4.0</button>
+      <button class="nav-btn" onclick="switchTab('tips')">💳 Tronco Propinas</button>
+      <button class="nav-btn" onclick="switchTab('franchise')">🏢 Portal Franquicias</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-banner">
+      <div class="hero-text">
+        <h1>Centro de Operaciones Corporativo & Fiscal (Sprint 13)</h1>
+        <p>Automatización de comprobantes fiscales CFDI 4.0 en WhatsApp en &lt; 15 segundos, dispersión algorítmica de propinas (Tronco Digital LFT) y control multi-sucursal con auditoría de caja centralizada.</p>
+      </div>
+      <div>
+        <span class="tag tag-success" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;">● PAC SANDBOX ONLINE (SW SAPIEN)</span>
+      </div>
+    </section>
+
+    <!-- KPI STRIP -->
+    <section class="kpi-strip">
+      <div class="kpi-card success">
+        <div class="kpi-label">Facturas Timbradas Hoy</div>
+        <div class="kpi-val" id="kpi-invoices">48 CFDI</div>
+        <div class="kpi-sub">Tiempo promedio: 11.4s en WhatsApp</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label">Tronco Propinas del Turno</div>
+        <div class="kpi-val" id="kpi-tips">$4,500 MXN</div>
+        <div class="kpi-sub">6 colaboradores conciliados</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">GMV Red Franquicias (Día)</div>
+        <div class="kpi-val" id="kpi-gmv">$145,900 MXN</div>
+        <div class="kpi-sub">4 sucursales activas en Zacatecas</div>
+      </div>
+      <div class="kpi-card warning">
+        <div class="kpi-label">Auditoría Corte Z</div>
+        <div class="kpi-val" id="kpi-audit">1 Alerta</div>
+        <div class="kpi-sub">Faltante -$350 en Fresnillo</div>
+      </div>
+    </section>
+
+    <!-- TAB 1: CFDI 4.0 INVOICING -->
+    <section id="tab-invoicing" class="tab-content active">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📝 Datos del Comprobante & Receptor SAT</div>
+            <button class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.75rem;" onclick="autofillCsf()">📄 Autollenar con CSF OCR</button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">RFC Receptor (Física / Moral / Genérico)</label>
+            <input type="text" id="inv-rfc" class="form-input" value="JUMA960814H88" oninput="validateRfcInput()">
+            <span id="rfc-feedback" style="font-size: 0.75rem; color: #34d399; font-weight: 600;">✓ Formato RFC válido (Persona Física)</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nombre o Razón Social (tal cual Constancia SAT)</label>
+            <input type="text" id="inv-name" class="form-input" value="JOSE MAURICIO JUANES MARTINEZ">
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem;">
+            <div class="form-group">
+              <label class="form-label">Código Postal Fiscal</label>
+              <input type="text" id="inv-cp" class="form-input" value="98000" maxlength="5">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Régimen Fiscal</label>
+              <select id="inv-regimen" class="form-select">
+                <option value="626" selected>626 - RESICO</option>
+                <option value="601">601 - General Personas Morales</option>
+                <option value="612">612 - Personas Físicas Act. Empresariales</option>
+                <option value="605">605 - Sueldos y Salarios</option>
+                <option value="616">616 - Sin obligaciones fiscales</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem;">
+            <div class="form-group">
+              <label class="form-label">Uso de CFDI</label>
+              <select id="inv-uso" class="form-select">
+                <option value="G03" selected>G03 - Gastos en general</option>
+                <option value="G01">G01 - Adquisición de mercancías</option>
+                <option value="S01">S01 - Sin efectos fiscales</option>
+                <option value="CP01">CP01 - Pagos</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Total a Facturar ($ MXN)</label>
+              <input type="number" id="inv-total" class="form-input" value="580.00" step="10">
+            </div>
+          </div>
+
+          <button class="btn btn-success" onclick="stampCfdiInvoice()">⚡ Timbrar CFDI 4.0 y Despachar a WhatsApp</button>
+        </div>
+
+        <!-- RIGHT PANEL: PREVIEW & XML -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📄 Vista Previa de Factura Timbrada & WhatsApp</div>
+            <span class="tag tag-success" id="stamp-badge">TIMBRADO EXITOSO</span>
+          </div>
+
+          <!-- SAT PREVIEW -->
+          <div class="sat-preview-card">
+            <div class="sat-header">
+              <div>
+                <div class="sat-title">COMANDAFLOW RESTAURANTES SAPI DE CV</div>
+                <div style="color: #64748b; font-size: 0.72rem;">RFC: CFL240515XYZ • Lugar de Expedición: 98000 Zacatecas</div>
+              </div>
+              <div style="text-align: right;">
+                <span class="tag tag-purple">FACTURA CFDI 4.0</span>
+                <div class="sat-uuid" id="sat-folio-label">Folio: CFDI-ORD-98821</div>
+              </div>
+            </div>
+
+            <div class="sat-grid">
+              <div>
+                <strong>Receptor:</strong> <span id="sat-receptor-name">JOSE MAURICIO JUANES MARTINEZ</span><br>
+                <strong>RFC:</strong> <span id="sat-receptor-rfc">JUMA960814H88</span> | <strong>CP:</strong> <span id="sat-receptor-cp">98000</span>
+              </div>
+              <div style="text-align: right;">
+                <strong>UUID:</strong> <span id="sat-uuid" style="font-family: monospace; font-size: 0.68rem;">8061F1D4-4187-44A5-94E9-4B72ADDF53CA</span><br>
+                <strong>PAC:</strong> SW SAPIEN SANDBOX (Cert. 00001000000504465028)
+              </div>
+            </div>
+
+            <div class="sat-total-row">
+              <div>Subtotal: <span id="sat-subtotal">$500.00 MXN</span> | IVA 16%: <span id="sat-iva">$80.00 MXN</span></div>
+              <div>TOTAL: <span id="sat-total" style="color: #0f172a; font-size: 1.05rem;">$580.00 MXN</span></div>
+            </div>
+          </div>
+
+          <!-- WA BUBBLE -->
+          <div class="wa-bubble" id="wa-preview-bubble">
+            🧾 <strong>¡Tu Factura CFDI 4.0 está lista!</strong><br>
+            Estimado(a) <strong>JOSE MAURICIO JUANES MARTINEZ</strong>, tu factura por <strong>$580.00 MXN</strong> ha sido timbrada ante el SAT.<br>
+            📎 Adjuntos: <em>Factura_CFDI-98821.pdf</em> y <em>Factura_CFDI-98821.xml</em><br>
+            🔗 <a href="#" style="color: #6ee7b7; text-decoration: underline;">Verificar Validez Oficial en Portal SAT</a>
+          </div>
+
+          <!-- XML VIEWER -->
+          <div>
+            <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--text-muted);">Estructura XML CFDI 4.0 (Timbre Fiscal Digital v1.1)</div>
+            <pre class="code-box" id="xml-code-viewer">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;cfdi:Comprobante Version="4.0" Total="580.00" SubTotal="500.00" Moneda="MXN"&gt;
+  &lt;cfdi:Emisor Rfc="CFL240515XYZ" Nombre="COMANDAFLOW RESTAURANTES SAPI DE CV" RegimenFiscal="601"/&gt;
+  &lt;cfdi:Receptor Rfc="JUMA960814H88" Nombre="JOSE MAURICIO JUANES MARTINEZ" DomicilioFiscalReceptor="98000" RegimenFiscalReceptor="626" UsoCFDI="G03"/&gt;
+  &lt;tfd:TimbreFiscalDigital UUID="8061F1D4-4187-44A5-94E9-4B72ADDF53CA" FechaTimbrado="2026-08-15T21:00:00" RfcProvCertif="SW_SAPIEN_SANDBOX"/&gt;
+&lt;/cfdi:Comprobante&gt;</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DIGITAL TIPS / TRONCO -->
+    <section id="tab-tips" class="tab-content">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">⚖️ Configuración & Conciliación de Turno (Tronco)</div>
+            <span class="tag tag-success">LFT ARTS. 346/347 COMPLIANT</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Fondo Total de Propinas del Turno ($ MXN)</label>
+              <input type="number" id="tips-total-pool" class="form-input" value="4500" oninput="recalcTronco()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Turno a Liquidar</label>
+              <select id="tips-shift" class="form-select">
+                <option value="NOCHE">Turno Nocturno (18:00 - 01:00)</option>
+                <option value="DIA">Turno Matutino (10:00 - 18:00)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 1rem; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.75rem;">Reglas de Reparto por Departamento</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; text-align: center;">
+              <div>
+                <div style="color: var(--primary); font-weight: 800; font-size: 1.1rem;">60%</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Salón / Piso</div>
+                <div style="font-size: 0.8rem; font-weight: 700;" id="tips-salon-fund">$2,700.00 MXN</div>
+              </div>
+              <div>
+                <div style="color: var(--accent); font-weight: 800; font-size: 1.1rem;">30%</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Cocina / BOH</div>
+                <div style="font-size: 0.8rem; font-weight: 700;" id="tips-cocina-fund">$1,350.00 MXN</div>
+              </div>
+              <div>
+                <div style="color: var(--purple); font-weight: 800; font-size: 1.1rem;">10%</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Barra / Caja</div>
+                <div style="font-size: 0.8rem; font-weight: 700;" id="tips-barra-fund">$450.00 MXN</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-purple" onclick="disperseStpBatch()">🚀 Generar y Autorizar Dispersión SPEI STP Automática</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">👥 Desglose de Liquidación Individual por Colaborador</div>
+            <span class="tag tag-purple" id="staff-count-tag">6 COLABORADORES</span>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Colaborador</th>
+                  <th>Área</th>
+                  <th>Horas</th>
+                  <th>Tarifa/Hora</th>
+                  <th>Pago Neto</th>
+                </tr>
+              </thead>
+              <tbody id="tronco-table-body">
+                <tr>
+                  <td><strong>Luis García</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Mesero Líder • BBVA</span></td>
+                  <td><span class="tag tag-success">SALÓN</span></td>
+                  <td>8 hrs</td>
+                  <td>$122.73</td>
+                  <td><strong style="color: #34d399;">$981.82</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Ana Martínez</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Mesera • Santander</span></td>
+                  <td><span class="tag tag-success">SALÓN</span></td>
+                  <td>8 hrs</td>
+                  <td>$122.73</td>
+                  <td><strong style="color: #34d399;">$981.82</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Jorge Pérez</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Garrotero • Banorte</span></td>
+                  <td><span class="tag tag-success">SALÓN</span></td>
+                  <td>6 hrs</td>
+                  <td>$122.73</td>
+                  <td><strong style="color: #34d399;">$736.36</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Chef Mario</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Parrillero • BBVA</span></td>
+                  <td><span class="tag tag-purple">COCINA</span></td>
+                  <td>8 hrs</td>
+                  <td>$90.00</td>
+                  <td><strong style="color: #c084fc;">$720.00</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Elena Ruiz</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Lavaloza • Nu</span></td>
+                  <td><span class="tag tag-purple">COCINA</span></td>
+                  <td>7 hrs</td>
+                  <td>$90.00</td>
+                  <td><strong style="color: #c084fc;">$630.00</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Raúl Soto</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Bartender • MP</span></td>
+                  <td><span class="tag tag-warning">BARRA</span></td>
+                  <td>8 hrs</td>
+                  <td>$56.25</td>
+                  <td><strong style="color: #fbbf24;">$450.00</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="stp-disbursement-result" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.75rem; font-size: 0.78rem;">
+            ✅ <strong>Lote SPEI STP Generado:</strong> <code>STP-BATCH-463FB0DB</code> — 6 transferencias programadas por <strong>$4,500.00 MXN</strong>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: FRANCHISE PORTAL -->
+    <section id="tab-franchise" class="tab-content">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">🏢 Monitor Consolidado de Sucursales (Zacatecas)</div>
+            <span class="tag tag-success">RED HEALTHY (4 NODOS)</span>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sucursal</th>
+                  <th>GMV (Día)</th>
+                  <th>Órdenes</th>
+                  <th>Lead Time</th>
+                  <th>Corte Z</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Centro Histórico</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Carlos Ramos</span></td>
+                  <td>$48,500</td>
+                  <td>220</td>
+                  <td>18.5m</td>
+                  <td><span class="tag tag-success">CUADRADO</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Guadalupe Tahona</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Valeria Montelongo</span></td>
+                  <td>$39,200</td>
+                  <td>185</td>
+                  <td>21.0m</td>
+                  <td><span class="tag tag-success">CUADRADO</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Fresnillo Plateros</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Héctor De Santiago</span></td>
+                  <td>$31,400</td>
+                  <td>140</td>
+                  <td>24.2m</td>
+                  <td><span class="tag tag-danger">-$350 FALTANTE</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Bernárdez Express</strong><br><span style="font-size: 0.7rem; color: var(--text-muted);">Mariana Trejo</span></td>
+                  <td>$26,800</td>
+                  <td>110</td>
+                  <td>15.8m</td>
+                  <td><span class="tag tag-success">CUADRADO</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 0.85rem; font-size: 0.8rem;">
+            ⚠️ <strong>Alerta Auditoría Corte Z:</strong> Sucursal Fresnillo Plateros reportó efectivo esperado de $9,800 MXN vs $9,450 MXN físico contado. Se ha abierto ticket de revisión con el gerente de sucursal.
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📑 Liquidación de Regalías & Estado de Cuenta</div>
+            <button class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.75rem;" onclick="generateSettlementDoc()">📥 Descargar PDF</button>
+          </div>
+
+          <div style="background: #040711; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; font-size: 0.82rem;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 0.75rem;">
+              <div>
+                <strong>ESTADO DE CUENTA CORPORATIVO</strong><br>
+                <span style="font-size: 0.7rem; color: var(--text-muted);">Sucursal Centro Histórico (Agosto 2026)</span>
+              </div>
+              <span class="tag tag-purple">STMT-BR-ZAC-202608</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+              <span>Venta Bruta Mensual (GMV):</span>
+              <strong style="font-family: var(--font-mono);">$485,000.00 MXN</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: var(--text-muted);">
+              <span>• Regalías de Marca (5.0%):</span>
+              <span style="font-family: var(--font-mono);">$24,250.00 MXN</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: var(--text-muted);">
+              <span>• Fondo Nacional de Publicidad (1.5%):</span>
+              <span style="font-family: var(--font-mono);">$7,275.00 MXN</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: var(--text-muted);">
+              <span>• Licenciamiento SaaS ComandaFlow AI:</span>
+              <span style="font-family: var(--font-mono);">$1,499.00 MXN</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--border-color); padding-top: 0.5rem; margin-top: 0.5rem; font-weight: 700;">
+              <span>Subtotal Cuotas:</span>
+              <span style="font-family: var(--font-mono);">$33,024.00 MXN</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: var(--text-muted);">
+              <span>IVA 16%:</span>
+              <span style="font-family: var(--font-mono);">$5,283.84 MXN</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 2px solid var(--primary); padding-top: 0.5rem; font-size: 1rem; font-weight: 800; color: #34d399;">
+              <span>TOTAL A LIQUIDAR:</span>
+              <span style="font-family: var(--font-mono);">$38,307.84 MXN</span>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            🏦 <strong>Instrucciones STP:</strong> Transferir a CLABE <code>646930001234567890</code> con referencia <code>STMTBRZAC202608</code> antes del día 25 del mes.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    ComandaFlow AI Enterprise Suite v1.8.0 • Módulos Productivos CFDI 4.0, Tronco Propinas y Portal Franquicias • Zacatecas, México
+  </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function validateRfcInput() {
+      const rfc = document.getElementById('inv-rfc').value.trim().toUpperCase();
+      const fb = document.getElementById('rfc-feedback');
+      const rfcRegex = /^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/;
+      
+      if (rfcRegex.test(rfc)) {
+        fb.style.color = '#34d399';
+        fb.innerText = `✓ Formato RFC válido (${rfc.length === 12 ? 'Persona Moral' : 'Persona Física'})`;
+      } else {
+        fb.style.color = '#f87171';
+        fb.innerText = '✗ RFC inválido según catálogo SAT';
+      }
+    }
+
+    function autofillCsf() {
+      document.getElementById('inv-rfc').value = 'JUMA960814H88';
+      document.getElementById('inv-name').value = 'JOSE MAURICIO JUANES MARTINEZ';
+      document.getElementById('inv-cp').value = '98000';
+      document.getElementById('inv-regimen').value = '626';
+      document.getElementById('inv-uso').value = 'G03';
+      validateRfcInput();
+      alert('📄 Datos de Constancia de Situación Fiscal (CSF SAT) cargados automáticamente vía OCR.');
+    }
+
+    function stampCfdiInvoice() {
+      const rfc = document.getElementById('inv-rfc').value.toUpperCase();
+      const name = document.getElementById('inv-name').value.toUpperCase();
+      const cp = document.getElementById('inv-cp').value;
+      const total = parseFloat(document.getElementById('inv-total').value) || 580;
+      const subtotal = (total / 1.16).toFixed(2);
+      const iva = (total - subtotal).toFixed(2);
+
+      const uuid = '8061F1D4-' + Math.random().toString(36).substring(2, 6).toUpperCase() + '-44A5-94E9-' + Date.now().toString(16).toUpperCase();
+
+      document.getElementById('sat-receptor-name').innerText = name;
+      document.getElementById('sat-receptor-rfc').innerText = rfc;
+      document.getElementById('sat-receptor-cp').innerText = cp;
+      document.getElementById('sat-uuid').innerText = uuid;
+      document.getElementById('sat-subtotal').innerText = `$${subtotal} MXN`;
+      document.getElementById('sat-iva').innerText = `$${iva} MXN`;
+      document.getElementById('sat-total').innerText = `$${total.toFixed(2)} MXN`;
+
+      document.getElementById('wa-preview-bubble').innerHTML = `
+        🧾 <strong>¡Tu Factura CFDI 4.0 está lista!</strong><br>
+        Estimado(a) <strong>${name}</strong>, tu factura por <strong>$${total.toFixed(2)} MXN</strong> ha sido timbrada ante el SAT con folio fiscal <code>${uuid}</code>.<br>
+        📎 Adjuntos: <em>Factura_${uuid.substring(0,8)}.pdf</em> y <em>Factura_${uuid.substring(0,8)}.xml</em><br>
+        🔗 <a href="#" style="color: #6ee7b7; text-decoration: underline;">Verificar Validez Oficial en Portal SAT</a>
+      `;
+
+      alert(`✅ Factura ${uuid} timbrada exitosamente por PAC SW sapien. XML y PDF despachados.`);
+    }
+
+    function recalcTronco() {
+      const pool = parseFloat(document.getElementById('tips-total-pool').value) || 0;
+      const salon = (pool * 0.60).toFixed(2);
+      const cocina = (pool * 0.30).toFixed(2);
+      const barra = (pool * 0.10).toFixed(2);
+
+      document.getElementById('tips-salon-fund').innerText = `$${salon} MXN`;
+      document.getElementById('tips-cocina-fund').innerText = `$${cocina} MXN`;
+      document.getElementById('tips-barra-fund').innerText = `$${barra} MXN`;
+      document.getElementById('kpi-tips').innerText = `$${pool.toLocaleString()} MXN`;
+    }
+
+    function disperseStpBatch() {
+      document.getElementById('stp-disbursement-result').style.display = 'block';
+      alert('🚀 Lote STP SPEI enviado al concentrador bancario. 6 transferencias ejecutadas con éxito.');
+    }
+
+    function generateSettlementDoc() {
+      alert('📥 Descargando Estado de Cuenta PDF oficial para Sucursal Centro Histórico.');
+    }
+  </script>
+</body>
+</html>
