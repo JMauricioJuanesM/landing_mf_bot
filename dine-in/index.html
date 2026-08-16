@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — Dine-In QR, Split Bill & Loyalty Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --purple: #8b5cf6;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gold: #fbbf24;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.15rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 10px;
+      letter-spacing: -0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .header-tag {
+      font-size: 0.75rem;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.25rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab.active {
+      background: var(--primary);
+      color: #070b14;
+      font-weight: 700;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    .nav-tab:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Grid Layouts */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stat-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Table Dining Simulator */
+    .table-selector-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .table-chip {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .table-chip.active {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .diner-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .diner-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .diner-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .diner-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .diner-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .diner-item-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.15rem;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #070b14;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+
+    .btn-accent:hover {
+      background: #2563eb;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Split Bill Box */
+    .split-mode-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.3rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .split-mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.45rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .split-mode-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .tip-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .tip-btn {
+      flex: 1;
+      padding: 0.45rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .tip-btn.active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .bill-summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .bill-summary-row.total {
+      border-top: 1px solid var(--border-color);
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .diner-split-card {
+      background: rgba(59, 130, 246, 0.05);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 8px;
+      padding: 0.85rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Onboarding Wizard */
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .stepper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border-color);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-card);
+      padding: 0 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-item.active .step-circle {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #070b14;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-item.active .step-label {
+      color: #fff;
+    }
+
+    .ocr-dropzone {
+      border: 2px dashed rgba(59, 130, 246, 0.4);
+      background: rgba(59, 130, 246, 0.03);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 1.25rem;
+    }
+
+    .ocr-dropzone:hover {
+      background: rgba(59, 130, 246, 0.08);
+      border-color: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Loyalty Wallet Card */
+    .wallet-hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 16px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .wallet-hero::after {
+      content: '💎';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5rem;
+      opacity: 0.15;
+    }
+
+    .wallet-balance {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: var(--font-mono);
+      margin: 0.5rem 0;
+    }
+
+    .tier-progress-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 0.75rem 0;
+    }
+
+    .tier-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      border-radius: 9999px;
+      width: 65%;
+    }
+
+    /* Terminal / Log Preview */
+    .terminal-box {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #38bdf8;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .terminal-line {
+      margin-bottom: 0.25rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <div class="logo-badge">
+        <span>⚡</span> ComandaFlow AI
+      </div>
+      <div>
+        <div class="header-title">Dine-In QR, Onboarding & Loyalty Engine</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">Comedor Contactless • Split Bill • Fidelización • Onboarding &lt;5 min</div>
+      </div>
+      <span class="header-tag">v1.6.0 Sprint 11</span>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('dinein')">🍽️ Salón QR & Split Bill</button>
+      <button class="nav-tab" onclick="switchTab('onboarding')">🧙 Wizard Onboarding</button>
+      <button class="nav-tab" onclick="switchTab('loyalty')">🎁 Monedero & Cashback</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: DINE-IN QR & SPLIT BILL -->
+    <div id="tab-dinein" class="tab-content active">
+      <div class="grid-3col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📱 Mesas Activas Salón</div>
+            <span class="stat-badge">3 Ocupadas</span>
+          </div>
+          <div class="table-selector-bar">
+            <div class="table-chip active" onclick="selectTable(4)">Mesa #4 (Salón)</div>
+            <div class="table-chip" onclick="selectTable(8)">Mesa #8 (Terraza)</div>
+            <div class="table-chip" onclick="selectTable(2)">Mesa #2 (Barra)</div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Mesero asignado: <strong style="color: #fff;">Carlos R.</strong> • Clave QR: <code style="color: var(--primary);">tbl_0b74f02ed716</code>
+          </div>
+          <button class="btn btn-secondary" style="width: 100%;" onclick="triggerServiceCall()">🔔 Timbre de Asistencia / Mesero</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">👥 Comensales en Mesa #4</div>
+            <span class="stat-badge">2 Personas</span>
+          </div>
+          <div class="diner-list">
+            <div class="diner-card">
+              <div class="diner-header">
+                <span class="diner-name">👩 Mariana G.</span>
+                <span style="font-size: 0.8rem; font-weight: 700; color: #fff;">$480 MXN</span>
+              </div>
+              <div class="diner-items">
+                <div class="diner-item-row"><span>1x Pizza Serrana (Compartida)</span><span>$155 MXN</span></div>
+                <div class="diner-item-row"><span>2x Cerveza Artesanal 355ml</span><span>$170 MXN</span></div>
+              </div>
+            </div>
+            <div class="diner-card">
+              <div class="diner-header">
+                <span class="diner-name">👨 Luis F.</span>
+                <span style="font-size: 0.8rem; font-weight: 700; color: #fff;">$340 MXN</span>
+              </div>
+              <div class="diner-items">
+                <div class="diner-item-row"><span>1x Pizza Serrana (Compartida)</span><span>$155 MXN</span></div>
+                <div class="diner-item-row"><span>1x Alitas BBQ 12 Pzas</span><span>$185 MXN</span></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-secondary" style="width: 100%;" onclick="addMockDish()">➕ Agregar Platillo a la Mesa</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🧾 Split-Bill & Pago Instantáneo</div>
+            <span class="stat-badge">Checkout en 1-Tap</span>
+          </div>
+          
+          <div class="split-mode-toggle">
+            <button id="btn-split-equal" class="split-mode-btn active" onclick="setSplitMode('EQUAL')">Partes Iguales (50/50)</button>
+            <button id="btn-split-item" class="split-mode-btn" onclick="setSplitMode('ITEM')">Por lo Consumido</button>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">Propina para el mesero:</div>
+          <div class="tip-selector">
+            <button class="tip-btn" onclick="setTip(0)">0%</button>
+            <button class="tip-btn" onclick="setTip(10)">10%</button>
+            <button class="tip-btn active" onclick="setTip(15)">15%</button>
+            <button class="tip-btn" onclick="setTip(20)">20%</button>
+          </div>
+
+          <div class="bill-summary-row"><span>Subtotal Alimentos:</span><span id="subtotal-val">$665.00 MXN</span></div>
+          <div class="bill-summary-row"><span>Propina (15%):</span><span id="tip-val">$99.75 MXN</span></div>
+          <div class="bill-summary-row total"><span>Total Mesa:</span><span id="total-val" style="color: var(--primary);">$764.75 MXN</span></div>
+
+          <div id="split-breakdown" style="margin: 1rem 0;">
+            <div class="diner-split-card">
+              <div>
+                <strong style="color: #fff; font-size: 0.85rem;">Mariana G.</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Parte equitativa 50%</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-weight: 800; color: #fff; font-family: var(--font-mono);">$382.38 MXN</div>
+                <button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin-top: 0.25rem;" onclick="payShare('Mariana')">Pagar $382.38</button>
+              </div>
+            </div>
+
+            <div class="diner-split-card">
+              <div>
+                <strong style="color: #fff; font-size: 0.85rem;">Luis F.</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Parte equitativa 50%</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-weight: 800; color: #fff; font-family: var(--font-mono);">$382.37 MXN</div>
+                <button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin-top: 0.25rem;" onclick="payShare('Luis')">Pagar $382.37</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KDS Kitchen Live Log -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🍳 Inyección Directa a KDS de Cocina & Notificaciones</div>
+          <span class="stat-badge" style="background: rgba(59, 130, 246, 0.15); color: var(--accent);">SSE Live Stream</span>
+        </div>
+        <div class="terminal-box" id="kds-log">
+          <div class="terminal-line"><span style="color: var(--text-muted);">[19:00:15]</span> <span style="color: var(--primary);">[KDS_INJECT]</span> Comanda [SALÓN - MESA #4] enviada a Horno & Barra Fría (Mariana G., Luis F.)</div>
+          <div class="terminal-line"><span style="color: var(--text-muted);">[19:00:16]</span> <span style="color: #fbbf24;">[SERVICE_BELL]</span> Mesa #4 solicita cuenta con propina 15% calculada</div>
+          <div class="terminal-line"><span style="color: var(--text-muted);">[19:00:18]</span> <span style="color: #38bdf8;">[FINTECH_RECONCILE]</span> Enlace Mercado Pago QR activo para split individual</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: ONBOARDING WIZARD -->
+    <div id="tab-onboarding" class="tab-content">
+      <div class="card" style="max-width: 900px; margin: 0 auto;">
+        <div class="stepper">
+          <div class="step-item active">
+            <div class="step-circle">1</div>
+            <div class="step-label">Datos Generales</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-circle">2</div>
+            <div class="step-label">Menú OCR</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-circle">3</div>
+            <div class="step-label">WhatsApp Bot</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-circle">4</div>
+            <div class="step-label">Go-Live</div>
+          </div>
+        </div>
+
+        <div class="grid-2col">
+          <div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #fff;">📸 Ingestión de Menú por Foto / PDF</h3>
+            <div class="ocr-dropzone" onclick="simulateOcrUpload()">
+              <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📄</div>
+              <strong style="color: #fff;">Arrastra la foto de tu carta o menú</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Reconocimiento instantáneo con IA Multimodal (< 2 seg)</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nombre del Negocio</label>
+              <input type="text" class="form-input" id="onb-name" value="Lucky Pizza Guadalupe">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Teléfono WhatsApp del Restaurante</label>
+              <input type="text" class="form-input" id="onb-phone" value="492 123 4567">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="runOnboardingPipeline()">🚀 Procesar Onboarding en &lt; 5 Minutos</button>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #fff;">⚡ Extracción OCR Estructurada en Vivo</h3>
+            <div class="terminal-box" style="height: 260px;" id="ocr-results">
+              <div class="terminal-line" style="color: var(--primary);">✅ 3 Categorías detectadas: PIZZAS, ENTRADAS, BEBIDAS</div>
+              <div class="terminal-line">• Pizza Serrana Especial: $310 MXN (100% conf)</div>
+              <div class="terminal-line">• Pizza Cuatro Quesos: $275 MXN (98% conf)</div>
+              <div class="terminal-line">• Pizza Pepperoni: $240 MXN (100% conf)</div>
+              <div class="terminal-line">• Alitas BBQ 12 Pzas: $185 MXN (99% conf)</div>
+              <div class="terminal-line">• Cerveza Artesanal Zacatecana: $85 MXN (97% conf)</div>
+              <div class="terminal-line" style="color: var(--accent);">🤖 Código de Vinculación WhatsApp: 5795-6436</div>
+              <div class="terminal-line" style="color: #fbbf24;">📍 Zona Geofence: ZACATECAS_GUADALUPE_METRO</div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+              <button class="btn btn-accent" style="flex: 1;" onclick="downloadQrKit()">📥 Descargar Kit de Mesas QR</button>
+              <button class="btn btn-secondary" style="flex: 1;" onclick="openPublicMenu()">🌐 Ver Menú Web</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: LOYALTY & REWARDS -->
+    <div id="tab-loyalty" class="tab-content">
+      <div class="grid-2col">
+        <div>
+          <div class="wallet-hero">
+            <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #a78bfa; font-weight: 700;">Monedero Digital ComandaFlow</div>
+            <div class="wallet-balance" id="wallet-val">$115.00 MXN</div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+              <span>Nivel: <strong style="color: #fff;">🥈 Plata (5% Cashback)</strong></span>
+              <span>7 / 15 pedidos para 🥇 Oro</span>
+            </div>
+            <div class="tier-progress-track">
+              <div class="tier-progress-bar"></div>
+            </div>
+            <div style="font-size: 0.75rem; color: #38bdf8;">🔥 Racha activa: 3 pedidos en 14 días (+ $40 MXN bono acreditado)</div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🎁 Simular Pedido con Cashback & Redención</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monto del Pedido (MXN)</label>
+              <input type="number" class="form-input" id="loyalty-order-amount" value="500">
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+              <button class="btn btn-accent" style="flex: 1;" onclick="simulateCashbackGain()">Abonar Cashback (+5%)</button>
+              <button class="btn btn-secondary" style="flex: 1;" onclick="simulateWalletRedemption()">Redimir Monedero</button>
+            </div>
+            <div id="loyalty-summary" style="font-size: 0.85rem; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px;">
+              Abonarás <strong style="color: var(--primary);">+$25.00 MXN</strong> de cashback directo a tu cuenta.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🏆 Escalafón de Beneficios por Fidelidad</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="background: rgba(255,255,255,0.02); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color: #fff;">🥉 Nivel Bronce (0-4 pedidos)</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">3% de cashback en compras</div>
+                </div>
+                <span class="stat-badge">Base</span>
+              </div>
+              <div style="background: rgba(59, 130, 246, 0.1); padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color: #fff;">🥈 Nivel Plata (5-14 pedidos) [ACTUAL]</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">5% de cashback + postre de cumpleaños</div>
+                </div>
+                <span class="stat-badge" style="background: rgba(59,130,246,0.2); color: #60a5fa;">Tu Nivel</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.02); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color: #fff;">🥇 Nivel Oro (15-29 pedidos)</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">8% de cashback + envíos prioritarios gratis</div>
+                </div>
+                <span class="stat-badge" style="background: rgba(251,191,36,0.15); color: #fbbf24;">Próximo</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.02); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="color: #fff;">💎 Diamante VIP (30+ pedidos)</strong>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">10% de cashback + acceso a platillos secretos</div>
+                </div>
+                <span class="stat-badge" style="background: rgba(139,92,246,0.15); color: #a78bfa;">VIP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentTipPct = 15;
+    let splitMode = 'EQUAL';
+    let baseFoodTotal = 665;
+    let walletBalance = 115;
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function setTip(pct) {
+      currentTipPct = pct;
+      document.querySelectorAll('.tip-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      updateTotals();
+    }
+
+    function setSplitMode(mode) {
+      splitMode = mode;
+      document.getElementById('btn-split-equal').classList.toggle('active', mode === 'EQUAL');
+      document.getElementById('btn-split-item').classList.toggle('active', mode === 'ITEM');
+      updateTotals();
+    }
+
+    function updateTotals() {
+      const tipAmount = Math.round(baseFoodTotal * (currentTipPct / 100) * 100) / 100;
+      const grandTotal = baseFoodTotal + tipAmount;
+
+      document.getElementById('subtotal-val').innerText = `$${baseFoodTotal.toFixed(2)} MXN`;
+      document.getElementById('tip-val').innerText = `$${tipAmount.toFixed(2)} MXN`;
+      document.getElementById('total-val').innerText = `$${grandTotal.toFixed(2)} MXN`;
+
+      const breakdown = document.getElementById('split-breakdown');
+      if (splitMode === 'EQUAL') {
+        const share1 = (grandTotal / 2).toFixed(2);
+        const share2 = (grandTotal - parseFloat(share1)).toFixed(2);
+        breakdown.innerHTML = `
+          <div class="diner-split-card">
+            <div>
+              <strong style="color: #fff; font-size: 0.85rem;">Mariana G.</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Parte equitativa 50%</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; color: #fff; font-family: var(--font-mono);">$${share1} MXN</div>
+              <button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin-top: 0.25rem;" onclick="payShare('Mariana')">Pagar $${share1}</button>
+            </div>
+          </div>
+          <div class="diner-split-card">
+            <div>
+              <strong style="color: #fff; font-size: 0.85rem;">Luis F.</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Parte equitativa 50%</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; color: #fff; font-family: var(--font-mono);">$${share2} MXN</div>
+              <button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin-top: 0.25rem;" onclick="payShare('Luis')">Pagar $${share2}</button>
+            </div>
+          </div>
+        `;
+      } else {
+        // Individual: Mariana food=325, Luis food=340
+        const tipM = 325 * (currentTipPct / 100);
+        const tipL = 340 * (currentTipPct / 100);
+        const totM = (325 + tipM).toFixed(2);
+        const totL = (340 + tipL).toFixed(2);
+
+        breakdown.innerHTML = `
+          <div class="diner-split-card">
+            <div>
+              <strong style="color: #fff; font-size: 0.85rem;">Mariana G.</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">$325 comida + propina</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; color: #fff; font-family: var(--font-mono);">$${totM} MXN</div>
+              <button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin-top: 0.25rem;" onclick="payShare('Mariana')">Pagar $${totM}</button>
+            </div>
+          </div>
+          <div class="diner-split-card">
+            <div>
+              <strong style="color: #fff; font-size: 0.85rem;">Luis F.</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">$340 comida + propina</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; color: #fff; font-family: var(--font-mono);">$${totL} MXN</div>
+              <button class="btn btn-primary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin-top: 0.25rem;" onclick="payShare('Luis')">Pagar $${totL}</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function triggerServiceCall() {
+      const log = document.getElementById('kds-log');
+      const time = new Date().toLocaleTimeString();
+      log.innerHTML += `<div class="terminal-line"><span style="color: var(--text-muted);">[${time}]</span> <span style="color: #f43f5e;">[TIMBRE_MESERO]</span> Mesa #4 solicita asistencia de Carlos R.</div>`;
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function payShare(diner) {
+      alert(`✅ ¡Pago procesado con éxito para ${diner} vía Mercado Pago / Tarjeta! Comprobante enviado por WhatsApp.`);
+    }
+
+    function simulateOcrUpload() {
+      alert('📸 Menú escaneado con éxito: 8 platillos y 3 categorías identificadas con 93% de confianza.');
+    }
+
+    function runOnboardingPipeline() {
+      alert('🚀 ¡Restaurante provisionado en 3 minutos! Bot de WhatsApp enlazado y QR de mesas listos para imprimir.');
+    }
+
+    function simulateCashbackGain() {
+      const amt = parseFloat(document.getElementById('loyalty-order-amount').value) || 500;
+      const gain = amt * 0.05;
+      walletBalance += gain;
+      document.getElementById('wallet-val').innerText = `$${walletBalance.toFixed(2)} MXN`;
+      document.getElementById('loyalty-summary').innerHTML = `🎉 ¡Ganaste <strong style="color: var(--primary);">+$${gain.toFixed(2)} MXN</strong> de cashback! Nuevo saldo: <strong>$${walletBalance.toFixed(2)} MXN</strong>.`;
+    }
+
+    function simulateWalletRedemption() {
+      const amt = parseFloat(document.getElementById('loyalty-order-amount').value) || 500;
+      const redeemed = Math.min(amt, walletBalance);
+      const remaining = amt - redeemed;
+      walletBalance -= redeemed;
+      document.getElementById('wallet-val').innerText = `$${walletBalance.toFixed(2)} MXN`;
+      document.getElementById('loyalty-summary').innerHTML = `💳 Pago Mixto: <strong>$${redeemed.toFixed(2)}</strong> con Monedero + <strong>$${remaining.toFixed(2)}</strong> con Tarjeta.`;
+    }
+  </script>
+</body>
+</html>
