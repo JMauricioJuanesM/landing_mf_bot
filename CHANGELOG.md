@@ -6,7 +6,14 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.4.0] - 2026-08-15
+## [1.5.0] - 2026-08-15
+
+### Added
+- **Growth, Dynamic Pricing & Omnichannel Voice Hub PWA (`growth/index.html`):**
+  - Consola web interactiva para control de precios dinámicos y yield management en tiempo real con sliders de ocupación KDS.
+  - Simulador de llamadas telefónicas omnicanal SIP / Asterisk con visualización de transcripción en tiempo real y generación de tickets KDS.
+  - Tracker de campañas Meta Ads con cálculo dinámico de ROAS (6.8x), CAC ($50 MXN) y comisiones de Uber evitadas.
+
 
 ### Added
 - **Business Intelligence & Franchising Demand Forecasting Hub PWA (`bi/index.html`):**

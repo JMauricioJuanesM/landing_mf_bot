@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — Growth, Dynamic Pricing & Omnichannel Voice Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --purple: #8b5cf6;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .logo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary);
+    }
+
+    .tag-growth {
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--purple);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-tab:hover:not(.active) {
+      color: var(--text-main);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .hero-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, rgba(14, 21, 38, 0.9), rgba(20, 29, 51, 0.6));
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+    }
+
+    .hero-text h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-text p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .hero-stat-pill {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .stat-box {
+      text-align: right;
+    }
+
+    .stat-box .val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--primary);
+    }
+
+    .stat-box .lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Controls & Sliders */
+    .slider-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      height: 6px;
+      border-radius: 4px;
+      background: #1e293b;
+      cursor: pointer;
+    }
+
+    .badge-regime {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .badge-valley {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-optimal {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-surge {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Menu Table */
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .pricing-table th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .pricing-table td {
+      padding: 0.75rem 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .tag-flash {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* Voice AI Phone Simulator */
+    .phone-mockup {
+      background: #000;
+      border: 2px solid #1e293b;
+      border-radius: 24px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      height: 480px;
+    }
+
+    .phone-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .phone-status {
+      font-size: 0.75rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .status-dot-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .chat-stream {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-right: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .bubble {
+      max-width: 85%;
+      padding: 0.6rem 0.9rem;
+      border-radius: 12px;
+      line-height: 1.35;
+    }
+
+    .bubble-agent {
+      background: #1e293b;
+      color: #fff;
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .bubble-caller {
+      background: #047857;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .voice-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+    }
+
+    /* Meta Ads Attribution */
+    .campaign-card {
+      background: #131b2e;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .campaign-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .m-item {
+      text-align: center;
+    }
+
+    .m-item .m-val {
+      font-size: 1.1rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #fff;
+    }
+
+    .m-item .m-lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .code-box {
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #a7f3d0;
+      word-break: break-all;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <a href="../index.html" class="logo-badge">
+        <div class="logo-dot"></div>
+        ComandaFlow AI
+      </a>
+      <span class="tag-growth">Growth & Voice Hub</span>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('pricing')">🏷️ Precios Dinámicos</button>
+      <button class="nav-tab" onclick="switchTab('voice')">📞 Voice AI (SIP)</button>
+      <button class="nav-tab" onclick="switchTab('attribution')">📢 Atribución Meta Ads</button>
+    </div>
+
+    <div>
+      <a href="../kds/index.html" class="btn btn-secondary" style="font-size:0.75rem;">Ir a KDS</a>
+      <a href="../bi/index.html" class="btn btn-secondary" style="font-size:0.75rem;">Ir a BI Hub</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: PRECIOS DINÁMICOS -->
+    <div id="tab-pricing" class="tab-content active">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h1>Motor de Yield Management & Precios Dinámicos</h1>
+          <p>Optimiza la capacidad de cocina: estimula horas valle con flash promos y protege tiempos en horas pico.</p>
+        </div>
+        <div class="hero-stat-pill">
+          <div class="stat-box">
+            <div class="val" id="kds-load-val">22%</div>
+            <div class="lbl">Saturación KDS</div>
+          </div>
+          <div class="stat-box">
+            <div class="val" id="margin-avg-val">68.4%</div>
+            <div class="lbl">Margen Bruto Promedio</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>Simulador de Capacidad de Cocina</span>
+            <span id="regime-badge" class="badge-regime badge-valley">🔥 VALLEY_PROMO (-15%)</span>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Nivel de Ocupación KDS</span>
+              <span id="slider-pct-label" style="font-family:var(--font-mono); color:var(--primary);">22% (Horas Valle)</span>
+            </div>
+            <input type="range" id="kds-slider" min="5" max="100" value="22" oninput="updatePricingSimulation(this.value)">
+          </div>
+
+          <div id="banner-notice-box" style="background:#0f2e22; border:1px solid rgba(16,185,129,0.3); padding:0.75rem; border-radius:8px; font-size:0.85rem; color:#6ee7b7; margin-bottom:1rem;">
+            🔥 ¡Hora Feliz Valle! 15% de descuento automático en pizzas y combos para acelerar pedidos.
+          </div>
+
+          <div style="background:#131b2e; padding:1rem; border-radius:8px; font-size:0.85rem;">
+            <div style="font-weight:700; margin-bottom:0.5rem;">📲 Mensaje de Difusión WhatsApp Generado:</div>
+            <div id="broadcast-msg-text" style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">
+              ¡Antojo de media tarde! 😋 En *Lucky Pizza Guadalupe* activamos 15% de descuento en pizzas familiares. Entrega express en 25 min.
+            </div>
+            <button class="btn" style="margin-top:0.75rem; padding:0.4rem 0.8rem; font-size:0.75rem;" onclick="copyBroadcast()">📋 Copiar Texto para WhatsApp</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Menú Dinámico en Tiempo Real (Margen Protegido)</span>
+          </div>
+
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>Platillo</th>
+                <th>Base</th>
+                <th>Dinámico</th>
+                <th>Costo</th>
+                <th>Margen</th>
+              </tr>
+            </thead>
+            <tbody id="menu-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: VOICE AI -->
+    <div id="tab-voice" class="tab-content">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h1>Asistente de Voz Omnicanal (SIP / Asterisk Bridge)</h1>
+          <p>Atención telefónica 24/7 con Groq Whisper-Turbo, despacho a KDS y envío instantáneo de ticket por WhatsApp.</p>
+        </div>
+        <div class="hero-stat-pill">
+          <div class="stat-box">
+            <div class="val">240 ms</div>
+            <div class="lbl">Latencia STT</div>
+          </div>
+          <div class="stat-box">
+            <div class="val">100%</div>
+            <div class="lbl">Precisión Direcciones</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="phone-mockup">
+          <div class="phone-header">
+            <div>
+              <div style="font-weight:700; font-size:0.9rem;">📞 Llamada SIP Entrante</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Troncal: Asterisk Zacatecas 01 (Tel: 492-155-4433)</div>
+            </div>
+            <div class="phone-status">
+              <div class="status-dot-pulse"></div>
+              <span>EN VIVO</span>
+            </div>
+          </div>
+
+          <div class="chat-stream" id="call-stream">
+            <div class="bubble bubble-agent">
+              Buenas noches, gracias por llamar a Lucky Pizza. ¿Qué se te antoja ordenar hoy?
+            </div>
+            <div class="bubble bubble-caller">
+              Buenas noches, me da una pizza familiar de pepperoni con queso extra y dos cocas para Paseo de la Bufa #120, Arboledas en Guadalupe.
+            </div>
+            <div class="bubble bubble-agent">
+              ¡Perfecto! Anotado 1 Pizza Familiar Pepperoni (Extra Queso) y 2 Refrescos 2L. El total con envío es de $370 pesos. Te mandé el link de seguimiento a tu WhatsApp.
+            </div>
+          </div>
+
+          <div class="voice-controls">
+            <button class="btn" onclick="simulateVoiceStep('pizza')">🎙️ "Quiero Pizza Serrana"</button>
+            <button class="btn btn-secondary" onclick="simulateVoiceStep('address')">📍 "Enviar a Bernárdez #45"</button>
+            <button class="btn btn-secondary" onclick="simulateVoiceStep('operator')">👤 "Pásame con Gerente"</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Ticket KDS Generado Automáticamente</span>
+            <span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--primary);">CMD-VOICE-9821</span>
+          </div>
+
+          <div style="background:#000; border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:1rem; font-family:var(--font-mono); font-size:0.8rem; margin-bottom:1rem;">
+            <div style="color:var(--primary); font-weight:700; margin-bottom:0.5rem;">[EXPEDITER MAESTRO — VOICE SIP]</div>
+            <div>CLIENTE: Ing. Fernando Valadez (492-155-4433)</div>
+            <div>DIRECCIÓN: Paseo de la Bufa #120, Fracc. Arboledas, Guadalupe</div>
+            <div style="margin:0.5rem 0; border-top:1px dashed #334155;"></div>
+            <div>1x Pizza Familiar Pepperoni Especial ..... $260</div>
+            <div>   └ + Extra Queso Mozzarella .......... $35</div>
+            <div>2x Refresco Coca-Cola 2L ............... $75</div>
+            <div>Envío Domicilio Guadalupe .............. $35</div>
+            <div style="margin:0.5rem 0; border-top:1px dashed #334155;"></div>
+            <div style="font-weight:700; color:#fff;">TOTAL COBRAR: $405 MXN (Pago al Recibir)</div>
+          </div>
+
+          <div style="font-size:0.85rem; color:var(--text-muted);">
+            📲 <b>WhatsApp Live Tracker enviado al cliente:</b>
+            <div class="code-box">https://comanda.masfast.shop/tracker/CMD-VOICE-9821</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: ATRIBUCIÓN META ADS -->
+    <div id="tab-attribution" class="tab-content">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h1>Atribución de Meta Ads & WhatsApp Click-to-Chat</h1>
+          <p>Mide el retorno exacto (ROAS) de cada peso invertido en anuncios hiper-locales de Facebook e Instagram.</p>
+        </div>
+        <div class="hero-stat-pill">
+          <div class="stat-box">
+            <div class="val">6.8x</div>
+            <div class="lbl">ROAS Promedio</div>
+          </div>
+          <div class="stat-box">
+            <div class="val">$50 MXN</div>
+            <div class="lbl">CAC por Cliente</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="campaign-card">
+            <div class="campaign-header">
+              <div>
+                <div style="font-weight:700;">Martes de 2x1 en Pizzas Familiares (Horas Valle)</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Instagram Feed • Radio 4.0 km (Guadalupe y Zacatecas)</div>
+              </div>
+              <span class="tag-flash" style="background:rgba(16,185,129,0.15); color:var(--primary);">ACTIVA</span>
+            </div>
+            <div class="metric-row">
+              <div class="m-item"><div class="m-val">$1,200</div><div class="m-lbl">Gasto Ad</div></div>
+              <div class="m-item"><div class="m-val">202</div><div class="m-lbl">Chats WA</div></div>
+              <div class="m-item"><div class="m-val">24</div><div class="m-lbl">Órdenes</div></div>
+              <div class="m-item"><div class="m-val" style="color:var(--primary);">$8,160</div><div class="m-lbl">GMV (6.8x)</div></div>
+            </div>
+            <div style="margin-top:0.75rem;">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Enlace Click-to-WhatsApp con UTM:</div>
+              <div class="code-box">https://wa.me/524921112233?text=Hola%20vi%20la%20promo%202x1%20[REF:CAMP_VALLEY_TUE]</div>
+            </div>
+          </div>
+
+          <div class="campaign-card">
+            <div class="campaign-header">
+              <div>
+                <div style="font-weight:700;">Fin de Semana con Amigos (Pizza Serrana + Alitas)</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Facebook Feed • Radio 5.0 km (Zacatecas Centro y Arboledas)</div>
+              </div>
+              <span class="tag-flash" style="background:rgba(16,185,129,0.15); color:var(--primary);">ACTIVA</span>
+            </div>
+            <div class="metric-row">
+              <div class="m-item"><div class="m-val">$2,500</div><div class="m-lbl">Gasto Ad</div></div>
+              <div class="m-item"><div class="m-val">420</div><div class="m-lbl">Chats WA</div></div>
+              <div class="m-item"><div class="m-val">48</div><div class="m-lbl">Órdenes</div></div>
+              <div class="m-item"><div class="m-val" style="color:var(--primary);">$17,760</div><div class="m-lbl">GMV (7.1x)</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Calculadora de Retorno & Ahorro vs Uber</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1rem;">
+            <div style="background:#131b2e; padding:1rem; border-radius:8px;">
+              <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Comisiones de Uber Evitadas (30%)</div>
+              <div style="font-size:1.8rem; font-weight:800; font-family:var(--font-mono); color:var(--primary);">$7,776 MXN</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Dinero que se quedó 100% en la cuenta del restaurante.</div>
+            </div>
+
+            <div style="background:#131b2e; padding:1rem; border-radius:8px;">
+              <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Utilidad Neta Post-Inversión Publicitaria</div>
+              <div style="font-size:1.8rem; font-weight:800; font-family:var(--font-mono); color:#fff;">$13,144 MXN</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Calculado con margen bruto del 65% deduciendo el costo total de anuncios.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const mockItems = [
+      { id: 'p1', name: 'Pizza Familiar Pepperoni', category: 'pizzas', base: 260, cost: 65 },
+      { id: 'p2', name: 'Pizza Serrana Gourmet (Arrachera)', category: 'pizzas', base: 340, cost: 110 },
+      { id: 'p3', name: 'Alitas BBQ 12 Pzas', category: 'entradas', base: 180, cost: 60 },
+      { id: 'p4', name: 'Refresco Familiar 2L', category: 'bebidas', base: 55, cost: 18 }
+    ];
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function updatePricingSimulation(val) {
+      const pct = parseInt(val);
+      document.getElementById('kds-load-val').innerText = pct + '%';
+      document.getElementById('slider-pct-label').innerText = pct + '% (' + (pct < 35 ? 'Horas Valle' : pct > 85 ? 'Horas Pico Surge' : 'Óptimo') + ')';
+
+      const badge = document.getElementById('regime-badge');
+      const notice = document.getElementById('banner-notice-box');
+      let mult = 1.0;
+
+      if (pct < 35) {
+        mult = 0.85;
+        badge.className = 'badge-regime badge-valley';
+        badge.innerText = '🔥 VALLEY_PROMO (-15%)';
+        notice.style.background = '#0f2e22';
+        notice.style.color = '#6ee7b7';
+        notice.innerText = '🔥 ¡Hora Feliz Valle! 15% de descuento automático en pizzas y combos para acelerar pedidos.';
+      } else if (pct > 85) {
+        mult = 1.08;
+        badge.className = 'badge-regime badge-surge';
+        badge.innerText = '⚡ PEAK_SURGE (+8%)';
+        notice.style.background = '#3b1212';
+        notice.style.color = '#fca5a5';
+        notice.innerText = '⚡ Alta demanda en cocina: tiempo estimado de entrega extendido (+15 min) para garantizar calidad.';
+      } else {
+        mult = 1.0;
+        badge.className = 'badge-regime badge-optimal';
+        badge.innerText = '✨ REGIMEN_OPTIMO';
+        notice.style.background = '#131b2e';
+        notice.style.color = '#93c5fd';
+        notice.innerText = '✨ Cocina operando a ritmo óptimo (35–80%). Precios regulares activos.';
+      }
+
+      renderMenuTable(mult, pct < 35);
+    }
+
+    function renderMenuTable(multiplier, isValley) {
+      const tbody = document.getElementById('menu-table-body');
+      tbody.innerHTML = '';
+
+      let totalMargin = 0;
+      mockItems.forEach(item => {
+        let dyn = Math.round(item.base * multiplier);
+        // Margin protection > 60%
+        const minAllowed = item.cost / 0.40;
+        if (dyn < minAllowed) dyn = Math.round(minAllowed);
+
+        const margin = (((dyn - item.cost) / dyn) * 100).toFixed(1);
+        totalMargin += parseFloat(margin);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${item.name}</b> ${isValley ? '<span class="tag-flash">PROMO</span>' : ''}</td>
+          <td style="color:var(--text-muted);">$${item.base}</td>
+          <td style="font-family:var(--font-mono); font-weight:700; color:${multiplier < 1 ? 'var(--primary)' : multiplier > 1 ? 'var(--danger)' : '#fff'};">$${dyn} MXN</td>
+          <td style="color:var(--text-muted);">$${item.cost}</td>
+          <td style="font-family:var(--font-mono); color:#a7f3d0;">${margin}%</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('margin-avg-val').innerText = (totalMargin / mockItems.length).toFixed(1) + '%';
+    }
+
+    function copyBroadcast() {
+      navigator.clipboard.writeText(document.getElementById('broadcast-msg-text').innerText);
+      alert('¡Mensaje copiado al portapapeles!');
+    }
+
+    function simulateVoiceStep(type) {
+      const stream = document.getElementById('call-stream');
+      if (type === 'pizza') {
+        stream.innerHTML += `
+          <div class="bubble bubble-caller">Oye, también agrégate una pizza Serrana de arrachera.</div>
+          <div class="bubble bubble-agent">¡Agregada Pizza Serrana Gourmet! Tu nuevo total es de $710 pesos.</div>
+        `;
+      } else if (type === 'address') {
+        stream.innerHTML += `
+          <div class="bubble bubble-caller">Cámbiamela a Bernárdez #45 en Guadalupe porfa.</div>
+          <div class="bubble bubble-agent">Listo, dirección actualizada a Bernárdez #45. Tiempo de entrega: 30 minutos.</div>
+        `;
+      } else {
+        stream.innerHTML += `
+          <div class="bubble bubble-caller">Oye, pásame con alguien porfa.</div>
+          <div class="bubble bubble-agent">Te comunico de inmediato con nuestro encargado en mostrador. Un segundo...</div>
+        `;
+      }
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    // Init
+    updatePricingSimulation(22);
+  </script>
+</body>
+</html>
