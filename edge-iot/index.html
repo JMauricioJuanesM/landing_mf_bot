@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComandaFlow AI — Edge POS Offline, IoT Sensores NOM-251 & Dark Kitchen Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: #0e1526;
+      --bg-card-hover: #141d33;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.25);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --purple: #8b5cf6;
+      --purple-glow: rgba(139, 92, 246, 0.25);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gold: #fbbf24;
+      --cyan: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    header {
+      background: rgba(14, 21, 38, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+    .brand span.highlight {
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge-sprint {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(7, 11, 20, 0.6);
+      padding: 0.3rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .tab-btn.active {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(14, 21, 38, 0.9) 0%, rgba(20, 29, 51, 0.6) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .hero-banner h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
+    }
+    .hero-banner p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      max-width: 750px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: all 0.2s ease;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-primary { background: var(--primary); color: #042f1f; font-weight: 700; }
+    .btn-primary:hover { background: #059669; box-shadow: 0 4px 14px var(--primary-glow); }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #2563eb; box-shadow: 0 4px 14px var(--accent-glow); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-control {
+      width: 100%;
+      background: rgba(7, 11, 20, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .mono-box {
+      font-family: var(--font-mono);
+      background: #040711;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.82rem;
+      color: #38bdf8;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+    .table-custom th {
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+    .table-custom td {
+      padding: 0.85rem 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .status-badge.success { background: rgba(16, 185, 129, 0.15); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-badge.info { background: rgba(59, 130, 246, 0.15); color: var(--accent); border: 1px solid rgba(59, 130, 246, 0.3); }
+
+    .gauge-card {
+      background: rgba(14, 21, 38, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+    }
+    .gauge-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      margin: 0.5rem 0;
+    }
+    .gauge-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .gauge-rule {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      background: rgba(14, 21, 38, 0.95);
+      border-top: 1px solid var(--border-color);
+      padding: 1.25rem 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="highlight">ComandaFlow AI</span>
+      <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">/ Enterprise Suite</span>
+      <span class="badge-sprint">Sprint 14</span>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-edge')">🔌 Edge POS Offline</button>
+      <button class="tab-btn" onclick="switchTab('tab-iot')">🌡️ IoT Cocina NOM-251</button>
+      <button class="tab-btn" onclick="switchTab('tab-dark')">🍳 Dark Kitchen Hub</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============================================================ -->
+    <!-- TAB 1: EDGE POS OFFLINE SIMULATOR -->
+    <!-- ============================================================ -->
+    <div id="tab-edge" class="tab-pane active">
+      <div class="hero-banner">
+        <div>
+          <h1>🔌 Edge POS Offline-First & Sincronización CRDT</h1>
+          <p>Operación continua garantizada sin internet. Base de datos SQLite embebida en nodo local, Vector Clocks y reconciliación determinista Last-Write-Wins (LWW) al recuperar enlace.</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+          <span id="edge-conn-badge" class="status-badge success">● ONLINE (CONECTADO)</span>
+          <button id="btn-toggle-conn" class="btn btn-outline" onclick="toggleConnectivity()">🔌 Desconectar Red</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Col 1: POS Local Terminal -->
+        <div class="card">
+          <div class="card-title">
+            <span>🛒 Terminal de Punto de Venta Local</span>
+            <span class="status-badge info" id="pos-node-label">NODO: EDGE-ZAC-01</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Mesa / Ubicación</label>
+              <input type="number" id="pos-table" class="form-control" value="6" min="1" max="50">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mesero / Turno</label>
+              <input type="text" id="pos-waiter" class="form-control" value="Pedro Ramirez">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Seleccionar Platillos del Menú</label>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 6px;">
+                <span>🍔 2x Hamburguesa Clásica ($165 ea)</span>
+                <input type="checkbox" id="item-burger" checked>
+              </label>
+              <label style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 6px;">
+                <span>🍟 1x Papas Trufadas ($95 ea)</span>
+                <input type="checkbox" id="item-fries" checked>
+              </label>
+              <label style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 6px;">
+                <span>🥤 2x Agua de Jamaica 500ml ($40 ea)</span>
+                <input type="checkbox" id="item-drink" checked>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Forma de Cobro</label>
+            <select id="pos-payment" class="form-control">
+              <option value="CASH">Efectivo (Caja Local)</option>
+              <option value="CARD_OFFLINE">Tarjeta / Terminal Offline</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+            <button class="btn btn-primary" style="flex: 1;" onclick="submitEdgeOrder()">💾 Registrar Comanda Local</button>
+            <button class="btn btn-accent" onclick="reconcileEdgeCrdt()">🔄 Forzar Sync CRDT</button>
+          </div>
+        </div>
+
+        <!-- Col 2: OpLog & ESC/POS Receipt -->
+        <div class="card">
+          <div class="card-title">
+            <span>📋 OpLog CRDT & Ticket ESC/POS Local</span>
+            <span class="status-badge success" id="oplog-count">0 PENDIENTES</span>
+          </div>
+
+          <div class="form-label">Recibo ESC/POS Local (Buffer 80mm):</div>
+          <div class="mono-box" id="escpos-receipt-viewer">Esperando registro de orden local...</div>
+
+          <div class="form-label" style="margin-top: 1rem;">Vector Clocks & Reconciliación CRDT:</div>
+          <div class="mono-box" style="height: 120px; color: #a78bfa;" id="crdt-log-viewer">{
+  "EDGE-NODE-ZAC-01": 0,
+  "CLOUD-PRIMARY": 0,
+  "lastResolution": "READY"
+}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 2: IOT COCINA NOM-251 -->
+    <!-- ============================================================ -->
+    <div id="tab-iot" class="tab-pane">
+      <div class="hero-banner">
+        <div>
+          <h1>🌡️ Telemetría IoT en Cocina & Monitoreo NOM-251-SSA1</h1>
+          <p>Control continuo de cadena de frío y temperaturas críticas HACCP. Detección autónoma de anomalías (puertas abiertas, fallas de compresor) con alertas de emergencia vía WhatsApp.</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-danger" onclick="triggerTempAnomaly()">🚨 Simular Falla Térmica (8.5°C)</button>
+          <button class="btn btn-primary" onclick="generateNom251Cert()">📄 Generar Acta NOM-251</button>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <div class="gauge-card" id="card-camara-fria">
+          <div class="gauge-title">Cámara Fría 1 (Lácteos/Verduras)</div>
+          <div class="gauge-val" id="val-camara-fria" style="color: var(--primary);">2.8°C</div>
+          <span class="status-badge success" id="status-camara-fria">✅ NOMINAL OK</span>
+          <div class="gauge-rule">Norma NOM-251: 0°C a 4.0°C</div>
+        </div>
+
+        <div class="gauge-card" id="card-congelador">
+          <div class="gauge-title">Congelador Principal (Proteínas)</div>
+          <div class="gauge-val" id="val-congelador" style="color: var(--cyan);">-19.4°C</div>
+          <span class="status-badge success" id="status-congelador">✅ NOMINAL OK</span>
+          <div class="gauge-rule">Norma NOM-251: ≤ -18.0°C</div>
+        </div>
+
+        <div class="gauge-card" id="card-mesa-caliente">
+          <div class="gauge-title">Mesa Caliente / Mantención</div>
+          <div class="gauge-val" id="val-mesa-caliente" style="color: var(--gold);">66.2°C</div>
+          <span class="status-badge success" id="status-mesa-caliente">✅ NOMINAL OK</span>
+          <div class="gauge-rule">Norma NOM-251: ≥ 60.0°C</div>
+        </div>
+
+        <div class="gauge-card" id="card-ambiente">
+          <div class="gauge-title">Ambiente Cocina & Humedad</div>
+          <div class="gauge-val" id="val-ambiente" style="color: var(--purple);">23.5°C</div>
+          <span class="status-badge success">52% HR (ÓPTIMO)</span>
+          <div class="gauge-rule">Confort: 18°C a 26°C</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>📱 Vista Previa Alerta WhatsApp Inmediata</span>
+            <span class="status-badge danger" id="iot-alert-status">0 ALERTAS ACTIVAS</span>
+          </div>
+          <div class="mono-box" style="height: 240px; color: #fca5a5;" id="whatsapp-iot-preview">✅ Todos los sensores operan dentro de los umbrales NOM-251-SSA1-2009.
+No hay alertas de riesgo sanitario activas.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>📋 Bitácora Digital HACCP & NOM-251</span>
+            <span class="status-badge success">SCORE: 98.5%</span>
+          </div>
+          <div class="mono-box" style="height: 240px; color: #86efac;" id="nom251-log-viewer">{
+  "standard": "NOM-251-SSA1-2009 — Higiene y Seguridad Alimentaria",
+  "branchId": "BRANCH-CENTRO-01",
+  "auditPeriod": "24 Horas",
+  "overallCompliance": "98.50%",
+  "haccpStatus": "CERTIFIED_SAFE",
+  "criticalControlPoints": 4,
+  "violationsDetected": 0
+}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 3: DARK KITCHEN HUB -->
+    <!-- ============================================================ -->
+    <div id="tab-dark" class="tab-pane">
+      <div class="hero-banner">
+        <div>
+          <h1>🍳 Dark Kitchen Multi-Brand Dispatch & Station Router</h1>
+          <p>Orquestación de marcas virtuales desde una misma cocina central (*BurgerLab, TacoBox, WingHouse*). Enrutamiento inteligente a estaciones KDS (Parrilla, Freidoras, Plancha) y desglose P&L por marca.</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-primary" onclick="dispatchDkSampleOrder('BRAND-BURGERLAB')">🍔 Despachar BurgerLab</button>
+          <button class="btn btn-danger" onclick="dispatchDkSampleOrder('BRAND-TACOBOX')">🌮 Despachar TacoBox</button>
+          <button class="btn btn-accent" onclick="dispatchDkSampleOrder('BRAND-WINGHOUSE')">🍗 Despachar WingHouse</button>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <div class="card" style="border-left: 4px solid #f59e0b;">
+          <div class="card-title" style="margin-bottom: 0.5rem; font-size: 0.9rem;">🍔 BurgerLab Smash</div>
+          <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono); color: #f59e0b;" id="dk-gmv-burger">$560.00</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Food Cost: 24.8% | Margen: 73.7%</div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #ef4444;">
+          <div class="card-title" style="margin-bottom: 0.5rem; font-size: 0.9rem;">🌮 TacoBox Urbana</div>
+          <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono); color: #ef4444;" id="dk-gmv-tacos">$380.00</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Food Cost: 24.6% | Margen: 73.2%</div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #8b5cf6;">
+          <div class="card-title" style="margin-bottom: 0.5rem; font-size: 0.9rem;">🍗 WingHouse Boneless</div>
+          <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono); color: #8b5cf6;" id="dk-gmv-wings">$535.00</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Food Cost: 27.3% | Margen: 71.1%</div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #10b981;">
+          <div class="card-title" style="margin-bottom: 0.5rem; font-size: 0.9rem;">💰 Total Hub GMV</div>
+          <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary);" id="dk-gmv-total">$1,475.00</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">3 Marcas | 3 Comandas en BOH</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🍳 Balance de Carga en Estaciones KDS</span>
+            <span class="status-badge success">4 ESTACIONES ACTIVAS</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                <span>🥩 Estación Parrilla & Smash BOH</span>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: #f59e0b;">35% (3/12)</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.06); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: #f59e0b; width: 35%; height: 100%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                <span>🍟 Batería de Freidoras (Wings / Papas)</span>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: #8b5cf6;">48% (6/15)</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.06); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: #8b5cf6; width: 48%; height: 100%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                <span>🌮 Plancha de Tacos & Trompo Pastor</span>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: #ef4444;">20% (2/10)</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.06); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: #ef4444; width: 20%; height: 100%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                <span>📦 Mesa Central de Ensamble y Despacho</span>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: #10b981;">60% (12/20)</span>
+              </div>
+              <div style="background: rgba(255,255,255,0.06); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: #10b981; width: 60%; height: 100%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>📦 Despacho de Comandas a Bins de Reparto</span>
+            <span class="status-badge info">UBER / BORZO / FLEET</span>
+          </div>
+
+          <div class="mono-box" style="height: 240px; color: #38bdf8;" id="dk-orders-stream">[
+  {
+    "orderId": "DK-ORD-BURGER-01",
+    "brand": "BurgerLab Gourmet",
+    "bin": "BIN-3",
+    "stations": ["Parrilla", "Freidoras"],
+    "status": "READY_FOR_PICKUP",
+    "readyEta": "4 min"
+  },
+  {
+    "orderId": "DK-ORD-TACO-02",
+    "brand": "TacoBox Urbana",
+    "bin": "BIN-1",
+    "stations": ["Plancha Tacos"],
+    "status": "COOKING",
+    "readyEta": "6 min"
+  }
+]</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    ComandaFlow AI — Plataforma de Inteligencia y Operación para Restaurantes © 2026. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    let isOnline = true;
+    let pendingOfflineOps = [];
+    let localClock = 0;
+    let cloudClock = 0;
+    let hubGmv = { burger: 560, taco: 380, wings: 535 };
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function toggleConnectivity() {
+      isOnline = !isOnline;
+      const badge = document.getElementById('edge-conn-badge');
+      const btn = document.getElementById('btn-toggle-conn');
+
+      if (isOnline) {
+        badge.className = 'status-badge success';
+        badge.innerText = '● ONLINE (CONECTADO)';
+        btn.innerText = '🔌 Desconectar Red';
+      } else {
+        badge.className = 'status-badge danger';
+        badge.innerText = '● OFFLINE (MODO RESILIENTE)';
+        btn.innerText = '🌐 Reconectar a Nube';
+      }
+    }
+
+    function submitEdgeOrder() {
+      localClock++;
+      const table = document.getElementById('pos-table').value;
+      const waiter = document.getElementById('pos-waiter').value;
+      const payment = document.getElementById('pos-payment').value;
+
+      let subtotal = 0;
+      let itemsList = [];
+
+      if (document.getElementById('item-burger').checked) {
+        subtotal += 330.00;
+        itemsList.push('2x Hamburguesa Clásica      $330.00');
+      }
+      if (document.getElementById('item-fries').checked) {
+        subtotal += 95.00;
+        itemsList.push('1x Papas Trufadas           $95.00');
+      }
+      if (document.getElementById('item-drink').checked) {
+        subtotal += 80.00;
+        itemsList.push('2x Agua de Jamaica 500ml    $80.00');
+      }
+
+      const tax = subtotal * 0.16;
+      const total = subtotal + tax;
+      const orderId = 'ORD-EDGE-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+
+      const receipt = [
+        '================================================',
+        '           COMANDAFLOW AI — EDGE POS            ',
+        '        SUCURSAL: BRANCH-CENTRO-01              ',
+        ` NODO LOCAL: EDGE-ZAC-01 [${isOnline ? 'ONLINE' : 'MODO OFFLINE'}] `,
+        '================================================',
+        `ORDEN: #${orderId}  MESA: #${table}`,
+        `FECHA: ${new Date().toLocaleString('es-MX')}`,
+        `MESERO: ${waiter}`,
+        '------------------------------------------------',
+        ...itemsList,
+        '------------------------------------------------',
+        `SUBTOTAL:                          $${subtotal.toFixed(2)}`,
+        `IVA (16%):                         $${tax.toFixed(2)}`,
+        `TOTAL:                             $${total.toFixed(2)}`,
+        `FORMA DE PAGO:                     ${payment}`,
+        '================================================',
+        isOnline ? ' [ SINCRONIZADO INMEDIATO CON NUBE ] ' : ' * COMPROBANTE OFFLINE ALMACENADO EN SQLITE * ',
+        '================================================'
+      ].join('\n');
+
+      document.getElementById('escpos-receipt-viewer').innerText = receipt;
+
+      if (!isOnline) {
+        pendingOfflineOps.push({ orderId, total, table, timestamp: Date.now() });
+        document.getElementById('oplog-count').className = 'status-badge warning';
+        document.getElementById('oplog-count').innerText = `${pendingOfflineOps.length} PENDIENTES SYNC`;
+      }
+
+      document.getElementById('crdt-log-viewer').innerText = JSON.stringify({
+        "EDGE-NODE-ZAC-01": localClock,
+        "CLOUD-PRIMARY": cloudClock,
+        "status": isOnline ? "SYNCED_IMMEDIATE" : "QUEUED_OFFLINE",
+        "pendingCount": pendingOfflineOps.length,
+        "activeDrawerRecovered": `$${total.toFixed(2)}`
+      }, null, 2);
+    }
+
+    function reconcileEdgeCrdt() {
+      cloudClock += pendingOfflineOps.length + 1;
+      const synced = pendingOfflineOps.length;
+      pendingOfflineOps = [];
+      document.getElementById('oplog-count').className = 'status-badge success';
+      document.getElementById('oplog-count').innerText = '0 PENDIENTES';
+
+      document.getElementById('crdt-log-viewer').innerText = JSON.stringify({
+        "EDGE-NODE-ZAC-01": localClock,
+        "CLOUD-PRIMARY": cloudClock,
+        "status": "RECONCILED_SUCCESS",
+        "operationsMerged": synced,
+        "conflictsResolved": 0,
+        "resolutionEngine": "CRDT Last-Write-Wins (LWW)"
+      }, null, 2);
+
+      alert(`✅ Reconciliación CRDT completada: ${synced} operaciones sincronizadas con la nube.`);
+    }
+
+    function triggerTempAnomaly() {
+      document.getElementById('val-camara-fria').innerText = '8.5°C';
+      document.getElementById('val-camara-fria').style.color = 'var(--danger)';
+      document.getElementById('status-camara-fria').className = 'status-badge danger';
+      document.getElementById('status-camara-fria').innerText = '🚨 CRÍTICO (>7.0°C)';
+      document.getElementById('card-camara-fria').style.border = '1px solid var(--danger)';
+
+      document.getElementById('iot-alert-status').innerText = '1 ALERTA CRÍTICA';
+      document.getElementById('iot-alert-status').className = 'status-badge danger';
+
+      document.getElementById('whatsapp-iot-preview').innerText = [
+        '🚨 *ALERTA DE CADENA DE FRÍO — COMANDAFLOW IOT*',
+        '📍 *Sucursal:* BRANCH-CENTRO-01',
+        '🌡️ *Sensor:* Cámara Fría 1 (Lácteos y Verduras)',
+        '📊 *Lectura Actual:* *8.5°C* (Límite NOM-251: 4.0°C)',
+        '⚠️ *Estado:* *CRITICAL_RISK*',
+        '📋 *Detalle:* 🚪 PUERTA ABIERTA > 12 min detectada.',
+        '-------------------------------------------',
+        '🛠️ *Acción Inmediata Requerida:*',
+        ' 1. Cerrar puerta hermética inmediatamente.',
+        ' 2. Verificar sello magnético de goma.',
+        ' 3. Monitorear retorno a < 4.0°C en 15 min.',
+        '-------------------------------------------',
+        `🕒 _Registro NOM-251: ${new Date().toLocaleTimeString('es-MX')}_`
+      ].join('\n');
+    }
+
+    function generateNom251Cert() {
+      document.getElementById('nom251-log-viewer').innerText = JSON.stringify({
+        "reportId": "NOM251-LOG-" + Math.random().toString(36).substr(2, 6).toUpperCase(),
+        "standard": "NOM-251-SSA1-2009 — Higiene y Seguridad Alimentaria",
+        "branchId": "BRANCH-CENTRO-01",
+        "complianceScore": "96.8%",
+        "haccpStatus": "CERTIFIED_SAFE",
+        "totalReadings": 288,
+        "sensors": [
+          { "sensor": "Cámara Fría 1", "avgTemp": "3.1°C", "status": "COMPLIANT" },
+          { "sensor": "Congelador Carnes", "avgTemp": "-19.2°C", "status": "COMPLIANT" },
+          { "sensor": "Mesa Caliente", "avgTemp": "65.4°C", "status": "COMPLIANT" }
+        ],
+        "exportFormat": "PDF_OFFICIAL_READY"
+      }, null, 2);
+      alert('📄 Bitácora Oficial NOM-251 generada y certificada.');
+    }
+
+    function dispatchDkSampleOrder(brandId) {
+      if (brandId === 'BRAND-BURGERLAB') hubGmv.burger += 195;
+      if (brandId === 'BRAND-TACOBOX') hubGmv.taco += 135;
+      if (brandId === 'BRAND-WINGHOUSE') hubGmv.wings += 175;
+
+      const total = hubGmv.burger + hubGmv.taco + hubGmv.wings;
+      document.getElementById('dk-gmv-burger').innerText = `$${hubGmv.burger.toFixed(2)}`;
+      document.getElementById('dk-gmv-tacos').innerText = `$${hubGmv.taco.toFixed(2)}`;
+      document.getElementById('dk-gmv-wings').innerText = `$${hubGmv.wings.toFixed(2)}`;
+      document.getElementById('dk-gmv-total').innerText = `$${total.toFixed(2)}`;
+
+      const bin = 'BIN-' + Math.floor(Math.random() * 6 + 1);
+      const stream = document.getElementById('dk-orders-stream');
+      stream.innerText = `[NUEVA ORDEN ENRUTADA]\nMarca: ${brandId}\nAsignado a: ${bin}\nEstaciones KDS: Parrilla / Freidoras\nTiempo Estimado: 8 min\n\n` + stream.innerText;
+    }
+  </script>
+</body>
+</html>
