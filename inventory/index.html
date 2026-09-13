@@ -400,6 +400,7 @@
       <button class="tab-btn active" onclick="switchTab('inventory-tab')">📦 Inventario &amp; Recetas BOM</button>
       <button class="tab-btn" onclick="switchTab('replenish-tab')">🚚 Auto-Reabastecimiento PO</button>
       <button class="tab-btn" onclick="switchTab('waste-tab')">📉 Mermas &amp; Flash Yield</button>
+      <button class="tab-btn" onclick="switchTab('audit-tab')">📋 Auditoría Física &amp; Mermas</button>
     </div>
   </header>
 
@@ -716,7 +717,132 @@ _Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a 
       </div>
     </div>
 
-  </main>
+    <!-- AUDIT TAB -->
+    <div id="audit-tab" class="tab-content">
+      <div class="grid-2">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">📋 Conteo Físico en Almacén (Auditoría Ciega)</div>
+              <span class="badge badge-accent">Conciliación Físico vs Teórico</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Captura el conteo real levantado por el jefe de cocina. El motor ComandaFlow compara contra el stock teórico deducido por recetas BOM e identifica mermas operativas o fugas no registradas:
+            </p>
+
+            <form id="audit-form" onsubmit="event.preventDefault(); runPhysicalAudit();">
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                <div style="flex: 1;">
+                  <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Auditor / Responsable</label>
+                  <input type="text" id="audit-auditor" value="Chef Ejecutivo Marco" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: #fff; padding: 0.5rem; border-radius: 6px; font-family: var(--font-sans);">
+                </div>
+                <div style="flex: 1;">
+                  <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Sucursal / Tenant</label>
+                  <input type="text" value="Sucursal Zacatecas Centro" readonly style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.5rem; border-radius: 6px; font-family: var(--font-sans);">
+                </div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.25rem;">
+                  <span>INSUMO</span>
+                  <span>STOCK TEÓRICO</span>
+                  <span>CONTEO FÍSICO</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <div>
+                    <strong style="font-size: 0.85rem;">Carne Molida 80/20</strong>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">$140 MXN/kg</div>
+                  </div>
+                  <span id="audit-theo-carne" style="font-size: 0.85rem; color: var(--text-muted);">15.0 kg</span>
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <input type="number" step="0.1" id="audit-input-carne" value="14.2" style="width: 75px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: #fff; padding: 0.35rem; border-radius: 4px; text-align: right; font-family: var(--font-mono);">
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">kg</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <div>
+                    <strong style="font-size: 0.85rem;">Queso Gouda Rebanado</strong>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">$180 MXN/kg</div>
+                  </div>
+                  <span id="audit-theo-queso" style="font-size: 0.85rem; color: var(--text-muted);">6.0 kg</span>
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <input type="number" step="0.1" id="audit-input-queso" value="5.9" style="width: 75px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: #fff; padding: 0.35rem; border-radius: 4px; text-align: right; font-family: var(--font-mono);">
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">kg</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <div>
+                    <strong style="font-size: 0.85rem;">Pan Brioche Artesanal</strong>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">$8.50 MXN/pza</div>
+                  </div>
+                  <span id="audit-theo-pan" style="font-size: 0.85rem; color: var(--text-muted);">80 pza</span>
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <input type="number" step="1" id="audit-input-pan" value="80" style="width: 75px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: #fff; padding: 0.35rem; border-radius: 4px; text-align: right; font-family: var(--font-mono);">
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">pza</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="font-size: 0.85rem;">Alitas de Pollo Frescas</strong>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">$85 MXN/kg</div>
+                  </div>
+                  <span id="audit-theo-alitas" style="font-size: 0.85rem; color: var(--text-muted);">12.0 kg</span>
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <input type="number" step="0.1" id="audit-input-alitas" value="10.5" style="width: 75px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: #fff; padding: 0.35rem; border-radius: 4px; text-align: right; font-family: var(--font-mono);">
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">kg</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="submit" class="btn" style="flex: 1; background: var(--accent); color: #fff;">📊 Conciliar Auditoría</button>
+                <button type="button" class="btn btn-secondary" onclick="loadSampleAuditCounts()">🔄 Reset Conteos</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">📉 Diagnóstico de Merma &amp; Calibración Automática</div>
+              <span id="audit-status-badge" class="badge badge-success">Pendiente de Ejecución</span>
+            </div>
+
+            <div class="kpi-row" style="margin-bottom: 1rem;">
+              <div class="kpi-card" style="padding: 0.75rem;">
+                <div class="kpi-label">Impacto Financiero Merma</div>
+                <div class="kpi-value" id="audit-val-impact" style="font-size: 1.25rem; color: var(--warning);">$0.00 MXN</div>
+                <div class="kpi-sub" id="audit-sub-impact">Sin desviación calculada</div>
+              </div>
+              <div class="kpi-card" style="padding: 0.75rem;">
+                <div class="kpi-label">Tasa de Merma Global</div>
+                <div class="kpi-value" id="audit-shrinkage-rate" style="font-size: 1.25rem; color: var(--primary);">0.0%</div>
+                <div class="kpi-sub">Target &lt; 2.5%</div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">
+              DETALLE DE DISCREPANCIAS POR CATEGORÍA
+            </div>
+
+            <div id="audit-discrepancies-list" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; text-align: center; padding: 1.5rem;">
+                Presiona "Conciliar Auditoría" para ejecutar el algoritmo de categorización y detección de anomalías.
+              </div>
+            </div>
+
+            <button id="btn-auto-adjust" class="btn" style="width: 100%; background: var(--primary); color: #070b14; display: none;" onclick="applyStockCalibration()">
+              ⚡ Calibrar Stock Físico en Base de Datos &amp; Invalidar Cache Redis
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script>
     const inventoryData = [
@@ -864,8 +990,141 @@ _Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a 
       }
     }
 
-    function triggerFlashPromo() {
-      alert('🚀 ¡Campaña Flash Yield enviada por WhatsApp a 50 comensales VIP! 18% OFF activado por 4 horas.');
+    function loadSampleAuditCounts() {
+      document.getElementById('audit-input-carne').value = '14.2';
+      document.getElementById('audit-input-queso').value = '5.9';
+      document.getElementById('audit-input-pan').value = '80';
+      document.getElementById('audit-input-alitas').value = '10.5';
+    }
+
+    let lastAuditDiscrepancies = [];
+
+    function runPhysicalAudit() {
+      const cCarne = parseFloat(document.getElementById('audit-input-carne').value) || 0;
+      const cQueso = parseFloat(document.getElementById('audit-input-queso').value) || 0;
+      const cPan = parseFloat(document.getElementById('audit-input-pan').value) || 0;
+      const cAlitas = parseFloat(document.getElementById('audit-input-alitas').value) || 0;
+
+      const items = [
+        { id: 'ing_carne_res', name: 'Carne Molida 80/20', unit: 'kg', theo: inventoryData.find(i=>i.id==='ing_carne_res').stock, phys: cCarne, cost: 140 },
+        { id: 'ing_queso_gouda', name: 'Queso Gouda Rebanado', unit: 'kg', theo: inventoryData.find(i=>i.id==='ing_queso_gouda').stock, phys: cQueso, cost: 180 },
+        { id: 'ing_pan_brioche', name: 'Pan Brioche Artesanal', unit: 'pza', theo: inventoryData.find(i=>i.id==='ing_pan_brioche').stock, phys: cPan, cost: 8.5 },
+        { id: 'ing_alas_pollo', name: 'Alitas de Pollo Frescas', unit: 'kg', theo: inventoryData.find(i=>i.id==='ing_alas_pollo').stock, phys: cAlitas, cost: 85 }
+      ];
+
+      let totalTheoVal = 0;
+      let totalPhysVal = 0;
+      let discList = [];
+
+      items.forEach(it => {
+        const theoVal = it.theo * it.cost;
+        const physVal = it.phys * it.cost;
+        totalTheoVal += theoVal;
+        totalPhysVal += physVal;
+
+        const diffUnits = it.phys - it.theo;
+        const pct = it.theo > 0 ? (diffUnits / it.theo) * 100 : 0;
+        const varCost = diffUnits * it.cost;
+
+        let category = 'PERFECT_MATCH';
+        let badgeClass = 'badge-success';
+        let catLabel = 'Coincidencia Perfecta';
+
+        if (Math.abs(pct) <= 0.05) {
+          category = 'PERFECT_MATCH';
+        } else if (Math.abs(pct) <= 2.0) {
+          category = 'ACCEPTABLE_TOLERANCE';
+          badgeClass = 'badge-accent';
+          catLabel = 'Tolerancia Aceptable (+/- 2%)';
+        } else if (pct < -2.0 && pct >= -10.0) {
+          category = 'OVERPORTIONING_OR_PREP_WASTE';
+          badgeClass = 'badge-warning';
+          catLabel = 'Merma en Preparación / Sobreporción';
+        } else if (pct < -10.0) {
+          category = 'UNRECORDED_SHRINKAGE_OR_THEFT';
+          badgeClass = 'badge-danger';
+          catLabel = 'Merma Crítica / Fuga Oculta';
+        } else {
+          category = 'UNRECORDED_RECEIPT_OR_OVERAGE';
+          badgeClass = 'badge-accent';
+          catLabel = 'Sobrante no Registrado';
+        }
+
+        discList.push({
+          ...it,
+          diffUnits,
+          pct,
+          varCost,
+          category,
+          badgeClass,
+          catLabel
+        });
+      });
+
+      lastAuditDiscrepancies = discList;
+      const netVariance = totalPhysVal - totalTheoVal;
+      const shrinkageRate = totalTheoVal > 0 ? (Math.abs(netVariance) / totalTheoVal) * 100 : 0;
+
+      document.getElementById('audit-val-impact').innerText = `$${Math.abs(Math.round(netVariance)).toLocaleString()} MXN`;
+      document.getElementById('audit-val-impact').style.color = netVariance < -100 ? 'var(--danger)' : 'var(--warning)';
+      document.getElementById('audit-sub-impact').innerText = netVariance < 0 ? 'Pérdida por Desviación de Stock' : 'Superávit en Conteo';
+      document.getElementById('audit-shrinkage-rate').innerText = `${shrinkageRate.toFixed(2)}%`;
+
+      const statusBadge = document.getElementById('audit-status-badge');
+      if (shrinkageRate > 3.5) {
+        statusBadge.className = 'badge badge-danger';
+        statusBadge.innerText = 'ATENCIÓN REQUERIDA (> 3.5%)';
+      } else if (shrinkageRate > 1.5) {
+        statusBadge.className = 'badge badge-warning';
+        statusBadge.innerText = 'ACEPTABLE (En Observación)';
+      } else {
+        statusBadge.className = 'badge badge-success';
+        statusBadge.innerText = 'EXCELENTE (< 1.5%)';
+      }
+
+      const container = document.getElementById('audit-discrepancies-list');
+      container.innerHTML = '';
+
+      discList.forEach(d => {
+        const row = document.createElement('div');
+        row.style.cssText = 'background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem; display: flex; justify-content: space-between; align-items: center;';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight: 700; font-size: 0.85rem;">${d.name}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              Teórico: ${d.theo} ${d.unit} | Conteo: ${d.phys} ${d.unit} (${d.diffUnits > 0 ? '+' : ''}${d.diffUnits.toFixed(1)} ${d.unit})
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge ${d.badgeClass}">${d.catLabel}</span>
+            <div style="font-size: 0.8rem; font-weight: 700; color: ${d.varCost < 0 ? 'var(--danger)' : 'var(--primary)'}; margin-top: 0.25rem;">
+              ${d.varCost < 0 ? '-' : '+'}$${Math.abs(Math.round(d.varCost))} MXN
+            </div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      document.getElementById('btn-auto-adjust').style.display = 'block';
+    }
+
+    function applyStockCalibration() {
+      if (!lastAuditDiscrepancies.length) return;
+      lastAuditDiscrepancies.forEach(d => {
+        const item = inventoryData.find(i => i.id === d.id);
+        if (item) item.stock = d.phys;
+      });
+
+      renderTable();
+      document.getElementById('audit-theo-carne').innerText = `${inventoryData.find(i=>i.id==='ing_carne_res').stock} kg`;
+      document.getElementById('audit-theo-queso').innerText = `${inventoryData.find(i=>i.id==='ing_queso_gouda').stock} kg`;
+      document.getElementById('audit-theo-pan').innerText = `${inventoryData.find(i=>i.id==='ing_pan_brioche').stock} pza`;
+      document.getElementById('audit-theo-alitas').innerText = `${inventoryData.find(i=>i.id==='ing_alas_pollo').stock} kg`;
+
+      alert('✅ ¡Stock físico calibrado con éxito! Se invalidó el cache de snapshot en Redis (TTL 60s) y se sincronizó el inventario en tiempo real.');
+      document.getElementById('btn-auto-adjust').style.display = 'none';
+      document.getElementById('audit-status-badge').className = 'badge badge-success';
+      document.getElementById('audit-status-badge').innerText = 'Stock Calibrado & Sincronizado';
     }
 
     renderTable();

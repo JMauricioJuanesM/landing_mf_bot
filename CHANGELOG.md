@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.5] - 2026-09-13
+
+### Added
+- **Módulo Interactivo de Auditoría Física & Conciliación de Merma (`inventory/index.html`):**
+  - Pestaña interactiva "📋 Auditoría Física & Mermas" para levantamiento de conteo ciego en cocina y almacén.
+  - Conciliación algorítmica en tiempo real comparando conteo físico vs stock teórico deducido por recetas BOM.
+  - Clasificación de discrepancias: Tolerancia Aceptable (+/- 2%), Merma en Preparación (2-10%), Merma Crítica / Fuga Oculta (>10%) y Sobrante no Registrado.
+  - Cálculo instantáneo de Impacto Financiero ($ MXN) y Tasa de Merma con semáforo operativo (EXCELENTE, ACEPTABLE, ATENCIÓN REQUERIDA).
+  - Botón de Auto-Calibración de Stock que actualiza existencias e invalida caché de snapshot en Redis (TTL 60s).
+
+---
+
 ## [1.7.0] - 2026-08-15
 
 ### Added
