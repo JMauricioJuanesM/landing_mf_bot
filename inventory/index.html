@@ -402,6 +402,7 @@
       <button class="tab-btn" onclick="switchTab('waste-tab')">📉 Mermas &amp; Flash Yield</button>
       <button class="tab-btn" onclick="switchTab('audit-tab')">📋 Auditoría Física &amp; Mermas</button>
       <button class="tab-btn" onclick="switchTab('fefo-tab')">🏷️ Trazabilidad Lotes &amp; FEFO NOM-251</button>
+      <button class="tab-btn" onclick="switchTab('ppv-tab')">📈 PPV &amp; Scorecard Proveedores</button>
     </div>
   </header>
 
@@ -953,6 +954,133 @@ _Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a 
       </div>
     </div>
 
+    <!-- TAB 6: PPV & SCORECARD DE PROVEEDORES (Sprint 19) -->
+    <div id="ppv-tab" class="tab-content">
+      <div class="main-grid">
+        <!-- Columna Izquierda: Simulador Interactivo PPV & Auditoría de Precios -->
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">📈 Auditoría de Desvío de Precios (PPV)</div>
+              <span class="badge badge-success">Módulo v1.9.7 Activo</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              Monitoreo en tiempo real de <strong>Purchase Price Variance (PPV)</strong> al momento de recepción de facturas. Detecta aumentos no autorizados, calcula sobrecostos en muelle y previene la erosión del margen bruto del menú.
+            </p>
+
+            <form id="ppv-audit-form" onsubmit="calculatePpvDemo(event)">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-muted);">Insumo a Evaluar</label>
+                  <select id="ppv-ingredient-select" onchange="updatePpvDefaults()" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                    <option value="ing_arrachera">Arrachera Marinada (kg)</option>
+                    <option value="ing_queso_gouda">Queso Gouda Rebanado (kg)</option>
+                    <option value="ing_pan_brioche">Pan Brioche Artesanal (pza)</option>
+                    <option value="ing_alas_pollo">Alitas de Pollo Frescas (kg)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-muted);">Proveedor Asociado</label>
+                  <select id="ppv-supplier-select" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                    <option value="sup_carniceria_esperanza">Carnicería La Esperanza</option>
+                    <option value="sup_lacteos_bajio">Lácteos del Bajío S.A.</option>
+                    <option value="sup_panaderia_artesanal">Panificadora La Espiga</option>
+                    <option value="sup_avicola_san_juan">Avícola San Juan</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-muted);">Costo Estándar BOM ($)</label>
+                  <input type="number" step="0.5" id="ppv-std-cost" value="180.00" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-muted);">Costo Facturado Muelle ($)</label>
+                  <input type="number" step="0.5" id="ppv-inv-cost" value="208.00" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-muted);">Cantidad Recibida</label>
+                  <input type="number" step="1" id="ppv-qty-received" value="15" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                <button type="submit" class="btn" style="flex: 1; background: var(--accent); color: #fff;">📊 Calcular Desvío PPV</button>
+                <button type="button" class="btn btn-secondary" onclick="resetPpvDemo()">🔄 Reset</button>
+              </div>
+            </form>
+
+            <div id="ppv-result-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.85rem; font-weight: 600;">Diagnóstico PPV Insumo</span>
+                <span id="ppv-badge" class="badge badge-danger">🔴 DESVÍO CRÍTICO (+15.6%)</span>
+              </div>
+              <div class="kpi-row" style="margin-bottom: 0.5rem;">
+                <div class="kpi-card" style="padding: 0.5rem;">
+                  <div class="kpi-label">Varianza Unitaria</div>
+                  <div class="kpi-value" id="ppv-val-unit" style="font-size: 1.1rem; color: var(--danger);">+$28.00 MXN</div>
+                  <div class="kpi-sub">Por unidad de medida</div>
+                </div>
+                <div class="kpi-card" style="padding: 0.5rem;">
+                  <div class="kpi-label">Sobrecosto Total Lote</div>
+                  <div class="kpi-value" id="ppv-val-total" style="font-size: 1.1rem; color: var(--danger);">+$420.00 MXN</div>
+                  <div class="kpi-sub">Impacto directo en compra</div>
+                </div>
+              </div>
+              <div id="ppv-action-recommendation" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+                ⚠️ <strong>Acción Recomendada:</strong> Aplicar Cláusula Primera (Banda ±2.5% superada sin preaviso). Generar folio de reclamación fiscal o solicitar refacturación inmediata.
+              </div>
+            </div>
+          </div>
+
+          <!-- Impacto en Recetas / Menú -->
+          <div class="panel" style="margin-top: 1rem;">
+            <div class="panel-header">
+              <div class="panel-title">🍔 Impacto en Recetas &amp; Margen de Menú</div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Simulación de erosión de margen en platillos que utilizan este insumo y recálculo de precio de venta recomendado:
+            </p>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr>
+                    <th>Platillo</th>
+                    <th>P. Venta Actual</th>
+                    <th>Costo Anterior</th>
+                    <th>Nuevo Costo</th>
+                    <th>Food Cost %</th>
+                    <th>P. Sugerido (30% FC)</th>
+                  </tr>
+                </thead>
+                <tbody id="recipe-margin-tbody">
+                  <!-- Inyectado dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Scorecard Multidimensional de Proveedores -->
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">⭐ Scorecard de Proveedores &amp; Calificación SLA</div>
+              <span class="badge badge-success">30 Días Auditados</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Evaluación automatizada: <strong>OTIF 30%</strong> + <strong>Calidad NOM-251 35%</strong> + <strong>Estabilidad PPV 25%</strong> + <strong>Notas de Crédito 10%</strong>.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;" id="supplier-scorecards-container">
+              <!-- Cards dinámicas de proveedores -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <script>
     const inventoryData = [
       { id: 'ing_carne_res', name: 'Carne de Res Molida 80/20', cat: 'Proteínas', stock: 15.0, max: 20.0, reorder: 5.0, unit: 'kg', cost: 140 },
@@ -1414,8 +1542,231 @@ _Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a 
       document.getElementById('fefo-simulation-log').innerHTML = '[Listo] Lotes restaurados a valores iniciales.';
     }
 
+    const sampleSuppliersScorecards = [
+      {
+        id: 'sup_carniceria_esperanza',
+        name: 'Carnicería La Esperanza',
+        category: 'Cárnicos & Proteínas',
+        otif: 94.2,
+        quality: 97.5,
+        ppvStability: 82.0,
+        score: 91.8,
+        grade: 'A',
+        badgeClass: 'badge-success',
+        gradeText: 'A (Preferred / Socio)',
+        recommendation: 'Prioridad en reabastecimiento automático. Contrato anual con precios tope blindados.'
+      },
+      {
+        id: 'sup_lacteos_bajio',
+        name: 'Lácteos del Bajío S.A.',
+        category: 'Quesos & Lácteos',
+        otif: 88.5,
+        quality: 92.0,
+        ppvStability: 94.5,
+        score: 84.6,
+        grade: 'B',
+        badgeClass: 'badge-warning',
+        gradeText: 'B (Qualified / Regular)',
+        recommendation: 'Desempeño operativo aceptable. Monitorear ventanas de entrega en muelle.'
+      },
+      {
+        id: 'sup_avicola_san_juan',
+        name: 'Avícola San Juan',
+        category: 'Aves & Huevos',
+        otif: 72.0,
+        quality: 84.0,
+        ppvStability: 68.0,
+        score: 66.5,
+        grade: 'C',
+        badgeClass: 'badge-danger',
+        gradeText: 'C (Under Review / Riesgo)',
+        recommendation: 'Auditoría obligatoria de temperatura NOM-251 en cada muelle. Abrir licitación multi-vendor.'
+      }
+    ];
+
+    const sampleIngredientPpvData = {
+      ing_arrachera: { std: 180.0, inv: 208.0, qty: 15, unit: 'kg', sup: 'sup_carniceria_esperanza' },
+      ing_queso_gouda: { std: 180.0, inv: 176.0, qty: 10, unit: 'kg', sup: 'sup_lacteos_bajio' },
+      ing_pan_brioche: { std: 8.5, inv: 8.5, qty: 80, unit: 'pza', sup: 'sup_panaderia_artesanal' },
+      ing_alas_pollo: { std: 85.0, inv: 96.0, qty: 12, unit: 'kg', sup: 'sup_avicola_san_juan' }
+    };
+
+    function updatePpvDefaults() {
+      const select = document.getElementById('ppv-ingredient-select');
+      const data = sampleIngredientPpvData[select.value];
+      if (data) {
+        document.getElementById('ppv-std-cost').value = data.std.toFixed(2);
+        document.getElementById('ppv-inv-cost').value = data.inv.toFixed(2);
+        document.getElementById('ppv-qty-received').value = data.qty;
+        document.getElementById('ppv-supplier-select').value = data.sup;
+        calculatePpvDemo();
+      }
+    }
+
+    function calculatePpvDemo(e) {
+      if (e) e.preventDefault();
+      const select = document.getElementById('ppv-ingredient-select');
+      const ingId = select ? select.value : 'ing_arrachera';
+      const std = parseFloat(document.getElementById('ppv-std-cost').value) || 180;
+      const inv = parseFloat(document.getElementById('ppv-inv-cost').value) || 208;
+      const qty = parseFloat(document.getElementById('ppv-qty-received').value) || 15;
+
+      const varianceUnit = inv - std;
+      const variancePct = ((inv - std) / std) * 100;
+      const totalVariance = varianceUnit * qty;
+
+      const badge = document.getElementById('ppv-badge');
+      const valUnit = document.getElementById('ppv-val-unit');
+      const valTotal = document.getElementById('ppv-val-total');
+      const recBox = document.getElementById('ppv-action-recommendation');
+
+      if (!badge || !valUnit || !valTotal || !recBox) return;
+
+      if (variancePct < -1.0) {
+        badge.className = 'badge badge-success';
+        badge.innerText = `🟢 FAVORABLE (${variancePct.toFixed(1)}% Ahorro)`;
+        valUnit.style.color = 'var(--primary)';
+        valTotal.style.color = 'var(--primary)';
+        recBox.innerHTML = `✅ <strong>Ahorro Capturado:</strong> El insumo se facturó por debajo del costo estándar. Bonificación directa al margen bruto del período.`;
+      } else if (variancePct >= -1.0 && variancePct <= 1.0) {
+        badge.className = 'badge badge-warning';
+        badge.innerText = `⚪ EN PRESUPUESTO (±0.0%)`;
+        valUnit.style.color = 'var(--text-main)';
+        valTotal.style.color = 'var(--text-main)';
+        recBox.innerHTML = `ℹ️ <strong>Costo en Presupuesto:</strong> Precio dentro del margen de tolerancia convenido en el contrato marco.`;
+      } else if (variancePct > 1.0 && variancePct <= 10.0) {
+        badge.className = 'badge badge-warning';
+        badge.innerText = `🟡 MODERADO (+${variancePct.toFixed(1)}%)`;
+        valUnit.style.color = 'var(--warning)';
+        valTotal.style.color = 'var(--warning)';
+        recBox.innerHTML = `⚠️ <strong>Alerta Preventiva:</strong> Varianza no justificada. Notificar al comprador para conciliar precio contra orden de compra original.`;
+      } else {
+        badge.className = 'badge badge-danger';
+        badge.innerText = `🔴 DESVÍO CRÍTICO (+${variancePct.toFixed(1)}%)`;
+        valUnit.style.color = 'var(--danger)';
+        valTotal.style.color = 'var(--danger)';
+        recBox.innerHTML = `🛑 <strong>Alerta Crítica:</strong> Supera la banda contractual de ±2.5%. Generar folio de reclamación o solicitar Nota de Crédito SAT obligatoria.`;
+      }
+
+      valUnit.innerText = `${varianceUnit >= 0 ? '+' : ''}$${varianceUnit.toFixed(2)} MXN`;
+      valTotal.innerText = `${totalVariance >= 0 ? '+' : ''}$${totalVariance.toFixed(2)} MXN`;
+
+      renderRecipeImpact(ingId, std, inv);
+    }
+
+    function renderRecipeImpact(ingId, stdCost, invCost) {
+      const tbody = document.getElementById('recipe-margin-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const dishes = [
+        {
+          id: 'rec_burger_deluxe',
+          name: 'Hamburguesa Artesanal Deluxe',
+          price: 155.0,
+          baseCost: 42.5,
+          usage: 0.18,
+          appliesTo: ['ing_arrachera', 'ing_carne_res']
+        },
+        {
+          id: 'rec_tacos_arrachera',
+          name: 'Orden de Tacos de Arrachera (3 pzas)',
+          price: 160.0,
+          baseCost: 46.0,
+          usage: 0.22,
+          appliesTo: ['ing_arrachera']
+        },
+        {
+          id: 'rec_queso_fundido',
+          name: 'Queso Gouda Fundido con Chistorra',
+          price: 120.0,
+          baseCost: 32.0,
+          usage: 0.15,
+          appliesTo: ['ing_queso_gouda']
+        },
+        {
+          id: 'rec_alitas_combo',
+          name: 'Combo Alitas BBQ (10 pzas)',
+          price: 145.0,
+          baseCost: 41.0,
+          usage: 0.40,
+          appliesTo: ['ing_alas_pollo']
+        }
+      ];
+
+      const affected = dishes.filter(d => d.appliesTo.includes(ingId) || ingId === 'ing_arrachera');
+
+      affected.forEach(dish => {
+        const extra = (invCost - stdCost) * dish.usage;
+        const newCost = Math.max(0, dish.baseCost + extra);
+        const fcPct = ((newCost / dish.price) * 100).toFixed(1);
+        const suggested = (newCost / 0.30).toFixed(2);
+        const isBreached = fcPct > 30.0;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${dish.name}</strong></td>
+          <td>$${dish.price.toFixed(2)} MXN</td>
+          <td>$${dish.baseCost.toFixed(2)} MXN</td>
+          <td style="color: ${extra > 0 ? 'var(--danger)' : 'var(--primary)'}; font-weight: 700;">$${newCost.toFixed(2)} MXN</td>
+          <td><span class="badge ${isBreached ? 'badge-danger' : 'badge-success'}">${fcPct}%</span></td>
+          <td style="font-weight: 700; color: var(--accent);">$${suggested} MXN</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderSupplierScorecards() {
+      const container = document.getElementById('supplier-scorecards-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      sampleSuppliersScorecards.forEach(sup => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem;';
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem;">${sup.name}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">${sup.category}</div>
+            </div>
+            <span class="badge ${sup.badgeClass}">${sup.gradeText}</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+            <div style="background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 4px; text-align: center;">
+              <div style="font-size: 0.65rem; color: var(--text-muted);">OTIF Puntualidad</div>
+              <div style="font-size: 0.9rem; font-weight: 700; color: ${sup.otif >= 90 ? 'var(--primary)' : 'var(--warning)'};">${sup.otif}%</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 4px; text-align: center;">
+              <div style="font-size: 0.65rem; color: var(--text-muted);">Calidad NOM-251</div>
+              <div style="font-size: 0.9rem; font-weight: 700; color: ${sup.quality >= 95 ? 'var(--primary)' : 'var(--warning)'};">${sup.quality}%</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 4px; text-align: center;">
+              <div style="font-size: 0.65rem; color: var(--text-muted);">Score Compuesto</div>
+              <div style="font-size: 0.9rem; font-weight: 700; color: var(--accent);">${sup.score} / 100</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.3;">
+            🎯 <em>${sup.recommendation}</em>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function resetPpvDemo() {
+      document.getElementById('ppv-std-cost').value = '180.00';
+      document.getElementById('ppv-inv-cost').value = '208.00';
+      document.getElementById('ppv-qty-received').value = '15';
+      calculatePpvDemo();
+    }
+
     renderTable();
     renderLotsTable();
+    calculatePpvDemo();
+    renderSupplierScorecards();
   </script>
 </body>
 </html>
