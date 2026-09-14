@@ -401,6 +401,7 @@
       <button class="tab-btn" onclick="switchTab('replenish-tab')">🚚 Auto-Reabastecimiento PO</button>
       <button class="tab-btn" onclick="switchTab('waste-tab')">📉 Mermas &amp; Flash Yield</button>
       <button class="tab-btn" onclick="switchTab('audit-tab')">📋 Auditoría Física &amp; Mermas</button>
+      <button class="tab-btn" onclick="switchTab('fefo-tab')">🏷️ Trazabilidad Lotes &amp; FEFO NOM-251</button>
     </div>
   </header>
 
@@ -844,6 +845,114 @@ _Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a 
       </div>
     </div>
 
+    <!-- TAB 5: TRAZABILIDAD DE LOTES, FEFO & NOM-251 -->
+    <div id="fefo-tab" class="tab-content">
+      <div class="main-grid">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">🏷️ Catálogo de Lotes Activos &amp; Semáforo FEFO</div>
+              <button class="btn btn-secondary" onclick="restoreDemoLots()">🔄 Restaurar Lotes</button>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              Rotación <strong>FEFO (First-Expired, First-Out)</strong> automatizada. Las órdenes de cocina consumen prioritariamente los lotes más próximos a su fecha límite, reduciendo hasta un 18% las pérdidas por caducidad y garantizando cumplimiento estricto con la <strong>NOM-251-SSA1-2009</strong>.
+            </p>
+
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <thead>
+                  <tr>
+                    <th>Lote ID</th>
+                    <th>Insumo</th>
+                    <th>Stock / Unidad</th>
+                    <th>Temp. Entrada</th>
+                    <th>Caducidad &amp; Ventana</th>
+                    <th>Estado Sanitario</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="lots-tbody">
+                  <!-- Inyectado dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">⚡ Simulador Interactivo de Rotación FEFO</div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Simula órdenes para comprobar en tiempo real cómo el algoritmo agota primero los lotes más urgentes antes de tocar existencias de mayor vida útil.
+            </p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
+              <button class="btn btn-secondary" onclick="simulateFEFODeduction('ing_carne_res', 3.0)">
+                🥩 Orden de Hamburguesas (3.0 kg Carne)
+              </button>
+              <button class="btn btn-secondary" onclick="simulateFEFODeduction('ing_alas_pollo', 4.5)">
+                🍗 Orden Alitas Fiesta (4.5 kg Alitas)
+              </button>
+              <button class="btn btn-secondary" onclick="simulateFEFODeduction('ing_queso_gouda', 2.0)">
+                🧀 Quesadillas Especiales (2.0 kg Gouda)
+              </button>
+            </div>
+            <div style="background: rgba(0,0,0,0.35); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); max-height: 160px; overflow-y: auto;" id="fefo-simulation-log">
+              [Listo] Selecciona una orden para probar la deducción automática FEFO.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">🚨 Protocolo de Retiro / Recall Sanitario NOM-251</div>
+              <span id="quarantine-kpi-badge" class="badge badge-success">0 Cuarentenas</span>
+            </div>
+
+            <div class="kpi-row" style="margin-bottom: 1rem;">
+              <div class="kpi-card" style="padding: 0.75rem;">
+                <div class="kpi-label">Riesgo Financiero Caducidad</div>
+                <div class="kpi-value" id="fefo-financial-risk" style="font-size: 1.25rem; color: var(--warning);">$450 MXN</div>
+                <div class="kpi-sub">Lotes en ventana &lt; 24h</div>
+              </div>
+              <div class="kpi-card" style="padding: 0.75rem;">
+                <div class="kpi-label">Auditoría Cadena Frío</div>
+                <div class="kpi-value" style="font-size: 1.25rem; color: var(--primary);">100% PASS</div>
+                <div class="kpi-sub">&lt; 4.5°C recepción NOM-251</div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">
+              ACTIVAR PROTOCOLO DE AISLAMIENTO INMEDIATO
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Si un lote presenta alerta de salubridad (olor, empaque roto o alerta de proveedor), aísla el lote con un click para impedir que ninguna cocina lo despache.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+              <select id="quarantine-lot-select" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;">
+                <!-- Opciones dinámicas -->
+              </select>
+              <input type="text" id="quarantine-reason-input" placeholder="Motivo de rechazo o folio de alerta sanitaria..." style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem;" value="Alerta preventiva de proveedor: temperatura de transporte fuera de rango">
+              <button class="btn btn-danger" onclick="triggerLotQuarantine()">
+                🛑 Bloquear Lote &amp; Emitir Acta Sanitaria Recall
+              </button>
+            </div>
+
+            <div id="recall-notice-box" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: 8px; padding: 0.85rem; font-size: 0.8rem;">
+              <div style="color: var(--danger); font-weight: 700; margin-bottom: 0.25rem;">
+                ⚠️ ACTA DE RETIRO PREVENTIVO EMITIDA
+              </div>
+              <div id="recall-notice-text" style="color: var(--text-main); line-height: 1.4;"></div>
+              <button class="btn btn-secondary" style="margin-top: 0.5rem; width: 100%; font-size: 0.75rem;" onclick="releaseDemoQuarantine()">
+                🔓 Inspeccionar &amp; Liberar Cuarentena
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <script>
     const inventoryData = [
       { id: 'ing_carne_res', name: 'Carne de Res Molida 80/20', cat: 'Proteínas', stock: 15.0, max: 20.0, reorder: 5.0, unit: 'kg', cost: 140 },
@@ -1127,7 +1236,186 @@ _Por favor confírmenos de recibido y tiempo estimado de llegada respondiendo a 
       document.getElementById('audit-status-badge').innerText = 'Stock Calibrado & Sincronizado';
     }
 
+    let demoLots = [
+      { id: 'LOT-ARR-0914', ingId: 'ing_carne_res', name: 'Carne de Res Molida 80/20', stock: 5.0, initial: 10.0, unit: 'kg', temp: 2.8, exp: '2026-09-14T08:00:00', status: 'ACTIVE' },
+      { id: 'LOT-ARR-0920', ingId: 'ing_carne_res', name: 'Carne de Res Molida 80/20', stock: 10.0, initial: 10.0, unit: 'kg', temp: 3.1, exp: '2026-09-20T18:00:00', status: 'ACTIVE' },
+      { id: 'LOT-ALI-0915', ingId: 'ing_alas_pollo', name: 'Alitas de Pollo Frescas', stock: 4.0, initial: 8.0, unit: 'kg', temp: 2.4, exp: '2026-09-15T12:00:00', status: 'ACTIVE' },
+      { id: 'LOT-ALI-0922', ingId: 'ing_alas_pollo', name: 'Alitas de Pollo Frescas', stock: 8.0, initial: 8.0, unit: 'kg', temp: 2.1, exp: '2026-09-22T20:00:00', status: 'ACTIVE' },
+      { id: 'LOT-QUE-0916', ingId: 'ing_queso_gouda', name: 'Queso Gouda Rebanado', stock: 2.0, initial: 5.0, unit: 'kg', temp: 3.5, exp: '2026-09-16T10:00:00', status: 'ACTIVE' },
+      { id: 'LOT-QUE-0928', ingId: 'ing_queso_gouda', name: 'Queso Gouda Rebanado', stock: 4.0, initial: 5.0, unit: 'kg', temp: 3.2, exp: '2026-09-28T12:00:00', status: 'ACTIVE' }
+    ];
+
+    function renderLotsTable() {
+      const tbody = document.getElementById('lots-tbody');
+      const select = document.getElementById('quarantine-lot-select');
+      if (!tbody || !select) return;
+
+      tbody.innerHTML = '';
+      select.innerHTML = '';
+
+      const now = new Date('2026-09-13T15:00:00');
+      let nearExpRiskVal = 0;
+      let quarantineCount = 0;
+
+      demoLots.forEach(lot => {
+        const expDate = new Date(lot.exp);
+        const diffHours = Math.round((expDate - now) / (1000 * 60 * 60));
+
+        let badgeClass = 'badge-success';
+        let statusLabel = '🟢 ÓPTIMO';
+        let windowText = `${diffHours}h restantes`;
+
+        if (lot.status === 'QUARANTINED') {
+          badgeClass = 'badge-danger';
+          statusLabel = '🛑 CUARENTENA';
+          windowText = 'BLOQUEADO NOM-251';
+          quarantineCount++;
+        } else if (diffHours <= 0) {
+          badgeClass = 'badge-danger';
+          statusLabel = '🔴 CADUCADO';
+          windowText = 'Vencido';
+          nearExpRiskVal += lot.stock * (lot.ingId === 'ing_carne_res' ? 140 : lot.ingId === 'ing_alas_pollo' ? 85 : 180);
+        } else if (diffHours <= 24) {
+          badgeClass = 'badge-warning';
+          statusLabel = '🟠 CRÍTICO (<24h)';
+          windowText = `⚠️ Vence en ${diffHours}h`;
+          nearExpRiskVal += lot.stock * (lot.ingId === 'ing_carne_res' ? 140 : lot.ingId === 'ing_alas_pollo' ? 85 : 180);
+        } else if (diffHours <= 72) {
+          badgeClass = 'badge-accent';
+          statusLabel = '🟡 PREVENTIVO';
+          windowText = `${Math.round(diffHours / 24)} días restantes`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${lot.id}</strong></td>
+          <td>${lot.name}</td>
+          <td><strong>${lot.stock.toFixed(1)} / ${lot.initial} ${lot.unit}</strong></td>
+          <td><span style="color: ${lot.temp <= 4.5 ? 'var(--primary)' : 'var(--danger)'}; font-weight: 700;">${lot.temp}°C</span></td>
+          <td><span style="font-size: 0.8rem; font-family: var(--font-mono);">${windowText}</span></td>
+          <td><span class="badge ${badgeClass}">${statusLabel}</span></td>
+          <td>
+            ${lot.status === 'ACTIVE' 
+              ? `<button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.7rem;" onclick="quickQuarantine('${lot.id}')">Quarantine</button>`
+              : `<button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.7rem;" onclick="quickRelease('${lot.id}')">Liberar</button>`
+            }
+          </td>
+        `;
+        tbody.appendChild(tr);
+
+        if (lot.status === 'ACTIVE') {
+          const opt = document.createElement('option');
+          opt.value = lot.id;
+          opt.innerText = `${lot.id} — ${lot.name} (${lot.stock} ${lot.unit})`;
+          select.appendChild(opt);
+        }
+      });
+
+      document.getElementById('fefo-financial-risk').innerText = `$${Math.round(nearExpRiskVal).toLocaleString()} MXN`;
+      const qBadge = document.getElementById('quarantine-kpi-badge');
+      if (quarantineCount > 0) {
+        qBadge.className = 'badge badge-danger';
+        qBadge.innerText = `${quarantineCount} Lotes en Cuarentena`;
+      } else {
+        qBadge.className = 'badge badge-success';
+        qBadge.innerText = `0 Cuarentenas`;
+      }
+    }
+
+    function simulateFEFODeduction(ingId, neededQty) {
+      const log = document.getElementById('fefo-simulation-log');
+      const time = new Date().toLocaleTimeString();
+
+      const activeLots = demoLots
+        .filter(l => l.ingId === ingId && l.status === 'ACTIVE' && l.stock > 0)
+        .sort((a, b) => new Date(a.exp) - new Date(b.exp));
+
+      if (activeLots.length === 0) {
+        log.innerHTML = `[${time}] ❌ No hay lotes activos disponibles para ${ingId}.\n` + log.innerHTML;
+        return;
+      }
+
+      let remainingToDeduct = neededQty;
+      let deductionSteps = [];
+
+      for (const lot of activeLots) {
+        if (remainingToDeduct <= 0) break;
+        const deduct = Math.min(lot.stock, remainingToDeduct);
+        lot.stock = Math.round((lot.stock - deduct) * 100) / 100;
+        remainingToDeduct = Math.round((remainingToDeduct - deduct) * 100) / 100;
+
+        deductionSteps.push(`• Lote ${lot.id} (Vence: ${lot.exp.slice(5, 10)}): -${deduct} ${lot.unit} (Quedan: ${lot.stock} ${lot.unit})`);
+      }
+
+      log.innerHTML = `[${time}] ⚡ Descuento FEFO Completado (${neededQty} kg):\n` +
+        deductionSteps.join('\n') + `\n` +
+        (remainingToDeduct > 0 ? `⚠️ Faltante sin cubrir por falta de lote: ${remainingToDeduct} kg\n` : `✅ Prioridad FEFO respetada al 100%.\n`) +
+        `----------------------------------------\n` + log.innerHTML;
+
+      renderLotsTable();
+    }
+
+    function triggerLotQuarantine() {
+      const select = document.getElementById('quarantine-lot-select');
+      const reasonInput = document.getElementById('quarantine-reason-input');
+      const lotId = select.value;
+      const reason = reasonInput.value || 'Fallo preventivo de salubridad';
+
+      const lot = demoLots.find(l => l.id === lotId);
+      if (!lot) return;
+
+      lot.status = 'QUARANTINED';
+      const recallBox = document.getElementById('recall-notice-box');
+      const recallText = document.getElementById('recall-notice-text');
+
+      recallBox.style.display = 'block';
+      recallText.innerHTML = `
+        <strong>Lote Afectado:</strong> ${lot.id} (${lot.name})<br>
+        <strong>Existencia Bloqueada:</strong> ${lot.stock} ${lot.unit} (Costo: $${lot.stock * 140} MXN)<br>
+        <strong>Motivo Oficial:</strong> ${reason}<br>
+        <strong>Folio COFEPRIS / NOM-251:</strong> NOM251-REC-${Math.floor(10000 + Math.random() * 90000)}<br>
+        <strong>Acción Inmediata:</strong> Bloqueado de comandas y aislado en contenedor de rechazo.
+      `;
+
+      renderLotsTable();
+      alert(`🛑 Lote ${lot.id} puesto en cuarentena. Las comandas no podrán consumir este insumo hasta su dictamen.`);
+    }
+
+    function quickQuarantine(lotId) {
+      const lot = demoLots.find(l => l.id === lotId);
+      if (!lot) return;
+      lot.status = 'QUARANTINED';
+      renderLotsTable();
+    }
+
+    function quickRelease(lotId) {
+      const lot = demoLots.find(l => l.id === lotId);
+      if (!lot) return;
+      lot.status = 'ACTIVE';
+      renderLotsTable();
+    }
+
+    function releaseDemoQuarantine() {
+      const recallBox = document.getElementById('recall-notice-box');
+      recallBox.style.display = 'none';
+      alert('🔓 Inspección completada. Cuarentena levantada y registro archivado en la bitácora NOM-251.');
+    }
+
+    function restoreDemoLots() {
+      demoLots = [
+        { id: 'LOT-ARR-0914', ingId: 'ing_carne_res', name: 'Carne de Res Molida 80/20', stock: 5.0, initial: 10.0, unit: 'kg', temp: 2.8, exp: '2026-09-14T08:00:00', status: 'ACTIVE' },
+        { id: 'LOT-ARR-0920', ingId: 'ing_carne_res', name: 'Carne de Res Molida 80/20', stock: 10.0, initial: 10.0, unit: 'kg', temp: 3.1, exp: '2026-09-20T18:00:00', status: 'ACTIVE' },
+        { id: 'LOT-ALI-0915', ingId: 'ing_alas_pollo', name: 'Alitas de Pollo Frescas', stock: 4.0, initial: 8.0, unit: 'kg', temp: 2.4, exp: '2026-09-15T12:00:00', status: 'ACTIVE' },
+        { id: 'LOT-ALI-0922', ingId: 'ing_alas_pollo', name: 'Alitas de Pollo Frescas', stock: 8.0, initial: 8.0, unit: 'kg', temp: 2.1, exp: '2026-09-22T20:00:00', status: 'ACTIVE' },
+        { id: 'LOT-QUE-0916', ingId: 'ing_queso_gouda', name: 'Queso Gouda Rebanado', stock: 2.0, initial: 5.0, unit: 'kg', temp: 3.5, exp: '2026-09-16T10:00:00', status: 'ACTIVE' },
+        { id: 'LOT-QUE-0928', ingId: 'ing_queso_gouda', name: 'Queso Gouda Rebanado', stock: 4.0, initial: 5.0, unit: 'kg', temp: 3.2, exp: '2026-09-28T12:00:00', status: 'ACTIVE' }
+      ];
+      renderLotsTable();
+      document.getElementById('fefo-simulation-log').innerHTML = '[Listo] Lotes restaurados a valores iniciales.';
+    }
+
     renderTable();
+    renderLotsTable();
   </script>
 </body>
 </html>

@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.6] - 2026-09-13
+
+### Added
+- **Consola Interactiva de Trazabilidad de Lotes, FEFO & Recall Sanitario NOM-251 (`inventory/index.html`):**
+  - Pestaña interactiva "🏷️ Trazabilidad Lotes & FEFO NOM-251" con semáforo preventivo de vida de anaquel (Óptimo, Preventivo <72h, Crítico <24h, Cuarentenado).
+  - Simulador de rotación FEFO que muestra la priorización automática de lotes con menor vida útil ante comandas de cocina.
+  - Protocolo de retiro preventivo sanitario (Recall) con 1-click para aislamiento de lotes con falla térmica (> 4.5°C) o alerta de salubridad y emisión de actas oficiales NOM-251.
+  - Métricas de riesgo financiero ($ MXN) y auditoría de cadena de frío en tiempo real.
+
+---
+
 ## [1.9.5] - 2026-09-13
 
 ### Added
