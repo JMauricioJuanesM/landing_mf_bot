@@ -6,7 +6,14 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.9.6] - 2026-09-13
+## [1.9.8] - 2026-09-20
+
+### Added
+- **Dine-In QR, Split-Bill & Badges de Impacto Operativo (`index.html`):**
+  - Badges visuales de ROI para restaurantes: +22% de rotación de mesas, reducción del tiempo de cobro en mesa de 14 min a 2.1 min y +28% en propinas digitales para personal.
+  - Integración comercial de la experiencia de autoservicio en mesa vía WhatsApp y Web PWA sin fricción de mesero.
+
+---
 
 ### Added
 - **Consola Interactiva de Trazabilidad de Lotes, FEFO & Recall Sanitario NOM-251 (`inventory/index.html`):**
