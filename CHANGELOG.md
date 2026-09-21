@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.11] - 2026-09-21
+
+### Added
+- **Seguridad Zero-Trust & Rotación de Secretos API 24h (`index.html`):**
+  - Módulo comercial destacando la arquitectura Zero-Trust de grado bancario para integraciones con POS, impresoras fiscales y plataformas de delivery.
+  - Soporte de rotación programada con periodo de gracia dual-key de 24h para cero caídas de servicio (Zero-Downtime).
+  - Badges visuales de valor técnico: Rotación 24h Grace Period, Cifrado HMAC SHA-256 y Dual-Key Zero-Downtime.
+
+---
+
 ## [1.9.10] - 2026-09-21
 
 ### Added
