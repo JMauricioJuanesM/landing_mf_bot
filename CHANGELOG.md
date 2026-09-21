@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.9] - 2026-09-20
+
+### Added
+- **Llamado Digital a Mesero & Asistencia Inmediata (`index.html`):**
+  - Módulo interactivo de solicitud de servicio y cuenta en 1 toque desde la mesa sin esperar al mesero.
+  - Alertas instantáneas en tiempo real a meseros y barra con caché Redis de sub-2ms y cero mesas desatendidas.
+  - Badges de rendimiento: latencia <2ms con Redis TTL, 0 mesas desatendidas y 1-Tap en WhatsApp/PWA.
+
+---
+
 ## [1.9.8] - 2026-09-20
 
 ### Added
