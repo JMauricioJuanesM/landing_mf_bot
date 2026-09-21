@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.13] - 2026-09-21
+
+### Added
+- **Expediter Inteligente & Handover Anti-Error con PIN OTP (`index.html`):**
+  - Módulo interactivo destacando la consolidación de tickets en barra de empaque y generación de PIN OTP de 4 dígitos.
+  - Notificación instantánea vía WhatsApp al repartidor o cliente con código de retiro.
+  - Eliminación total de entregas erróneas y robo de paquetes con SLA de entrega en barra < 3 min.
+  - Badges de rendimiento operativo: Cero Paquetes Confundidos, Handover Barra < 3 min y PIN OTP Criptográfico.
+
+---
+
 ## [1.9.12] - 2026-09-21
 
 ### Added
