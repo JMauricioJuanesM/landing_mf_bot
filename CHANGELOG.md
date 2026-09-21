@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.10] - 2026-09-21
+
+### Added
+- **Pagos Fraccionados Multi-Comensal & Conciliación FinTech (`index.html`):**
+  - Módulo de cobro individual por comensal o división en partes iguales desde WhatsApp/Web PWA.
+  - Conciliación satelital y liquidación en tiempo real en Redis sin saturación de terminales físicas.
+  - Badges de valor FinTech: Pagos Individuales 1-Tap, Conciliación SAT Automática y Cero Filas en Caja.
+
+---
+
 ## [1.9.9] - 2026-09-20
 
 ### Added
