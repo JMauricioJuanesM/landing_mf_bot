@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.12] - 2026-09-21
+
+### Added
+- **Cocina Inteligente KDS & Enrutamiento Multi-Estación (`index.html`):**
+  - Módulo interactivo destacando la digitalización completa de comandas en cocina, eliminando 100% el papel térmico.
+  - Enrutamiento automático por partidas a pantallas de Horno, Parrilla, Barra Fría, Bebidas y Despacho Expediter.
+  - Badges de rendimiento operativo: SLA Cocina < 12 min, Pantallas KDS Ilimitadas y Enrutamiento Sub-2ms.
+- **Programa Oficial de Partners & Afiliados 30% Recurrente (`index.html`):**
+  - Nueva sección comercial con calculadora dinámica interactiva de comisiones mensuales y anuales por referidos activos ($389.70 MXN/mes por sucursal).
+  - Integración directa de onboarding a canal prioritario de WhatsApp con contrato mercantil legal.
+
+---
+
 ## [1.9.11] - 2026-09-21
 
 ### Added

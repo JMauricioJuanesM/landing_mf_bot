@@ -1083,6 +1083,18 @@
                                 </div>
                             </div>
                         </li>
+                        <li class="feature-item">
+                            <div class="feature-icon">🍕</div>
+                            <div class="feature-content">
+                                <h4>Cocina Inteligente KDS & Enrutamiento Multi-Estación</h4>
+                                <p>Cero papel térmico y cero comandas perdidas. Enrutamiento automático por partidas a pantallas de Horno, Parrilla, Barra Fría, Bebidas y Despacho Expediter con semáforo de tiempos SLA en tiempo real (<12 min).</p>
+                                <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; font-size: 0.85rem; font-weight: 600;">
+                                    <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">⏱️ SLA Cocina < 12 min</span>
+                                    <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">📟 Pantallas KDS Ilimitadas</span>
+                                    <span style="background: rgba(59, 130, 246, 0.15); color: #2563eb; padding: 3px 10px; border-radius: 9999px;">⚡ Enrutamiento Sub-2ms</span>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -1346,11 +1358,58 @@
             }
         }
     </script>
-  <!-- AFILIADOS SECTION -->
-  <section class="afiliados" style="padding: 50px 20px; text-align: center; background: var(--bg-secondary); border-top: 1px solid var(--border-color);">
-    <h2 style="color: var(--emerald); font-family: Plus Jakarta Sans; margin-bottom: 20px;">Programa de Partners 30%</h2>
-    <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-family: Inter;">Refiere a un restaurante y gana el 30% recurrente de su suscripción de por vida. ¡Únete a la revolución de ComandaFlow!</p>
-    <a href="#contacto" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background: var(--emerald); color: var(--bg-primary); font-weight: bold; border-radius: var(--radius-sm); text-decoration: none;">Aplicar como Partner</a>
+  <!-- AFILIADOS SECTION V1.9.12 -->
+  <section class="afiliados" style="padding: 60px 20px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(16, 185, 129, 0.05) 100%); border-top: 1px solid var(--border-color);">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      <span class="pill-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 16px; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 16px;">🤝 Programa Oficial de Partners & Afiliados 2026</span>
+      <h2 style="color: #ffffff; font-size: clamp(26px, 4vw, 36px); margin-bottom: 16px; font-weight: 800;">Gana el 30% Recurrente de cada Restaurante</h2>
+      <p style="color: var(--text-secondary); max-width: 640px; margin: 0 auto 28px; line-height: 1.6; font-size: 1.05rem;">
+        Refiere restaurantes, cafeterías o dark kitchens. Recibe <strong>$389.70 MXN mensuales</strong> por cada sucursal activa directo a tu cuenta bancaria vía SPEI. Ingresos 100% pasivos con contrato mercantil formal.
+      </p>
+
+      <!-- Interactive Calculator Card -->
+      <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 28px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: 600;">
+          <span style="color: var(--text-secondary);">Restaurantes referidos activos:</span>
+          <span id="partnerCountVal" style="color: #10b981; font-size: 1.4rem; font-weight: 800;">10 restaurantes</span>
+        </div>
+        <input type="range" id="partnerSlider" min="1" max="50" value="10" step="1" style="width: 100%; accent-color: #10b981; height: 8px; border-radius: 4px; cursor: pointer; margin-bottom: 24px;">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: center;">
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px;">Tu Ingreso Mensual Pasivo</div>
+            <div id="partnerMonthlyVal" style="font-size: 1.6rem; font-weight: 800; color: #10b981;">$3,897 MXN/mes</div>
+          </div>
+          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px;">Tu Ingreso Anual Proyectado</div>
+            <div id="partnerYearlyVal" style="font-size: 1.6rem; font-weight: 800; color: #38bdf8;">$46,764 MXN/año</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://wa.me/528086086177?text=%C2%A1Hola!%20Quiero%20registrarme%20como%20Partner%20Afiliado%20de%20ComandaFlow%20al%2030%25" target="_blank" class="btn-primary" style="padding: 14px 28px; font-size: 15px; font-weight: 700; text-decoration: none;">
+          Quiero ser Partner Afiliado 🚀
+        </a>
+      </div>
+    </div>
   </section>
+  <script>
+    const partnerSlider = document.getElementById('partnerSlider');
+    const partnerCountVal = document.getElementById('partnerCountVal');
+    const partnerMonthlyVal = document.getElementById('partnerMonthlyVal');
+    const partnerYearlyVal = document.getElementById('partnerYearlyVal');
+
+    if (partnerSlider) {
+      partnerSlider.addEventListener('input', () => {
+        const count = parseInt(partnerSlider.value);
+        partnerCountVal.innerText = count + (count === 1 ? ' restaurante' : ' restaurantes');
+        const monthly = Math.round(count * 389.70);
+        const yearly = monthly * 12;
+        partnerMonthlyVal.innerText = '$' + monthly.toLocaleString('es-MX') + ' MXN/mes';
+        partnerYearlyVal.innerText = '$' + yearly.toLocaleString('es-MX') + ' MXN/año';
+      });
+    }
+  </script>
 </body>
 </html>
