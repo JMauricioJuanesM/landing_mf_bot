@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.17] - 2026-09-22
+
+### Added
+- **Sincronización Just-In-Time Cocina-Despacho (Zero-Wait Handover) (`index.html`):**
+  - Nuevo módulo comercial destacando la sincronización milimétrica entre KDS y la llegada del chofer a bahía.
+  - Erradicación del tiempo muerto en banqueta (dwell time reducido de 14.5 min a < 2.1 min).
+  - Blindaje térmico estricto bajo NOM-251-SSA1-2009 (> 60°C de temperatura central y < 3 min en barra caliente).
+  - Incremento del +50% en capacidad de despacho por chofer (+2.3 entregas adicionales por turno).
+  - Badges de conversión: Zero-Wait Handover (<2.1 min), Garantía Térmica NOM-251 (>60°C), KDS Multi-Estación JIT y +50% Productividad Chofer.
+
+---
+
 ## [1.9.16] - 2026-09-22
 
 ### Added
