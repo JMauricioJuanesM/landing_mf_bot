@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.16] - 2026-09-22
+
+### Added
+- **Smart Batching & Multi-Drop Inteligente con Garantía Térmica NOM-251 (`index.html`):**
+  - Nuevo módulo comercial destacando la agrupación automática de 2 a 3 pedidos compatibles en un solo viaje.
+  - Reducción de hasta un 43% en costos de despacho y +31% a +42% de incremento en remuneración horaria para choferes.
+  - Auditoría algorítmica continua de la NOM-251-SSA1-2009 garantizando tiempos de tránsito acumulado inferiores a 18 minutos.
+  - Badges de conversión: Multi-Drop 2x-3x Inteligente, -43% Costo de Despacho, SLA Térmico NOM-251 (<18 min) y Enrutamiento TSP Greedy.
+
+---
+
 ## [1.9.15] - 2026-09-22
 
 ### Added
