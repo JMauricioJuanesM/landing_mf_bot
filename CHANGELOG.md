@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.15] - 2026-09-22
+
+### Added
+- **Telemetría Satelital en Vivo & Geocercas 300m con Proof of Delivery (POD) (`index.html`):**
+  - Módulo interactivo destacando el rastreo satelital GPS en tiempo real para última milla accesible directamente desde WhatsApp sin instalación de apps.
+  - Alerta proactiva automática cuando el repartidor ingresa a menos de 300 metros del domicilio para agilizar la entrega y evitar comida fría.
+  - Validación de Proof of Delivery (POD) con PIN OTP de 4 dígitos y evidencia fotográfica que erradica disputas fraudulentas de entrega.
+  - Badges de rendimiento: Telemetría Satelital Sub-Segundo, Geocerca 300m Automática, Alerta WhatsApp Proactiva y POD Cero Fraude.
+
+---
+
 ## [1.9.14] - 2026-09-21
 
 ### Added
