@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.14] - 2026-09-21
+
+### Added
+- **Smart Dispatch Multi-Carrier & Flota Híbrida Inteligente (`index.html`):**
+  - Módulo interactivo destacando el despacho inteligente entre flota propia ($18.50 MXN) y auto-escalamiento a Uber Direct / Borzo en menos de 60 segundos.
+  - Monitoreo de SLA térmico bajo la norma NOM-251-SSA1-2009 con tiempos de tránsito inferiores a 18 minutos y rastreo en vivo por WhatsApp.
+  - Badges de rendimiento: Flota Propia + Uber Direct, Auto-Escalamiento < 60s, SLA Térmico NOM-251 y Ahorro de hasta $70/pedido.
+
+---
+
 ## [1.9.13] - 2026-09-21
 
 ### Added
