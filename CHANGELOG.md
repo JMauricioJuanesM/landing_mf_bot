@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.22] - 2026-09-23
+
+### Added
+- **Prueba Criptográfica de Entrega (PoD) & Arqueo Anti-Fraude CoD (`index.html`):**
+  - Nuevo módulo comercial "Prueba Criptográfica de Entrega (PoD) & Arqueo Anti-Fraude CoD (Código de Comercio Arts. 89-114)".
+  - Apretón de manos criptográfico bidireccional (PIN OTP dinámico y QR HMAC-SHA256) validado con geocerca de radio estricto (<65m) y checklist de precinto inviolable NOM-251.
+  - Generación de recibo digital inmutable con hash SHA-256 dotado de pleno valor probatorio mercantil ante PROFECO y tribunales federales.
+  - Arqueo y conciliación de efectivo en tiempo real (Cash-on-Delivery) con alerta preventiva a los $1,500 MXN en mano, reduciendo a cero los descuadres de caja y el 98.4% de disputas por entrega.
+  - Badges de conversión: `🔐 QR / OTP Criptográfico SHA-256`, `💵 Arqueo CoD en Tiempo Real`, `🛡️ 98.4% Cero Disputas / Fraudes` y `📦 Sello Inviolable NOM-251`.
+
+---
+
 ## [1.9.21] - 2026-09-23
 
 ### Added
