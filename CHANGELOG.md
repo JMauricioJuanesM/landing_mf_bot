@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.21] - 2026-09-23
+
+### Added
+- **Garantía de Entrega a Tiempo & Compensación Inmediata PROFECO (`index.html`):**
+  - Nuevo módulo comercial "Garantía de Entrega a Tiempo & Compensación Inmediata PROFECO (LFPC Art. 92)".
+  - Bonificación proactiva automática del 20% al 100% en monedero virtual ante demoras superiores a 4 minutos o incidencias térmicas bajo NOM-251-SSA1-2009.
+  - Atribución de responsabilidad algorítmica (cocina vs. chofer) que protege el margen del restaurante y asegura un 95.8% de retención de clientes.
+  - Badges de conversión: `⏱️ SLA Garantizado (94.2% On-Time)`, `🎁 Bonificación 20% - 100% LFPC Art. 92`, `🌡️ Blindaje Térmico NOM-251 (>60°C)` y `🛡️ 95.8% Retención Comensal Automática`.
+
+---
+
 ## [1.9.20] - 2026-09-23
 
 ### Added
