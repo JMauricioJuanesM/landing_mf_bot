@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.23] - 2026-09-23
+
+### Added
+- **Liquidación Instantánea SPEI / STP & Retenciones Fiscales Automatizadas SAT (`index.html`):**
+  - Nuevo módulo comercial "Liquidación Instantánea SPEI / STP & Retenciones Fiscales Automatizadas SAT (Art. 113-A LISR)".
+  - Dispersión bancaria automatizada en tiempo real (<3s) de ganancias y 100% de propinas voluntarias al terminar turno o a demanda por WhatsApp.
+  - Motor tributario conforme a la reforma de plataformas tecnológicas (LISR Arts. 113-A a 113-C y LIVA Art. 18-J): retención automática de ISR (2.1%) e IVA (8.0%) para repartidores con RFC verificado (20% ISR / 16% IVA para genéricos).
+  - Conciliación neta cruzada de efectivo CoD cobrado en mano, eliminando el riesgo de crédito y descuadres de caja para el restaurante.
+  - Emisión automatizada del CFDI de Retenciones e Información de Pagos (Complemento de Servicios de Plataformas Tecnológicas).
+  - Badges de conversión: `⚡ Dispersión Inmediata SPEI / STP (3s)`, `🏛️ Retención SAT Art. 113-A (2.1% ISR / 8% IVA)`, `🧾 Timbrado CFDI de Retenciones 2.0` y `💵 Conciliación Neta CoD en Tiempo Real`.
+
+---
+
 ## [1.9.22] - 2026-09-23
 
 ### Added
