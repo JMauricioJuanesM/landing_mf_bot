@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.28] - 2026-09-23
+
+### Added
+- **ComandaFlow Franquicias & Multi-Sucursal: Split de Regalías en Tiempo Real, Escrow Automatizado y Conciliación Z-Cut CFDI 4.0 (`index.html`):**
+  - Módulo comercial para cadenas y marcas gastronómicas multi-sucursal con enrutamiento de comanda por WhatsApp por geolocalización a la cocina más cercana.
+  - Split automatizado de ingresos: 93% liquidado a la cuenta operativa de la sucursal, 5% de regalías a la matriz concentradora, 2% al fondo cooperativo nacional de mercadotecnia y cuota SaaS fija ($1,499 MXN/mes).
+  - Escrow bancario centralizado con dispersión automática vía SPEI y simulación de CEP Banxico.
+  - Motor de auditoría de cortes Z de caja y conciliación anti-discrepancias con alerta `FLAGGED_DISCREPANCY` ante desvíos mayores a $200 MXN o 3.0%.
+  - Cumplimiento fiscal y contractual bajo LFPPI Arts. 245-250 (Circular de Oferta de Franquicia) y facturación masiva CFDI 4.0 (Clave SAT `80141600` e IVA 16% desglosado).
+  - Badges de conversión: `🏛️ Split 93% Sucursal / 5% Matriz / 2% Mktg`, `📍 Enrutamiento Geográfico por WhatsApp`, `⚖️ Auditoría Corte Z Anti-Discrepancias` y `📑 CFDI 4.0 Regalías & LFPPI Arts. 245-250`.
+
+---
+
 ## [1.9.27] - 2026-09-23
 
 ### Added
