@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.19] - 2026-09-22
+
+### Added
+- **Scorecard de Repartidores & Despacho Prioritario NOM-251 (`index.html`):**
+  - Nuevo módulo comercial de evaluación multidimensional de choferes (puntualidad > 95%, temperatura NOM-251 > 60°C, aceptación y CSAT).
+  - Algoritmo de 5 niveles dinámicos con factor de despacho prioritario (hasta 1.35x para choferes Diamond) y asignación exclusiva a rutas multi-drop.
+  - Smart Incentive Engine con bonos de racha (+$50, +$120, +$200 MXN) y compensación climática/surge (+25 MXN).
+  - Protocolo de auditoría semanal obligatoria de maletas térmicas herméticas bajo NOM-251-SSA1-2009.
+  - Badges de conversión: Repartidores Diamond (98.2% a Tiempo), Auditoría Maleta Térmica NOM-251, Bonos por Desempeño Transparente y +$24,650 MXN Ahorro/Mes.
+
+---
+
 ## [1.9.18] - 2026-09-22
 
 ### Added
