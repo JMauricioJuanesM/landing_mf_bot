@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.20] - 2026-09-23
+
+### Added
+- **Rebalanceo Predictivo de Flota, Hotspots y Tarificación Ética NOM-251 (`index.html`):**
+  - Módulo comercial de Hotspot Staging AI con reposicionamiento anticipado de repartidores (< 4 min de pickup lag en restaurante).
+  - Subsidio voluntario de relocalización ($18 a $35 MXN) respetando la autonomía laboral de la LFT (Art. 291).
+  - Tarificación dinámica equitativa con blindaje PROFECO (tope de 1.6x) y recargo de lluvia 100% transferido al chofer (+25 MXN).
+  - Garantía de inocuidad y control térmico (>60°C en comida caliente) bajo NOM-251-SSA1-2009.
+  - Badges de conversión: `⚡ Hotspot Staging AI (< 4 min Pickup)`, `🌡️ Garantía Térmica NOM-251 (>60°C)`, `🛡️ Tarifa Justa PROFECO (Tope 1.6x)` y `💵 +$28,450 MXN Utilidad Neta/Mes`.
+
+---
+
 ## [1.9.19] - 2026-09-22
 
 ### Added
