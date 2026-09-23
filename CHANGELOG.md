@@ -6,6 +6,51 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.27] - 2026-09-23
+
+### Added
+- **ComandaFlow Loyalty & Smart Cashback: Monedero Digital en WhatsApp, Rachas Gastronómicas y Rescate Anti-Churn (`index.html`):**
+  - Nuevo módulo comercial de fidelización directa, monedero digital nativo en WhatsApp y erradicación del 30% de comisiones a terceros.
+  - Tiers dinámicos progresivos (Bronze 5%, Silver 7%, Gold 10%, Diamond VIP 12%) con perks exclusivos (postres insignia, packaging ecológico y atención preferencial VIP).
+  - Gamificación con Rachas Gastronómicas (+1.5% extra en pedidos semanales) y bonos automáticos cada 3 pedidos en racha (+$50 MXN).
+  - Motor de rescate predictivo anti-churn con vouchers de 48h de vigencia para WhatsApp y salvaguarda financiera (tope de redención de 50% por comanda).
+  - Cumplimiento fiscal estricto SAT Regla 3.3.1.41 RMF 2026 (descuento comercial mercantil en CFDI 4.0) y tope LFPIORPI ($5,000 MXN).
+  - Badges de conversión: `💎 5% - 12% Smart Cashback Directo`, `🔥 Rachas Gastronómicas (+1.5% Bono)`, `🚨 Rescate Anti-Churn 48h en WhatsApp` y `💳 Monedero Digital Seguro (SAT Regla 3.3.1.41)`.
+
+---
+
+## [1.9.26] - 2026-09-23
+
+### Added
+- **ComandaFlow Corporate & Catering B2B: Almuerzos Grupales, Subsidio Co-Pay y Facturación SAT CFDI 4.0 (`index.html`):**
+  - Módulo comercial B2B para pedidos corporativos en oficinas y centros de trabajo con link único y cutoff time.
+  - Subsidio patronal diario por empleado deducible de impuestos (LISR Arts. 28 y 94) con co-pago automatizado de excedentes.
+  - Consolidación KDS en un solo lote maestro de preparación y despacho dedicado en camioneta o moto XL con contenedor NOM-251.
+  - Facturación fiscal SAT CFDI 4.0 consolidada (Régimen 601, Uso G03/D04 e IVA 16% desglosado).
+  - Badges de conversión: `🏢 Ticket Promedio 8.5x ($1,850 - $3,500 MXN)`, `💳 Subsidio + Co-Pay Inteligente Empleado`, `📑 Factura Consolidada SAT CFDI 4.0 (Régimen 601)` y `🚐 Despacho Consolidado Dedicado NOM-251`.
+
+---
+
+## [1.9.25] - 2026-09-23
+
+### Added
+- **Escudo Anti-Fraude & Arbitraje Tripartito de Disputas (`index.html`):**
+  - Módulo comercial de arbitraje imparcial y filtrado del 78.4% de reclamaciones falsas y friendly fraud.
+  - Scoring de riesgo en comensales con 4 tiers y corroboración técnica cruzada (PoD PIN SHA-256, GPS <45m y checklist expo KDS).
+  - Badges: `🛡️ Anti-Friendly Fraud (78.4% Filtrado)`, `⚖️ Arbitraje Tripartito Justo`, `💰 +4.1% Margen Neto Rescatado` y `📜 Blindaje Jurídico PROFECO`.
+
+---
+
+## [1.9.24] - 2026-09-23
+
+### Added
+- **Tarifa Dinámica Equilibrada, Detección de Clima Adverso & Price Lock Token (`index.html`):**
+  - Módulo comercial con reparto ético 75/25 para repartidores durante contingencias climáticas.
+  - Price Lock Token con TTL de 10 min en Redis y tope PROFECO (máx 2.2x o +$65 MXN) conforme a LFPC Art. 10.
+  - Badges: `🌧️ Bono de Riesgo Chofer`, `🤝 Fair-Split Ético (75/25)`, `🔒 Price Lock Token (10 min)` y `⚖️ Tope Regulatorio PROFECO`.
+
+---
+
 ## [1.9.23] - 2026-09-23
 
 ### Added
