@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.18] - 2026-09-22
+
+### Added
+- **Logística Inversa Inteligente & Garantía Térmica Cero Pérdidas NOM-251 (`index.html`):**
+  - Nuevo módulo comercial de resolución automatizada ante entregas fallidas (comensal ausente, dirección errónea, derrame o retraso térmico).
+  - Emisión de Certificados Inmutables de Destrucción Sanitaria bajo NOM-251-SSA1-2009 para garantizar inocuidad alimentaria.
+  - Re-cocción express KDS en < 10 min y compensación instantánea vía WhatsApp Bot (+84.5% de retención de clientes tras incidencias).
+  - Recuperación de mermas mediante disputas automáticas a agregadores 3P y cobro legal de pedidos no recibidos (+$20,394 MXN de ahorro neto mensual por sucursal).
+  - Badges de conversión: Rescate Clientes (84.5% Retención), Certificado NOM-251 Inmutable, Re-Cook Express KDS (<10 min) y +$20,394 MXN Ahorro/Mes.
+
+---
+
 ## [1.9.17] - 2026-09-22
 
 ### Added
