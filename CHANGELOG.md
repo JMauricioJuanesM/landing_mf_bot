@@ -6,7 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.9.29] - 2026-09-23
+## [1.9.30] - 2026-09-23
+
+### Added
+- **ComandaFlow Partner Network & Afiliados CRO 30%: Adquisición de Restaurantes a Escala, Atribución Criptográfica SHA-256 y Dispersión Automatizada SPEI STP (`index.html`):**
+  - Módulo comercial y de expansión para embajadores gastronómicos, chefs, consultores y proveedores de la industria restaurantera con comisión mercantil del 30% recurrente mensual de por vida ($389.70 MXN/mes por sucursal activa).
+  - Escala dinámica de 4 tiers de incentivo: Bronze (1-4 sucursales, 25%), Silver (5-14 sucursales, 30%), Gold Partner (15-29 sucursales, 32.5% + bono trimestral) y Black Ambassador (30+ sucursales, 35% + Account Manager VIP).
+  - Calculadora interactiva renovada con proyección mensual, anual y estimación neta bajo Régimen Simplificado de Confianza SAT (RESICO 1.25% ISR).
+  - Atribución multicanal con huella criptográfica SHA-256 (`attributionFingerprint`) y cookie de 60 días para enlaces de WhatsApp, códigos QR en volantes y campañas UTM.
+  - Marco contractual bajo el Código de Comercio (Arts. 273-308 para comisión mercantil sin relación laboral), timbrado fiscal deducible CFDI 4.0 (Clave SAT `80141600`) y dispersión bancaria directa el día 5 de cada mes vía SPEI STP.
+  - Badges de conversión comercial: `💰 30% Comisión Recurrente de por Vida`, `🔐 Atribución Criptográfica SHA-256`, `🏦 Dispersión Mensual SPEI STP` y `📑 Contrato Mercantil & CFDI 4.0 Clave 80141600`.
+
+---
 
 ### Added
 - **ComandaFlow Escudo 86 & Menú Omnicanal en Tiempo Real: Cero Ventas Canceladas por Desabasto, Sincronización Sub-Milisegundo y Rescate de Comandas en WhatsApp (`index.html`):**
