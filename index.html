@@ -5,7 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ComandaFlow AI - Automatiza tus Pedidos por WhatsApp y Ahorra en Comisiones</title>
     <meta name="description" content="Automatiza pedidos por WhatsApp con IA, conecta comandas de cocina y ahorra hasta el 30% en comisiones de Uber Eats y DiDi Food. Implementación llave en mano en 7 días.">
-    
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#10b981">
+    <link rel="canonical" href="https://comandaflow.com/">
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://comandaflow.com/">
+    <meta property="og:title" content="ComandaFlow AI — Automatiza Pedidos por WhatsApp y Ahorra 30%">
+    <meta property="og:description" content="Deja de regalarle el 30% a Uber Eats. Bot de IA para pedidos, comandas de cocina, rastreo GPS y cobros. Implementación en 7 días.">
+    <meta property="og:image" content="https://comandaflow.com/og-cover.png">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:site_name" content="ComandaFlow AI by MasFast">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ComandaFlow AI — Automatiza Pedidos por WhatsApp y Ahorra 30%">
+    <meta name="twitter:description" content="Bot de IA para restaurantes. Pedidos por WhatsApp, comanda digital, rastreo GPS y cobros sin comisiones.">
+    <meta name="twitter:image" content="https://comandaflow.com/og-cover.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310b981'/><text x='50' y='68' font-size='60' font-family='Arial,sans-serif' font-weight='bold' text-anchor='middle' fill='white'>C</text></svg>">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -815,6 +836,11 @@
             color: var(--text-muted);
         }
 
+        /* Desktop: hide hamburger and mobile-only elements */
+        .hamburger { display: none; }
+        .mobile-float-cta { display: none !important; }
+        .mobile-close-btn { display: none; }
+
         /* Responsive */
         @media (max-width: 960px) {
             .calc-card, .demo-grid, .pricing-grid, .steps-grid, .cta-card {
@@ -832,6 +858,68 @@
 
             .nav-links {
                 display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(7, 13, 24, 0.97);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 28px;
+                z-index: 1000;
+            }
+            .nav-links.mobile-open {
+                display: flex;
+            }
+            .hamburger {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                cursor: pointer;
+                z-index: 1001;
+                padding: 8px;
+            }
+            .hamburger span {
+                width: 24px;
+                height: 2px;
+                background: var(--text-primary);
+                border-radius: 2px;
+                transition: 0.3s;
+            }
+            .mobile-close-btn {
+                position: absolute;
+                top: 20px;
+                right: 24px;
+                font-size: 28px;
+                color: var(--text-primary);
+                cursor: pointer;
+                background: none;
+                border: none;
+                z-index: 1002;
+            }
+            /* Floating WhatsApp CTA for mobile */
+            .mobile-float-cta {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 14px 20px;
+                border-radius: 50px;
+                font-weight: 700;
+                font-size: 14px;
+                text-decoration: none;
+                box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+                z-index: 999;
+                animation: pulse-glow 2s ease-in-out infinite;
+            }
+            @keyframes pulse-glow {
+                0%, 100% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4); }
+                50% { box-shadow: 0 4px 30px rgba(16, 185, 129, 0.7); }
             }
         }
     </style>
@@ -846,14 +934,22 @@
                 <div class="logo-badge">C</div>
                 <div class="logo-text">Comanda<span>Flow</span> <small style="font-size: 12px; color: var(--text-muted); font-weight: normal;">AI by MasFast</small></div>
             </a>
+            <!-- Hamburger (mobile only, hidden on desktop via CSS) -->
+            <div class="hamburger" onclick="document.querySelector('.nav-links').classList.add('mobile-open')">
+                <span></span><span></span><span></span>
+            </div>
             <div class="nav-links">
-                <a href="#calculadora" class="nav-link">Calculadora de Ahorro</a>
-                <a href="#demo" class="nav-link">Cómo Funciona</a>
-                <a href="#precios" class="nav-link">Planes</a>
-                <a href="#registro" class="btn-primary">Agendar Piloto 🚀</a>
+                <button class="mobile-close-btn" onclick="this.parentElement.classList.remove('mobile-open')">&times;</button>
+                <a href="#calculadora" class="nav-link" onclick="this.parentElement.classList.remove('mobile-open')">Calculadora de Ahorro</a>
+                <a href="#demo" class="nav-link" onclick="this.parentElement.classList.remove('mobile-open')">Cómo Funciona</a>
+                <a href="#precios" class="nav-link" onclick="this.parentElement.classList.remove('mobile-open')">Planes</a>
+                <a href="#registro" class="btn-primary" onclick="this.parentElement.classList.remove('mobile-open')">Agendar Piloto 🚀</a>
             </div>
         </div>
     </nav>
+
+    <!-- Floating CTA for mobile -->
+    <a href="#registro" class="mobile-float-cta" style="display: none;">Agendar Piloto 🚀</a>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1488,111 +1584,8 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados.</p>
-            <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
-                Plataforma de comercio conversacional y logística inteligente para restaurantes en México.
-            </p>
-        </div>
-    </footer>
-
-    <!-- Interactive Scripts -->
-    <script>
-        // Savings Calculator Logic
-        const pedidosSlider = document.getElementById('pedidosSlider');
-        const ticketSlider = document.getElementById('ticketSlider');
-        const pedidosVal = document.getElementById('pedidosVal');
-        const ticketVal = document.getElementById('ticketVal');
-        
-        const ahorroMensualEl = document.getElementById('ahorroMensual');
-        const ventaTotalEl = document.getElementById('ventaTotal');
-        const comisionPlataformasEl = document.getElementById('comisionPlataformas');
-        const ahorroAnualEl = document.getElementById('ahorroAnual');
-
-        function formatCurrency(val) {
-            return '$' + Math.round(val).toLocaleString('es-MX') + ' MXN';
-        }
-
-        function calculateSavings() {
-            const pedidos = parseInt(pedidosSlider.value);
-            const ticket = parseInt(ticketSlider.value);
-
-            pedidosVal.innerText = pedidos + ' pedidos';
-            ticketVal.innerText = '$' + ticket + ' MXN';
-
-            const ventaTotal = pedidos * ticket;
-            const comisionPlataformas = ventaTotal * 0.30; // 30% promedio
-            const costoComandaFlow = 999; // mensualidad fija
-            const ahorroNeto = Math.max(0, comisionPlataformas - costoComandaFlow);
-            const ahorroAnual = ahorroNeto * 12;
-
-            ventaTotalEl.innerText = formatCurrency(ventaTotal);
-            comisionPlataformasEl.innerText = '-' + formatCurrency(comisionPlataformas);
-            ahorroMensualEl.innerText = formatCurrency(ahorroNeto);
-            ahorroAnualEl.innerText = formatCurrency(ahorroAnual);
-        }
-
-        pedidosSlider.addEventListener('input', calculateSavings);
-        ticketSlider.addEventListener('input', calculateSavings);
-        calculateSavings();
-
-        // Lead Form Handler with Fallback
-        async function handleSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const status = document.getElementById('formStatus');
-            
-            const rest = document.getElementById('f_rest').value;
-            const wa = document.getElementById('f_wa').value;
-            const email = document.getElementById('f_email').value;
-            const prob = document.getElementById('f_problema').value;
-
-            btn.disabled = true;
-            btn.innerText = 'Enviando solicitud...';
-            status.style.display = 'block';
-            status.style.color = '#38bdf8';
-            status.innerText = '⏳ Procesando tu registro...';
-
-            const formData = new FormData();
-            formData.append('f_rest', rest);
-            formData.append('f_wa', wa);
-            formData.append('f_email', email);
-            formData.append('f_problema', prob);
-
-            try {
-                // Intentar enviar al backend FastAPI local/producción
-                const response = await fetch('/registro', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    status.style.color = '#34d399';
-                    status.innerText = '✅ ¡Registro exitoso! Nos pondremos en contacto contigo por WhatsApp en breve.';
-                    document.getElementById('leadForm').reset();
-                } else {
-                    throw new Error('Endpoint no disponible');
-                }
-            } catch (err) {
-                // Fallback inteligente: Redirigir a WhatsApp con los datos listos
-                status.style.color = '#34d399';
-                status.innerHTML = '✅ ¡Excelente! Redirigiendo a WhatsApp para coordinar tu piloto...';
-                
-                const mensajeWA = encodeURIComponent(`¡Hola! Me interesa el programa piloto de ComandaFlow AI para mi restaurante.\n\n🍽️ Restaurante: ${rest}\n📱 WhatsApp: ${wa}\n✉️ Correo: ${email}\n💬 Reto actual: ${prob || 'Ahorrar comisiones de delivery'}`);
-                
-                setTimeout(() => {
-                    window.open(`https://wa.me/528086086177?text=${mensajeWA}`, '_blank');
-                }, 1200);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = 'Solicitar Demostración y Piloto 🚀';
-            }
-        }
-    </script>
-  <!-- AFILIADOS SECTION V1.9.30 -->
-  <section class="afiliados" style="padding: 70px 20px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(16, 185, 129, 0.08) 100%); border-top: 1px solid var(--border-color);">
+    <!-- AFILIADOS SECTION V1.9.30 (moved before footer) -->
+    <section id="afiliados" class="afiliados" style="padding: 70px 20px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(16, 185, 129, 0.08) 100%); border-top: 1px solid var(--border-color);">
     <div class="container" style="max-width: 900px; margin: 0 auto;">
       <span class="pill-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 18px; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 16px;">🤝 Red Oficial de Partners & Afiliados Gastronómicos 2026</span>
       <h2 style="color: #ffffff; font-size: clamp(26px, 4vw, 38px); margin-bottom: 16px; font-weight: 800;">Gana hasta el 35% Recurrente de cada Restaurante</h2>
@@ -1655,41 +1648,179 @@
       </div>
     </div>
   </section>
-  <script>
-    const partnerSlider = document.getElementById('partnerSlider');
-    const partnerCountVal = document.getElementById('partnerCountVal');
-    const partnerMonthlyVal = document.getElementById('partnerMonthlyVal');
-    const partnerYearlyVal = document.getElementById('partnerYearlyVal');
-    const partnerResicoVal = document.getElementById('partnerResicoVal');
 
-    if (partnerSlider) {
-      partnerSlider.addEventListener('input', () => {
-        const count = parseInt(partnerSlider.value);
-        let rate = 0.25;
-        let tierName = 'Bronze 25%';
-        if (count >= 30) {
-          rate = 0.35;
-          tierName = 'Black Ambassador 35%';
-        } else if (count >= 15) {
-          rate = 0.325;
-          tierName = 'Gold 32.5%';
-        } else if (count >= 5) {
-          rate = 0.30;
-          tierName = 'Silver 30%';
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados.</p>
+            <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
+                Plataforma de comercio conversacional y logística inteligente para restaurantes en México.
+            </p>
+            <p style="margin-top: 12px; font-size: 12px;">
+                <a href="#" style="color: var(--text-muted); text-decoration: underline; margin-right: 16px;">Aviso de Privacidad</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: underline; margin-right: 16px;">Términos de Servicio</a>
+                <a href="#afiliados" style="color: var(--text-muted); text-decoration: underline;">Programa de Afiliados</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // === UTM Tracking: Capture & persist UTM params for lead attribution ===
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'ref'];
+            utmKeys.forEach(k => {
+                const v = params.get(k);
+                if (v) localStorage.setItem('cf_' + k, v);
+            });
+        })();
+
+        // === Mobile Floating CTA visibility on scroll ===
+        (function() {
+            const floatCta = document.querySelector('.mobile-float-cta');
+            if (floatCta && window.innerWidth <= 960) {
+                window.addEventListener('scroll', function() {
+                    floatCta.style.display = window.scrollY > 400 ? 'block' : 'none';
+                });
+            }
+        })();
+
+        // Savings Calculator Logic
+        const pedidosSlider = document.getElementById('pedidosSlider');
+        const ticketSlider = document.getElementById('ticketSlider');
+        const pedidosVal = document.getElementById('pedidosVal');
+        const ticketVal = document.getElementById('ticketVal');
+        
+        const ahorroMensualEl = document.getElementById('ahorroMensual');
+        const ventaTotalEl = document.getElementById('ventaTotal');
+        const comisionPlataformasEl = document.getElementById('comisionPlataformas');
+        const ahorroAnualEl = document.getElementById('ahorroAnual');
+
+        function formatCurrency(val) {
+            return '$' + Math.round(val).toLocaleString('es-MX') + ' MXN';
         }
 
-        partnerCountVal.innerText = `${count} ${count === 1 ? 'restaurante' : 'restaurantes'} (Tier ${tierName})`;
-        const monthly = Math.round(count * 1299 * rate);
-        const yearly = monthly * 12;
-        const resicoNet = Math.round(monthly * (1 - 0.0125));
+        function calculateSavings() {
+            const pedidos = parseInt(pedidosSlider.value);
+            const ticket = parseInt(ticketSlider.value);
 
-        partnerMonthlyVal.innerText = '$' + monthly.toLocaleString('es-MX') + ' MXN/mes';
-        partnerYearlyVal.innerText = '$' + yearly.toLocaleString('es-MX') + ' MXN/año';
-        if (partnerResicoVal) {
-          partnerResicoVal.innerText = '$' + resicoNet.toLocaleString('es-MX') + ' MXN/mes';
+            pedidosVal.innerText = pedidos + ' pedidos';
+            ticketVal.innerText = '$' + ticket + ' MXN';
+
+            const ventaTotal = pedidos * ticket;
+            const comisionPlataformas = ventaTotal * 0.30; // 30% promedio
+            const costoComandaFlow = 999; // mensualidad fija
+            const ahorroNeto = Math.max(0, comisionPlataformas - costoComandaFlow);
+            const ahorroAnual = ahorroNeto * 12;
+
+            ventaTotalEl.innerText = formatCurrency(ventaTotal);
+            comisionPlataformasEl.innerText = '-' + formatCurrency(comisionPlataformas);
+            ahorroMensualEl.innerText = formatCurrency(ahorroNeto);
+            ahorroAnualEl.innerText = formatCurrency(ahorroAnual);
         }
-      });
-    }
-  </script>
+
+        pedidosSlider.addEventListener('input', calculateSavings);
+        ticketSlider.addEventListener('input', calculateSavings);
+        calculateSavings();
+
+        // Lead Form Handler with Fallback + UTM Attribution
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('formStatus');
+            
+            const rest = document.getElementById('f_rest').value;
+            const wa = document.getElementById('f_wa').value;
+            const email = document.getElementById('f_email').value;
+            const prob = document.getElementById('f_problema').value;
+
+            // Collect UTM params from localStorage
+            const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'ref'];
+            const utmData = {};
+            utmKeys.forEach(k => { const v = localStorage.getItem('cf_' + k); if (v) utmData[k] = v; });
+            const utmStr = Object.entries(utmData).map(([k,v]) => `${k}=${v}`).join('&');
+
+            btn.disabled = true;
+            btn.innerText = 'Enviando solicitud...';
+            status.style.display = 'block';
+            status.style.color = '#38bdf8';
+            status.innerText = '⏳ Procesando tu registro...';
+
+            const formData = new FormData();
+            formData.append('f_rest', rest);
+            formData.append('f_wa', wa);
+            formData.append('f_email', email);
+            formData.append('f_problema', prob);
+            // Append UTM data to form
+            Object.entries(utmData).forEach(([k,v]) => formData.append(k, v));
+
+            try {
+                // Intentar enviar al backend FastAPI local/producción
+                const response = await fetch('/registro', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    status.style.color = '#34d399';
+                    status.innerText = '✅ ¡Registro exitoso! Nos pondremos en contacto contigo por WhatsApp en breve.';
+                    document.getElementById('leadForm').reset();
+                } else {
+                    throw new Error('Endpoint no disponible');
+                }
+            } catch (err) {
+                // Fallback inteligente: Redirigir a WhatsApp con los datos listos
+                status.style.color = '#34d399';
+                status.innerHTML = '✅ ¡Excelente! Redirigiendo a WhatsApp para coordinar tu piloto...';
+                
+                const utmTag = utmStr ? `\n📊 Fuente: ${utmStr}` : '';
+                const mensajeWA = encodeURIComponent(`¡Hola! Me interesa el programa piloto de ComandaFlow AI para mi restaurante.\n\n🍽️ Restaurante: ${rest}\n📱 WhatsApp: ${wa}\n✉️ Correo: ${email}\n💬 Reto actual: ${prob || 'Ahorrar comisiones de delivery'}${utmTag}`);
+                
+                setTimeout(() => {
+                    window.open(`https://wa.me/528086086177?text=${mensajeWA}`, '_blank');
+                }, 1200);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Solicitar Demostración y Piloto 🚀';
+            }
+        }
+
+        // Partner/Affiliates Calculator
+        const partnerSlider = document.getElementById('partnerSlider');
+        const partnerCountVal = document.getElementById('partnerCountVal');
+        const partnerMonthlyVal = document.getElementById('partnerMonthlyVal');
+        const partnerYearlyVal = document.getElementById('partnerYearlyVal');
+        const partnerResicoVal = document.getElementById('partnerResicoVal');
+
+        if (partnerSlider) {
+          partnerSlider.addEventListener('input', () => {
+            const count = parseInt(partnerSlider.value);
+            let rate = 0.25;
+            let tierName = 'Bronze 25%';
+            if (count >= 30) {
+              rate = 0.35;
+              tierName = 'Black Ambassador 35%';
+            } else if (count >= 15) {
+              rate = 0.325;
+              tierName = 'Gold 32.5%';
+            } else if (count >= 5) {
+              rate = 0.30;
+              tierName = 'Silver 30%';
+            }
+
+            partnerCountVal.innerText = `${count} ${count === 1 ? 'restaurante' : 'restaurantes'} (Tier ${tierName})`;
+            const monthly = Math.round(count * 1299 * rate);
+            const yearly = monthly * 12;
+            const resicoNet = Math.round(monthly * (1 - 0.0125));
+
+            partnerMonthlyVal.innerText = '$' + monthly.toLocaleString('es-MX') + ' MXN/mes';
+            partnerYearlyVal.innerText = '$' + yearly.toLocaleString('es-MX') + ' MXN/año';
+            if (partnerResicoVal) {
+              partnerResicoVal.innerText = '$' + resicoNet.toLocaleString('es-MX') + ' MXN/mes';
+            }
+          });
+        }
+    </script>
 </body>
 </html>
