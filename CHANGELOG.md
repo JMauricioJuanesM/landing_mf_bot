@@ -6,6 +6,15 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.32] - 2026-09-24
+
+### Added
+- **CMO / CRO — Sección de Preguntas Frecuentes (FAQ) Interactivas y Marcado Estructurado Schema.org FAQPage (`index.html`):**
+  - Acordeón interactivo de 8 preguntas críticas para resolver objeciones de restauranteros (instalación sin apps, KDS en cocina, ruteo híbrido de repartidores con Uber Direct / DiDi Express, facturación CFDI 4.0 SAT 80141600, contratos sin permanencia y adaptación a cualquier giro gastronómico).
+  - Marcado estructurado JSON-LD `FAQPage` para Google Rich Results y SEO orgánico, acelerando la indexación de respuestas directas en el buscador.
+
+---
+
 ## [1.9.30] - 2026-09-23
 
 ### Added
