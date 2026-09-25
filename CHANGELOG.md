@@ -6,7 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.36] - 2026-09-25
+
+### Added
+- **CMO / CRO — KDS Real-Time Station Analytics, Bottleneck Heatmap & Dynamic Throttle (`index.html`):**
+  - Módulo comercial y telemetría de cocina en tiempo real: monitoreo de 5 estaciones operativas (Grill, Fryer, Cold Bar, Beverages, Expo) con detección proactiva de cuellos de botella.
+  - Motor de regulación y pacing dinámico (Normal, Soft Pacing, Hard Throttle) con ajuste automático de promesas de entrega en WhatsApp para blindar la reputación de la marca.
+  - Badges de conversión comercial y unit economics: `🌡️ Heatmap de Cuellos de Botella`, `🚦 Pacing Dinámico en WhatsApp (+8m/+15m)`, `📉 -94.8% Cancelaciones por Retraso`, `⏱️ -36.4% Turnaround (26m → 16m)` y `💰 +$24,880 MXN Ahorro Mensual`.
+
+---
+
 ## [1.9.35] - 2026-09-25
+
 
 ### Added
 - **CMO / CRO — Estación Expo, Quality Gate NOM-251 & Apretón de Manos OTP en Mostrador (`index.html`):**
