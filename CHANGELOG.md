@@ -6,7 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.34] - 2026-09-25
+
+### Added
+- **CMO / CRO — KDS Station Routing & Line Item Bump Engine (5 Estaciones & NOM-251) (`index.html`):**
+  - Orquestación en vivo por partidas operativas de cocina: Grill, Freidora, Barra Fría, Bebidas y Expediter (Expo).
+  - Protocolo de avance atómico de platos ("item bumping") con auto-consolidación de comanda al completarse todas las partidas.
+  - Alerta sanitaria de barra caliente a los 180s bajo NOM-251-SSA1-2009 para evitar enfriamiento de alimentos.
+  - Badges de conversión actualizados: `🍳 5 Estaciones (Grill/Fryer/Cold/Expo)`, `⚡ Latencia <5ms Redis Engine`, `⏱️ -34% Tiempo Cocina (18.5m → 12.2m)`, `🛡️ Trazabilidad NOM-251` y `🧾 0 Comandas Perdidas en Papel`.
+
+---
+
 ## [1.9.33] - 2026-09-25
+
 
 ### Added
 - **CMO / CRO — Kitchen Display System (KDS) & Monitor de Cocina en Vivo (<5ms Redis Engine) (`index.html`):**
