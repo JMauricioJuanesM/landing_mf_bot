@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.33] - 2026-09-25
+
+### Added
+- **CMO / CRO — Kitchen Display System (KDS) & Monitor de Cocina en Vivo (<5ms Redis Engine) (`index.html`):**
+  - Módulo de cocina digital en tiempo real: gestión de comandas en cualquier tablet o pantalla sin tickets de papel extraviados.
+  - Métricas de impacto visual: reducción de 33% en tiempos de preparación (de 18 min a 12 min), latencia sub-5ms mediante Redis TTL y semáforo dinámico de estaciones.
+  - Badges de conversión comercial: `⚡ Latencia <5ms Redis Engine`, `⏱️ -33% Tiempo en Cocina`, `🚦 Semáforo de Tiempos en Vivo` y `🧾 0 Comandas Perdidas en Papel`.
+
+---
+
 ## [1.9.32] - 2026-09-24
 
 ### Added
