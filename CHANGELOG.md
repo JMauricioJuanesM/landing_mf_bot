@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.37] - 2026-09-25
+
+### Added
+- **CMO / CRO — Smart Fire & Hold™: Cocción Sincronizada al Segundo y Pacing Multi-Cursos NOM-251 (`index.html`):**
+  - Módulo comercial de sincronización milimétrica de tiempos de cocción entre estaciones (Parrilla, Freidora, Barra Fría y Bebidas) para que todos los platillos terminen exactamente al unísono (Ventana de sincronización ≤90s).
+  - Eliminación definitiva del síndrome de comida reseca o fría bajo lámparas de calor, protegiendo la textura, aroma y temperatura de servicio (>60°C).
+  - Pacing multi-tiempos automatizado para restaurantes casual-dining (Entradas, Platos Fuertes y Postres) con intervalos fluidos y botón de avance manual de cursos para personal de sala.
+  - Badges de conversión comercial y unit economics: `🎯 Ventana de Sincronización ≤90s`, `🍽️ Pacing Multi-Tiempos (Cursos 1, 2 y 3)`, `🛡️ Blindaje Térmico NOM-251 (>60°C)`, `📉 -82% Mermas por Degradación` y `💰 +$18,400 MXN Ahorro Mensual`.
+
+---
+
 ## [1.9.36] - 2026-09-25
 
 ### Added
