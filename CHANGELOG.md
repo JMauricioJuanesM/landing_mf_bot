@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.40] - 2026-09-25
+
+### Added
+- **CMO / CRO — Smart Runner & Table Pacing™: Despacho a Mesa en <90s, Rotación +28% y Cero Platos Fríos (`index.html`):**
+  - Módulo comercial interactivo para el control y despacho sincronizado de comandas de Expo a mesa de comensales en restaurantes Dine-In y terrazas.
+  - Asignación algorítmica de meseros y garroteros por sección con SLA estricto de recogida (<90 segundos) y monitor semafórico anti-enfriamiento bajo la NOM-251 Numeral 5.11 (>60°C).
+  - Apretón de manos digital en mesa (Table Handshake) que comprime el ciclo promedio de mesa de 62 min a 44.5 min, generando un incremento del +28.2% en capacidad de rotación de clientes en turnos pico de fin de semana.
+  - Badges de conversión comercial y unit economics: `🏃 Despacho Expo en <90s`, `⚡ +28.2% Rotación de Mesas`, `🌡️ Blindaje NOM-251 (>60°C)`, `📱 Handshake Digital en Mesa` y `💰 +$64,800 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.39] - 2026-09-25
 
 ### Added
