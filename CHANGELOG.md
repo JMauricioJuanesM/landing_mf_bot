@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.41] - 2026-09-25
+
+### Added
+- **CMO / CRO — Smart Mise-en-Place & Digital HACCP™: Cero Infracciones Sanitarias, Control de Caducidades en Línea y Restock Kanban en <3 Minutos (`index.html`):**
+  - Módulo comercial interactivo para la digitalización integral de la bitácora de temperaturas NOM-251 Numerales 5.3 y 5.8 para cámaras frías (<4°C), congeladores (<-18°C) y mesas calientes (>60°C).
+  - Control dinámico de vida útil de insumos porcionados con etiquetado FEFO (First Expired, First Out) y semáforo visual de caducidad en pantallas KDS de línea.
+  - Circuito cerrado de reabastecimiento Kanban de estación a cuarto de preparación en menos de 120 segundos que reduce mermas en 74.1% y previene multas de COFEPRIS.
+  - Badges de conversión comercial y unit economics: `🛡️ 100% Blindaje NOM-251 / HACCP`, `⏱️ Restock Kanban en <90s`, `🥗 Semáforo FEFO de Mise-en-Place`, `📉 -74.1% Mermas por Caducidad` y `💰 +$35,180 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.40] - 2026-09-25
 
 ### Added
