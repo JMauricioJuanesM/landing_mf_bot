@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.39] - 2026-09-25
+
+### Added
+- **CMO / CRO — Zero Waste Kitchen™: Control de Remakes, Merma Cero y Deducibilidad Fiscal NOM-251 (`index.html`):**
+  - Módulo comercial interactivo para el control y prevención del desperdicio operativo en cocinas y dark kitchens (-64.5% mermas).
+  - Remake Prioritario VIP en 1 toque táctil que re-encola platillos al inicio de la estación KDS eliminando demoras excesivas y protegiendo el LTV del cliente.
+  - Bitácora inmutable de destrucción de alimentos bajo los numerales 5.14 y 5.15 de la NOM-251-SSA1-2009 con soporte probatorio para deducibilidad del 100% de mermas ante el SAT (CFF Art. 32-D y LISR Art. 27 Fracc. XX).
+  - Badges de conversión comercial y unit economics: `♻️ -64.5% Desperdicio Operativo`, `⚡ Remake Prioritario VIP (1-Tap)`, `📊 Deducibilidad Fiscal CFF Art. 32-D`, `🛡️ Bitácora Inmutable NOM-251` y `💰 +$31,568 MXN Recuperados / Mes`.
+
+---
+
 ## [1.9.38] - 2026-09-25
 
 ### Added
