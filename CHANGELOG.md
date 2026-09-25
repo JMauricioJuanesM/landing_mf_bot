@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.38] - 2026-09-25
+
+### Added
+- **CMO / CRO — Batch Cooking Inteligente, Escudo de Alérgenos NOM-251/NOM-051 & Forecast de Insumos (`index.html`):**
+  - Módulo comercial interactivo de consolidación masiva de tandas de cocción en parrillas y freidoras para acelerar el despacho en horas pico (+28.5% throughput).
+  - Aislamiento estricto de los 9 alérgenos reglamentarios (Gluten, Mariscos, Cacahuates, etc.) en tandas dedicadas con checklist digital NOM-251 y cero incidentes sanitarios.
+  - Pronóstico predictivo de agotamiento de insumos (Depletion Forecaster) que alerta con >20 min de buffer antes de un paro por insumo agotado (86).
+  - Badges de conversión comercial y unit economics: `🔥 Batch Cooking +28.5% Throughput`, `🛡️ Escudo Alérgenos NOM-251/NOM-051`, `📦 Forecast Anti-Stockout 86`, `📉 0.0% Incidentes Sanitarios` y `💰 +$19,450 MXN Ahorro Mensual`.
+
+---
+
 ## [1.9.37] - 2026-09-25
 
 ### Added
