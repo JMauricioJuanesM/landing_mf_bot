@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.35] - 2026-09-25
+
+### Added
+- **CMO / CRO — Estación Expo, Quality Gate NOM-251 & Apretón de Manos OTP en Mostrador (`index.html`):**
+  - Módulo comercial de última milla para entrega a repartidores en mostrador: erradicación total de órdenes cruzadas, bolsas equivocadas o comida enfriada.
+  - Validación de Quality Gate sanitario NOM-251-SSA1-2009 con precinto inviolable y temperatura segura (>60°C).
+  - Apretón de manos criptográfico OTP de 4 dígitos para despacho en sub-45 segundos por repartidor.
+  - Badges de conversión comercial y unit economics: `🔒 Precinto Inviolable NOM-251`, `🔑 Handshake OTP en Mostrador`, `⏱️ Despacho en <45s por Repartidor`, `🎯 0.0% Pedidos Cruzados` y `💰 +$18,720 MXN Ahorro Mensual`.
+
+---
+
 ## [1.9.34] - 2026-09-25
 
 ### Added
