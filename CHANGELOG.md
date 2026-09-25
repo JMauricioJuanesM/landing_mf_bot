@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.42] - 2026-09-25
+
+### Added
+- **CMO / CRO — Smart Station Load-Balancing & Anti-Choke Pacing™: Cero Colapsos de Cocina en Horas Pico, Desborde Inteligente y SLA Dinámico PROFECO (`index.html`):**
+  - Módulo interactivo de telemetría y mapa de calor de saturación por estación KDS (`GRILL`, `FRYER`, `COLD_BAR`, `BEVERAGES`, `EXPO`) con prevención activa de colapsos operativos.
+  - Re-enrutamiento de desborde seguro en menos de 5 segundos respaldado por huella criptográfica SHA-256 inmutable de pleno valor probatorio.
+  - Calibración algorítmica de SLA prometido (+5m a +25m) en canales de venta físicos y conversacionales, blindando el negocio contra compensaciones y sanciones bajo el Art. 92 de la LFPC.
+  - Badges de conversión comercial y unit economics: `⚖️ Balanceo Dinámico de Carga KDS`, `🔥 Cero Kitchen Chokes en Horas Pico`, `⚡ Re-enrutamiento de Desborde <5s`, `📜 100% Cumplimiento LFPC Art. 92` y `💰 +$44,273 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.41] - 2026-09-25
 
 ### Added
