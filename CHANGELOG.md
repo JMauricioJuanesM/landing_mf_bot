@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.43] - 2026-09-25
+
+### Added
+- **CMO / CRO — Smart Delivery Staging & JIT Courier Handshake™: Despacho a Repartidores en <90s, Cero Comida Fría (NOM-251) y Cero Penalizaciones de Plataformas (`index.html`):**
+  - Módulo interactivo de sincronización Just-In-Time (JIT) entre el ETA por GPS del repartidor (Uber Eats, Rappi, Didi Food) y el motor de cocción KDS.
+  - Asignación inteligente a bahías térmicas calefactadas (>60°C) con temporizadores anti-degradación NOM-251 Numeral 5.8 y control de sellos tamper-evident.
+  - Validación de entrega en mostrador con PIN/OTP de chofer y generación inmutable de huella criptográfica SHA-256 de pleno valor probatorio mercantil.
+  - Badges de conversión comercial y unit economics: `🛵 Despacho a Repartidor <90s`, `⏱️ Fuego Just-In-Time (JIT) GPS`, `🌡️ Bahías Calientes NOM-251 (>60°C)`, `🔒 Handshake OTP & SHA-256` y `💰 +$47,750 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.42] - 2026-09-25
 
 ### Added
