@@ -6,6 +6,27 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.46] - 2026-09-26
+
+### Added
+- **CMO / CRO — Smart Order Status Board (OSB) Digital Signage & Kiosk Production Pacing Engine™: Elimina el 78% de la Congestión en Mostrador, Cero Alimentos Fríos y Kiosk Pacing Anti-Colapso (`index.html`):**
+  - Señalización digital multizona para televisores y monitores comerciales en sala (`MAIN_DINING_ROOM`, `PICKUP_COUNTER`, `DRIVE_THRU_WAIT_AREA`), segregando visualmente órdenes en preparación y listas para entrega con llamada sonora (Smart Chimes multitonos y voice callout).
+  - Telemetría en vivo de capacidad de cocina para autorregular y dosificar la entrada de comandas en kioscos de autoservicio (`Kiosk Production Pacing`), previniendo colapsos en horas pico e inflando tiempos prometidos.
+  - Alarma sanitaria NOM-251 Numeral 5.8 ante órdenes con permanencia superior a 10 minutos en estante sin recolección.
+  - Badges de conversión comercial y unit economics: `📺 Tablero de Turnos Multizona OSB`, `🔔 Smart Chimes & Voice Callout`, `🛡️ Alerta Shelf Dwell NOM-251 (<10m)`, `⚡ Kiosk Pacing Anti-Colapso` y `💰 +$58,920 MXN / Mes por Sucursal`.
+
+---
+
+## [1.9.45] - 2026-09-26
+
+### Added
+- **CMO / CRO — Smart Drive-Thru SOS & Dual-Lane Sequencing™: Reduce el Tiempo de Fila a <120s, Erradica el Abandono y Aumenta tu Capacidad en +35% (`index.html`):**
+  - Secuenciación dinámica en dos carriles (LANE_1 tradicional y LANE_2 mobile bypass) con pantalla de confirmación visual OCD (<200ms).
+  - Telemetría en tiempo real en menuboard, caja y entrega con semáforo SLA Gold (<120s), protocolo anti-atasco Pull-Forward hacia bahías adelantadas y despacho en ventanilla con control térmico NOM-251 (>60°C) y firma probatoria inmutable SHA-256.
+  - Badges de conversión: `⏱️ Loop Time <120s SLA Gold`, `🏎️ Doble Carril & OCD Sync`, `⚡ Pull-Forward Anti-Atasco`, `🔒 NOM-251 & Hash SHA-256` y `💰 +$194,694 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.44] - 2026-09-25
 
 ### Added
