@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.44] - 2026-09-25
+
+### Added
+- **CMO / CRO — Smart Curbside Geofence & Vehicle Handshake™: Recolección en Auto en <60s, Cero Congestión y Ahorro del 30% en Comisiones (`index.html`):**
+  - Módulo interactivo de detección telemática de proximidad GPS con 3 geovallas perimetrales y empaque Just-In-Time a los 5 minutos de aproximación.
+  - Asignación inteligente de bahías exclusivas de estacionamiento (`CURBSIDE_BAY_1` a `CURBSIDE_BAY_6`) con telemetría en tiempo real de modelo y placas vehiculares.
+  - Protocolo de entrega contactless en ventanilla con verificación de PIN de 4 dígitos, control de temperatura NOM-251 (>60°C) y firma criptográfica SHA-256 inmutable.
+  - Badges de conversión comercial y unit economics: `🚗 Entrega en Auto <60s SLA`, `📍 Geovallas de Proximidad 5-Min`, `🅿️ Bahías Exclusivas 1 a 6`, `🔒 Contactless PIN & SHA-256` y `💰 +$61,044 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.43] - 2026-09-25
 
 ### Added
