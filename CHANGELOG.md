@@ -6,6 +6,16 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.47] - 2026-09-26
+
+### Added
+- **CMO / CRO — Digital Recipe Viewer & SOP Assembly Engine™: Estandarización al Gramo, Cero Errores de Modificadores y Blindaje de Alérgenos NOM-051 (`index.html`):**
+  - Fichas técnicas interactivas paso a paso en cada pantalla KDS con especificación de gramaje nominal, tolerancia algorítmica y control estricto de alérgenos bajo NOM-051 (`GLUTEN`, `DAIRY`, `EGGS`, `PEANUTS`, `SOY`, `SESAME`).
+  - Checklist digital obligatorio previo al bump con termometría HACCP NOM-251 (>60°C) y firma criptográfica SHA-256 (`auditHash`) inmutable bajo Código de Comercio Art. 89.
+  - Badges de conversión comercial y unit economics: `📖 Ficha Técnica SOP Interactiva`, `⚖️ Control al Gramo (Food Cost Shield)`, `🛡️ Blindaje Alérgenos NOM-051`, `🌡️ Termometría HACCP >60°C NOM-251` y `💰 +$39,100 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.46] - 2026-09-26
 
 ### Added
