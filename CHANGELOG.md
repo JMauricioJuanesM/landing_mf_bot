@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.52] - 2026-09-26
+
+### Added
+- **CMO / CRO — Smart Hot-Holding Telemetry, Bain-Marie & Heat-Lamp Shelf-Life Guard™: Alimentos Siempre a >=60°C, Cero Quejas por Comida Fría, Cumplimiento Estricto NOM-251 Num. 5.8 y Desecho Deducible SAT (`index.html`):**
+  - Módulo comercial interactivo de telemetría y control térmico en tiempo real para barras calientes, mesas de vapor (baño maría), vitrinas y rampas térmicas en pase.
+  - Ingesta de sondas digitales de aguja IoT con semáforo inteligente de amortiguamiento preventivo en 63.0°C y candado sanitario crítico ante violación de ZPT (<60°C).
+  - Cronómetro descendente de expiración organoléptica para erradicar comida reseca o sobrecocida, protocolo de recalentamiento rápido a >=74°C y actas de desecho con firma SHA-256 para deducibilidad del 100% ante el SAT (LISR Art. 27 Fracc. XX).
+  - Badges de conversión comercial y unit economics: `🍲 Retención Térmica >=60°C NOM-251 Num. 5.8`, `🚨 Alerta de Amortiguamiento 63°C`, `🛡️ Blindaje LFPC Art. 92 (Cero Devoluciones)`, `📉 -88.4% Quejas por Comida Fría` y `💰 +$52,500 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.51] - 2026-09-26
 
 ### Added
