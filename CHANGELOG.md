@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.51] - 2026-09-26
+
+### Added
+- **CMO / CRO — Smart Cook-Chill, Rapid Blast Chiller & Temperature Danger Zone (TDZ) Emergency Guard™: Cero Brotes Bacterianos, Cumplimiento Estricto NOM-251 Num. 5.7 y Blindaje COFEPRIS / SAT (`index.html`):**
+  - Módulo comercial interactivo de monitoreo térmico en 2 fases para abatimiento rápido de preparaciones en volumen (60°C a <=21°C en <120 min, y a <=4.0°C en <240 min).
+  - Telemetría en tiempo real con sondas Bluetooth IoT y alertas automáticas de intervención preventiva (`SPLIT_TO_SHALLOW_PANS_2INCH`, `ADD_ICE_BATH`, `TRANSFER_TO_BLAST_CHILLER`).
+  - Candado sanitario crítico irreversible ante violación de ZPT con acta digital de desecho criptográfica SHA-256 para deducibilidad fiscal al 100% de mermas ante el SAT (LISR Art. 27 Fracc. XX) y blindaje ante COFEPRIS.
+  - Badges de conversión comercial y unit economics: `🌡️ Abatimiento HACCP 2 Fases (60°C → 4°C)`, `🚨 Alerta Preventiva Slow-Cooling`, `🛡️ NOM-251 Numeral 5.7 Certificado`, `🦠 -99.7% Riesgo de Intoxicaciones` y `💰 +$60,900 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.48] - 2026-09-26
 
 ### Added
