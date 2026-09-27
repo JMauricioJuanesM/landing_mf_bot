@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.53] - 2026-09-27
+
+### Added
+- **CMO / CRO — Smart Cold-Holding Telemetry, Salad Bar & Sushi/Ceviche Prep-Table Guard™: Alimentos Siempre a <=4°C / <=7°C, Cero Intoxicaciones por Mariscos/Lácteos, Cumplimiento NOM-251 Num. 5.8 y Desecho Deducible SAT (`index.html`):**
+  - Módulo comercial interactivo de telemetría y control térmico en tiempo real para mesas refrigeradas de insertos, vitrinas de sushi, camas de hielo escamado y barras frías de autoservicio.
+  - Ingesta de sondas IoT con semáforos de advertencia preventiva (3.2°C en mariscos y lácteos / 5.5°C en vegetales procesados) y candado sanitario crítico (>=10.0°C o TDZ prolongada) con Auto-86 automático en comandas.
+  - Protocolos certificados de rescate térmico (recambio de cama de hielo escamado, trasvase a inserto de acero inoxidable pre-congelado a -18°C y abatimiento de choque) con actas digitales de desecho con firma SHA-256 (Cód. Comercio Art. 89) para deducción al 100% ante el SAT (LISR Art. 27 Fracc. XX).
+  - Badges de conversión comercial y unit economics: `🥗 Retención Fría <=4.0°C / <=7.0°C NOM-251 Num. 5.8`, `🚨 Alerta Preventiva sub-3.2°C / 5.5°C`, `🛡️ Blindaje Listeria & Vibrio (Cero Brotes)`, `📉 -76.5% Mermas en Barra Fría` y `💰 +$57,900 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.52] - 2026-09-26
 
 ### Added
