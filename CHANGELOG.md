@@ -6,7 +6,15 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.9.62] - 2026-09-30
+## [1.9.63] - 2026-09-30
+
+### Changed
+- **UX / CRO — Desaturación Radical & Enfoque en Beneficios Clave (`index.html`):**
+  - Reemplazo de la vista saturada de 51 fichas técnicas por una cuadrícula ejecutiva de 6 pilares esenciales de alto impacto para dueños de restaurantes (WhatsApp 24/7 con IA, Pantalla de Cocina KDS, Rastreo GPS en tiempo real, Control de Insumos y Mermas, Inocuidad y Calidad Garantizada, Cortes de Caja y Reportes).
+  - Empaquetado de los 51 módulos y especificaciones técnicas profundas en un drawer desplegable interactivo (`toggleDetailedEcosystem`), oculto por defecto para garantizar una lectura rápida y sin sobrecarga cognitiva.
+  - Actualización de navegación a "Beneficios & Funciones".
+
+---
 
 ### Changed
 - **UX / CRO — Rediseño Arquitectónico de Landing Page & Desaturación de Sección WhatsApp (`index.html`):**
