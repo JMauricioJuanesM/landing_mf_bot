@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.60] - 2026-09-30
+
+### Added
+- **CMO / CRO — Smart Walk-In Cold & Dry Storage Management, Vertical Cross-Contamination Guard & Door Ajar Telemetry™: Almacenamiento en Frío y Seco NOM-251 Num. 5.3, Distintivo H, Elevación de 15cm del Suelo, Sensor de Puerta Abierta sub-3 min, Jerarquía Vertical de 4 Niveles y ROI en <12 Horas (`index.html`):**
+  - Módulo comercial interactivo de control telemático de cámaras frigoríficas y bodegas de secos.
+  - Compuerta estricta de jerarquía vertical de almacenamiento de 4 niveles para erradicación total de contaminación biológica cruzada por goteo (Nivel 1 superior RTE y Nivel 4 inferior aves crudas).
+  - Telemetría IoT de sensores magnéticos de puerta abierta (>180s) para evitar pérdida de frío y proteger compresores frigoríficos, y control de humedad relativa en almacén de secos (<=65% RH).
+  - Auditoría digital de elevación reglamentaria de estantería y tarimas (>=15.0 cm sobre el piso) con bitácoras criptográficas inmutables SHA-256 (Cód. Comercio Art. 89).
+  - Badges de conversión comercial y unit economics: `❄️ Almacenamiento Frío/Seco NOM-251 Num. 5.3`, `🛡️ Jerarquía Vertical 4 Niveles Anti-Contaminación`, `📏 Elevación >=15cm del Piso Distintivo H`, `🚪 Alarma Puerta Abierta sub-3 min` y `💰 +$97,000 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.59] - 2026-09-29
 
 ### Added
