@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.66] - 2026-09-30
+
+### Added
+- **CMO / CRO — Smart Commercial Ice Machine Sanitation, Potable Water Free Chlorine Telemetry, Scoop Holster Guard & Dual-Use Ice Segregation Engine™: Hielo Inocuo NOM-251 Num. 5.2.1 y 5.6.7, Distintivo H, Compuerta Paramétrica de Cloro Libre, Candado Anti-Reutilización y ROI en <10 Horas (`index.html`):**
+  - Módulo comercial interactivo de supervisión telemática y paramétrica de máquinas de hielo comerciales conforme a la NOM-251-SSA1-2009 Numeral 5.2.1/5.6.7, NOM-127-SSA1-2021, NMX-F-605-NORMEX-2018 (Distintivo H) y FDA Food Code.
+  - Telemetría de agua potable de alimentación con compuerta paramétrica de cloro libre residual (0.2 a 1.5 mg/L) y bloqueo automático de producción.
+  - Monitoreo de cucharón en funda exterior sanitizada y prohibición total de vasos de vidrio o contacto manual.
+  - Candado algorítmico contra contaminación cruzada por reutilización de hielo de enfriamiento para bebidas (NOM-251 Num. 5.6.7).
+  - Badges de conversión comercial y unit economics: `🧊 Hielo Inocuo Grado Alimento NOM-251`, `💧 Cloro Libre 0.2-1.5 mg/L NOM-127`, `🛡️ Funda Exterior de Cucharón Distintivo H`, `🚫 Candado Anti-Reutilización NOM-251 5.6.7` y `💰 +$109,201 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.65] - 2026-09-30
 
 ### Added
