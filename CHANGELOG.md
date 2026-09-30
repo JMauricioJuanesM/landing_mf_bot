@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.61] - 2026-09-30
+
+### Added
+- **CMO / CRO — Smart Fresh Produce Washing, Chemical Sanitizing PPM Gate & Immersion Timer™: Desinfección de Frutas y Verduras NOM-251 Num. 5.6.1, Distintivo H Num. 5.7, Compuerta Paramétrica de PPM, Candado de Agotamiento de Tina y ROI en <12 Horas (`index.html`):**
+  - Módulo comercial interactivo de lavado y desinfección trifásica de vegetales, frutas y hierbas consumidas crudas.
+  - Compuerta paramétrica de concentración química en PPM (100-200 PPM cloro / 40-85 PPM ácido peracético) con tiras reactivas.
+  - Cronómetro interactivo de contacto letal con bloqueo algorítmico de retiro prematuro.
+  - Candado contra agotamiento de solución por carga orgánica (máximo 3 lotes por tina).
+  - Badges de conversión comercial y unit economics: `🥬 Desinfección Vegetales NOM-251 Num. 5.6.1`, `🧪 Compuerta de PPM Cloro/PAA Distintivo H`, `⏱️ Cronómetro KDS con Bloqueo de Retiro`, `🔒 Candado Agotamiento Orgánico (3 lotes)` y `💰 +$91,500 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.60] - 2026-09-30
 
 ### Added
