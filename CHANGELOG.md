@@ -6,7 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.9.61] - 2026-09-30
+## [1.9.62] - 2026-09-30
+
+### Changed
+- **UX / CRO — Rediseño Arquitectónico de Landing Page & Desaturación de Sección WhatsApp (`index.html`):**
+  - Desaturación integral de la sección `#demo` ("Vende más por WhatsApp sin saturar a tu equipo"): balance simétrico 1:1 con el simulador de chat, reduciendo la columna a los 4 pilares esenciales de experiencia conversacional (IA especializada, cálculo GPS geoespacial, comanda digital y rastreo en vivo con OTP).
+  - Creación de la sección dedicada de alto impacto `#ecosistema` ("Cocina Inteligente (KDS), Inocuidad NOM-251 & Operaciones"), desacoplando los 51 módulos operativos de la columna de chat.
+  - Implementación de cuadrícula responsiva multi-columna (3 columnas en desktop, 2 en tablet y 1 en mobile) con tarjetas de alto impacto visual, hover states e insignia de categoría.
+  - Sistema de filtrado interactivo por pestañas funcionales (Todos, Cocina & KDS, Inocuidad NOM-251, Almacén & Mermas, Sala & Mostrador, Delivery & Despacho, FinTech & Enterprise) con renderizado en tiempo real.
+  - Inclusión de enlace directo en barra de navegación (`#ecosistema`).
+
+---
+
 
 ### Added
 - **CMO / CRO — Smart Fresh Produce Washing, Chemical Sanitizing PPM Gate & Immersion Timer™: Desinfección de Frutas y Verduras NOM-251 Num. 5.6.1, Distintivo H Num. 5.7, Compuerta Paramétrica de PPM, Candado de Agotamiento de Tina y ROI en <12 Horas (`index.html`):**
