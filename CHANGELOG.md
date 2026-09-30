@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.58] - 2026-09-29
+
+### Added
+- **CMO / CRO — Smart Rapid Food Reheating, Steam Table Hot-Holding & Bain-Marie Misuse Prevention Guard™: Recalentamiento Acelerado >=74°C en <=2h NOM-251 Num. 5.6.5, Mantenimiento >=60°C Num. 5.6.6 y Distintivo H, Bloqueo de Recalentado Ilícito en Baño María, Ahorro de +$22,500 MXN/mes en Mermas y ROI en <13 Horas (`index.html`):**
+  - Módulo comercial interactivo de control telemático de regeneración térmica en estufas/hornos y mantenimiento en mesas de vapor y bufeteras.
+  - Candado sanitario automático anti-mal uso (`LOCKDOWN_ILLEGAL_HOLDING_REHEAT_ATTEMPT`) que bloquea el recalentamiento negligente en mesas de vapor de producto frío (<50°C), forzando el ciclo en equipos de cocción rápida.
+  - Alarma de ventana crítica (120 min) y gate sanitario de transferencia a mesa caliente con exigencia de >=74.0°C en centro geométrico.
+  - Monitoreo continuo de mesa caliente (>=60.0°C) con alarma preventiva (55-59.9°C) y desecho ineludible (`LOCKDOWN_HOLDING_CRITICAL_DISCARD`) con actas digitales firmadas con SHA-256 (Cód. Comercio Art. 89).
+  - Badges de conversión comercial y unit economics: `♨️ Recalentamiento Rápido >=74°C NOM-251 Num. 5.6.5`, `🍲 Mantenimiento en Caliente >=60°C Num. 5.6.6`, `🚫 Candado Anti-Recalentado Ilícito en Baño María`, `⏱️ Alarma Ventana Crítica (<=120 min)` y `💰 +$87,700 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.53] - 2026-09-27
 
 ### Added
