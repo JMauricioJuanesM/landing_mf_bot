@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.59] - 2026-09-29
+
+### Added
+- **CMO / CRO — Smart Raw Material Receiving, Inbound Cold-Chain Quality Gate & Supplier Telemetry Guard™: Recepción en Andén NOM-251 Num. 5.1/5.2, Distintivo H, Telemetría de Furgón de Proveedor, Manifiestos Criptográficos SHA-256 (LFPC Art. 92) y ROI en <11 Horas (`index.html`):**
+  - Módulo comercial interactivo de compuerta de calidad e inspección telemática al desembarque de insumos perecederos y abarrotes.
+  - Validación paramétrica de temperatura al centro (<=4.0°C proteínas frescas, <=-18.0°C congelados, <=7.0°C lácteos y vegetales) y furgón transportista (<=7.0°C refrigerado / <=-18.0°C congelador) según NOM-251 y Distintivo H.
+  - Ruta de rescate térmico asistido hacia abatidor rápido (*blast chiller*) para carnes frescas entre 4.1°C y 4.5°C, evitando rechazos innecesarios y garantizando descenso térmico acelerado.
+  - Generación de Manifiestos Digitales de Devolución con firma de transportista en pantalla y sello criptográfico SHA-256 inmutable (Cód. Comercio Art. 89) para reclamación mercantil automática de notas de crédito a proveedores (LFPC Art. 92).
+  - Badges de conversión comercial y unit economics: `🚚 Recepción en Andén NOM-251 Num. 5.1/5.2`, `❄️ Calidad de Cadena de Frío <=4°C / <=-18°C`, `🚛 Telemetría Furgón Proveedor Distintivo H`, `📝 Manifiesto de Rechazo SHA-256 (LFPC Art. 92)` y `💰 +$108,500 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.58] - 2026-09-29
 
 ### Added
