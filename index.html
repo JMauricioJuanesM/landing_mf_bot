@@ -2748,38 +2748,6 @@
         {"@type": "Question", "name": "¿Funciona para cualquier tipo de restaurante?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Taquerías, pizzerías, cafeterías, dark kitchens, food trucks y cualquier negocio de alimentos con delivery o para llevar."}}
       ]
     }
-    
-        // Toggle Detailed Technical Specs Drawer
-        function toggleDetailedEcosystem() {
-            const drawer = document.getElementById('ecosystemDetailsDrawer');
-            const arrow = document.getElementById('toggleEcosystemArrow');
-            const text = document.getElementById('toggleEcosystemText');
-            if (!drawer) return;
-            const isHidden = drawer.style.display === 'none' || !drawer.style.display;
-            if (isHidden) {
-                drawer.style.display = 'block';
-                if (arrow) arrow.textContent = '▲';
-                if (text) text.textContent = 'Ocultar Arquitectura Técnica y Módulos Avanzados';
-            } else {
-                drawer.style.display = 'none';
-                if (arrow) arrow.textContent = '▼';
-                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (51 Módulos Avanzados)';
-            }
-        }
-
-        // Ecosystem KDS Tab Filter
-        function filterEcosystem(cat, el) {
-            document.querySelectorAll('.eco-tab').forEach(b => b.classList.remove('active'));
-            if (el) el.classList.add('active');
-            document.querySelectorAll('.eco-card').forEach(c => {
-                if (cat === 'all' || c.dataset.category === cat) {
-                    c.style.display = 'flex';
-                } else {
-                    c.style.display = 'none';
-                }
-            });
-        }
-
     </script>
 
     <!-- Footer -->
@@ -2799,6 +2767,47 @@
 
     <!-- Interactive Scripts -->
     <script>
+        // === Ecosystem Detailed Technical Specs Drawer Toggle ===
+        function toggleDetailedEcosystem() {
+            const drawer = document.getElementById('ecosystemDetailsDrawer');
+            const arrow = document.getElementById('toggleEcosystemArrow');
+            const text = document.getElementById('toggleEcosystemText');
+            if (!drawer) return;
+            const isHidden = drawer.style.display === 'none' || getComputedStyle(drawer).display === 'none';
+            if (isHidden) {
+                drawer.style.display = 'block';
+                if (arrow) arrow.textContent = '▲';
+                if (text) text.textContent = 'Ocultar Arquitectura Técnica y Módulos Avanzados';
+            } else {
+                drawer.style.display = 'none';
+                if (arrow) arrow.textContent = '▼';
+                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (51 Módulos Avanzados)';
+            }
+        }
+        window.toggleDetailedEcosystem = toggleDetailedEcosystem;
+
+        // === Ecosystem KDS Tab Filter ===
+        function filterEcosystem(cat, el) {
+            document.querySelectorAll('.eco-tab').forEach(b => b.classList.remove('active'));
+            if (el) el.classList.add('active');
+            document.querySelectorAll('.eco-card').forEach(c => {
+                if (cat === 'all' || c.dataset.category === cat) {
+                    c.style.display = 'flex';
+                } else {
+                    c.style.display = 'none';
+                }
+            });
+        }
+        window.filterEcosystem = filterEcosystem;
+
+        // Auto-bind toggle button click listener on DOM ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('toggleEcosystemBtn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', toggleDetailedEcosystem);
+            }
+        });
+
         // === UTM Tracking: Capture & persist UTM params for lead attribution ===
         (function() {
             const params = new URLSearchParams(window.location.search);
