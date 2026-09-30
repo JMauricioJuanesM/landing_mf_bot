@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.67] - 2026-09-30
+
+### Added
+- **CMO / CRO — Smart Color-Coded Cutting Board, Knife Sterilization & Anti-Cross Contamination Guard™: Tablas Codificadas por Color NOM-251 Num. 5.6.2, Distintivo H Num. 5.6, Paro por Rotación a 120 min, Tina de Desinfección de Cuchillos, Sensor de Desgaste de Ranuras y ROI en <11 Horas (`index.html`):**
+  - Módulo comercial interactivo de supervisión telemática de la estación de picado y corte conforme a la NOM-251-SSA1-2009 Numeral 5.2.1/5.6.2 y NMX-F-605-NORMEX-2014 (Distintivo H Num. 5.6.2/5.6.3).
+  - Segregación física por código de color obligatorio en 6 gamas reglamentarias (Rojo, Amarillo, Azul, Verde, Blanco, Marrón) con bloqueo algorítmico inmediato de contaminación cruzada.
+  - Cronómetro de uso continuo con alerta a 105 min y paro imperativo a 120 min para lavado y desinfección obligatoria.
+  - Validación de concentración de tinas de desinfección de cuchillos (cloro 100-200 PPM / amonio cuaternario 200-400 PPM).
+  - Auditoría digital de profundidad de ranuras superficiales contra acumulación de biopelículas bacterianas (bloqueo ante surcos >1.5 mm).
+  - Badges de conversión comercial y unit economics: `🔪 Código 6 Colores Distintivo H Num. 5.6`, `⏱️ Paro Rotación Obligatoria 120 min NOM-251`, `🧪 Tina de Desinfección Cuchillos 100-200 PPM`, `📏 Auditoría de Ranuras Anti-Biofilm <=1.5mm` y `💰 +$104,901 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.66] - 2026-09-30
 
 ### Added
