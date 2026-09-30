@@ -6,6 +6,18 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
+## [1.9.65] - 2026-09-30
+
+### Added
+- **CMO / CRO — Smart Controlled Food Thawing, Defrosting Telemetry & Anti-Refreezing Guard™: Descongelación Inocua NOM-251 Num. 5.6.3, Distintivo H, Candado Anti-Recongelación, Erradicación de Drip Loss y ROI en <11 Horas (`index.html`):**
+  - Módulo comercial interactivo de supervisión telemática y paramétrica de descongelación controlada en cocinas comerciales y restaurantes conforme a la NOM-251-SSA1-2009 Numeral 5.6.3, NMX-F-605-NORMEX-2018 (Distintivo H) y FDA Food Code §3-501.12/13.
+  - Supervisión integral de los 4 métodos normativos autorizados (Refrigeración en cámara fría <=4.0°C, chorro continuo de agua potable fría <=20.0°C con cronómetro estricto de 120 minutos, microondas con cocción inmediata y cocción directa).
+  - Bloqueo algorítmico inmediato de descongelación a temperatura ambiente o agua caliente (LOCKDOWN_ILLEGAL_ROOM_TEMP).
+  - Candado estricto contra recongelación ilícita de alimentos descongelados (NOM-251 Num. 5.6.3.2) con acta de desviación y firma SHA-256.
+  - Badges de conversión comercial y unit economics: `🥩 Descongelación Inocua NOM-251 Num. 5.6.3`, `🔒 Candado Anti-Recongelación NOM-251`, `⏱️ Cronómetro Agua <=20°C Máx 120 min`, `💧 -86% Pérdida por Drip Loss` y `💰 +$96,901 MXN / Mes por Sucursal`.
+
+---
+
 ## [1.9.63] - 2026-09-30
 
 ### Changed
