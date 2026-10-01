@@ -1491,7 +1491,7 @@
             <div class="ecosystem-toggle-wrapper">
                 <button type="button" id="toggleEcosystemBtn" class="ecosystem-toggle-btn" onclick="toggleDetailedEcosystem()">
                     <span class="toggle-btn-icon">🔬</span>
-                    <span id="toggleEcosystemText" class="toggle-btn-text">Ver Arquitectura Técnica Completa (51 Módulos Avanzados)</span>
+                    <span id="toggleEcosystemText" class="toggle-btn-text">Ver Arquitectura Técnica Completa (55 Módulos Avanzados)</span>
                     <span id="toggleEcosystemArrow" class="toggle-btn-arrow">▼</span>
                 </button>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 10px;">
@@ -1503,13 +1503,13 @@
             <div id="ecosystemDetailsDrawer" class="ecosystem-details-drawer" style="display: none;">
                 <!-- Category Filter Tabs -->
             <div class="ecosystem-tabs">
-                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (51)</button>
+                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (55)</button>
                 <button class="eco-tab" onclick="filterEcosystem('kds', this)">🍳 Cocina & KDS (9)</button>
-                <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (8)</button>
+                <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (11)</button>
                 <button class="eco-tab" onclick="filterEcosystem('almacen', this)">📦 Almacén & Mermas (8)</button>
                 <button class="eco-tab" onclick="filterEcosystem('sala', this)">🍽️ Sala & Mostrador (6)</button>
                 <button class="eco-tab" onclick="filterEcosystem('delivery', this)">🛵 Delivery & Despacho (13)</button>
-                <button class="eco-tab" onclick="filterEcosystem('enterprise', this)">🚀 FinTech & Enterprise (7)</button>
+                <button class="eco-tab" onclick="filterEcosystem('enterprise', this)">🚀 FinTech & Enterprise (8)</button>
             </div>
 
             <!-- Multi-Column Grid -->
@@ -2511,6 +2511,22 @@
                                     <span style="background: rgba(147, 51, 234, 0.15); color: #7c3aed; padding: 3px 10px; border-radius: 9999px;">📑 Contrato Mercantil & CFDI 4.0 Clave 80141600</span>
                     </div>
                 </div>
+                <div class="eco-card" data-category="enterprise">
+                    <div>
+                        <div class="eco-card-header">
+                            <div class="eco-card-icon">🔐</div>
+                            <div class="eco-card-meta">
+                                <span class="eco-card-category">🚀 FinTech & Enterprise</span>
+                                <h4 class="eco-card-title">Secrets Rotation Guard & TTL Governance™</h4>
+                            </div>
+                        </div>
+                        <p class="eco-card-desc">Rotación automatizada de secretos criptográficos cada 90 días, gobierno centralizado de TTL en Redis con 7 políticas por tipo de dato, y validación CI de migraciones pendientes. Blindaje enterprise-grade.</p>
+                    </div>
+                    <div class="eco-card-badges">
+                        <span style="background: rgba(168, 85, 247, 0.15); color: #9333ea; padding: 3px 10px; border-radius: 9999px;">🛡️ Sprint 81 · Seguridad</span>
+                                    <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">💰 $12,500 MXN/mes en prevención de brechas</span>
+                    </div>
+                </div>
             </div>
             </div> <!-- /ecosystemDetailsDrawer -->
         </div>
@@ -2671,7 +2687,7 @@
         </div>
     </section>
 
-    <!-- AFILIADOS SECTION V1.9.30 (moved before footer) -->
+    <!-- AFILIADOS SECTION V1.9.68 (moved before footer) -->
     <section id="afiliados" class="afiliados" style="padding: 70px 20px; text-align: center; background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(16, 185, 129, 0.08) 100%); border-top: 1px solid var(--border-color);">
     <div class="container" style="max-width: 900px; margin: 0 auto;">
       <span class="pill-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 18px; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 16px;">🤝 Red Oficial de Partners & Afiliados Gastronómicos 2026</span>
@@ -2810,7 +2826,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados.</p>
+            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados. v1.9.68</p>
             <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
                 Plataforma de comercio conversacional y logística inteligente para restaurantes en México.
             </p>
@@ -2838,7 +2854,7 @@
             } else {
                 drawer.style.display = 'none';
                 if (arrow) arrow.textContent = '▼';
-                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (51 Módulos Avanzados)';
+                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (55 Módulos Avanzados)';
             }
         }
         window.toggleDetailedEcosystem = toggleDetailedEcosystem;
