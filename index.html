@@ -1503,13 +1503,13 @@
             <div id="ecosystemDetailsDrawer" class="ecosystem-details-drawer" style="display: none;">
                 <!-- Category Filter Tabs -->
             <div class="ecosystem-tabs">
-                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (57)</button>
+                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (58)</button>
                 <button class="eco-tab" onclick="filterEcosystem('kds', this)">🍳 Cocina & KDS (9)</button>
                 <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (12)</button>
                 <button class="eco-tab" onclick="filterEcosystem('almacen', this)">📦 Almacén & Mermas (8)</button>
                 <button class="eco-tab" onclick="filterEcosystem('sala', this)">🍽️ Sala & Mostrador (6)</button>
                 <button class="eco-tab" onclick="filterEcosystem('delivery', this)">🛵 Delivery & Despacho (13)</button>
-                <button class="eco-tab" onclick="filterEcosystem('enterprise', this)">🚀 FinTech & Enterprise (8)</button>
+                <button class="eco-tab" onclick="filterEcosystem('enterprise', this)">🚀 FinTech & Enterprise (9)</button>
             </div>
 
             <!-- Multi-Column Grid -->
@@ -2563,6 +2563,24 @@
                         <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ NOM-251 Num. 5.7 · Distintivo H Num. 5.8</span>
                     </div>
                 </div>
+
+                <div class="eco-card" data-category="enterprise">
+                    <div>
+                        <div class="eco-card-header">
+                            <div class="eco-card-icon">💵</div>
+                            <div class="eco-card-meta">
+                                <span class="eco-card-category">🚀 FinTech & Enterprise</span>
+                                <h4 class="eco-card-title">Smart POS Cash Drawer Reconciliation, Multi-Channel Settlement & Blind Drop Shift Handoff Engine™</h4>
+                            </div>
+                        </div>
+                        <p class="eco-card-desc">Arqueo inteligente de caja en tiempo real y conciliación multicanal unificada (Efectivo, SPEI, Mercado Pago QR, Terminales TPV y Delivery). Protocolo de cambio de turno acelerado (&lt;3 min vs 40 min manuales) con conteo ciego anti-robo hormiga, conciliación automática de varianza (BALANCED, SURPLUS, DEFICIT), foliado digital y deducción de egresos de caja chica con comprobante para escudo fiscal SAT (LISR Art. 27), cálculo automático de retiro a bóveda reteniendo fondo del siguiente cajero, traspaso atómico de comandas activas sin pausar ventas por WhatsApp, generación instantánea de tickets térmicos ESC/POS 80mm de Cortes X y Z con doble firma, y sellado criptográfico inmutable SHA-256 (Cód. Comercio Arts. 89-94 y NOM-151) para plena eficacia probatoria ante disputas laborales y auditorías mercantiles.</p>
+                    </div>
+                    <div class="eco-card-badges">
+                        <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">💵 Sprint 84 · Cash & Shift Handoff</span>
+                        <span style="background: rgba(59, 130, 246, 0.15); color: #2563eb; padding: 3px 10px; border-radius: 9999px;">💰 +$40,900 MXN/mes por sucursal</span>
+                        <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ Cód. Comercio Arts. 89-94 · LFT Art. 110</span>
+                    </div>
+                </div>
             </div>
             </div> <!-- /ecosystemDetailsDrawer -->
         </div>
@@ -2890,7 +2908,7 @@
             } else {
                 drawer.style.display = 'none';
                 if (arrow) arrow.textContent = '▼';
-                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (57 Módulos Avanzados)';
+                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (58 Módulos Avanzados)';
             }
         }
         window.toggleDetailedEcosystem = toggleDetailedEcosystem;
