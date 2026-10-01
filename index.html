@@ -1491,7 +1491,7 @@
             <div class="ecosystem-toggle-wrapper">
                 <button type="button" id="toggleEcosystemBtn" class="ecosystem-toggle-btn" onclick="toggleDetailedEcosystem()">
                     <span class="toggle-btn-icon">🔬</span>
-                    <span id="toggleEcosystemText" class="toggle-btn-text">Ver Arquitectura Técnica Completa (56 Módulos Avanzados)</span>
+                    <span id="toggleEcosystemText" class="toggle-btn-text">Ver Arquitectura Técnica Completa (61 Módulos Avanzados)</span>
                     <span id="toggleEcosystemArrow" class="toggle-btn-arrow">▼</span>
                 </button>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 10px;">
@@ -1499,17 +1499,17 @@
                 </p>
             </div>
 
-            <!-- Drawer Desplegable con las 51 tarjetas técnicas (Oculto por defecto para no saturar) -->
+            <!-- Drawer Desplegable con las 60 tarjetas técnicas (Oculto por defecto para no saturar) -->
             <div id="ecosystemDetailsDrawer" class="ecosystem-details-drawer" style="display: none;">
                 <!-- Category Filter Tabs -->
             <div class="ecosystem-tabs">
-                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (59)</button>
+                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (61)</button>
                 <button class="eco-tab" onclick="filterEcosystem('kds', this)">🍳 Cocina & KDS (9)</button>
-                <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (13)</button>
+                <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (15)</button>
                 <button class="eco-tab" onclick="filterEcosystem('almacen', this)">📦 Almacén & Mermas (8)</button>
                 <button class="eco-tab" onclick="filterEcosystem('sala', this)">🍽️ Sala & Mostrador (6)</button>
                 <button class="eco-tab" onclick="filterEcosystem('delivery', this)">🛵 Delivery & Despacho (13)</button>
-                <button class="eco-tab" onclick="filterEcosystem('enterprise', this)">🚀 FinTech & Enterprise (9)</button>
+                <button class="eco-tab" onclick="filterEcosystem('enterprise', this)">🚀 FinTech & Enterprise (10)</button>
             </div>
 
             <!-- Multi-Column Grid -->
@@ -2598,6 +2598,49 @@
                         <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ NOM-251 Num. 5.11 · Distintivo H</span>
                     </div>
                 </div>
+                <div class="eco-card" data-category="sanidad">
+                    <div>
+                        <div class="eco-card-header">
+                            <div class="eco-card-icon">🪳</div>
+                            <div class="eco-card-meta">
+                                <span class="eco-card-category">🛡️ Inocuidad NOM-251 / Distintivo H</span>
+                                <h4 class="eco-card-title">Smart KDS Pest Control & IPM, Fumigation Scheduling, Bait Station Telemetry & Sanitary Exclusion Zone Guard™</h4>
+                            </div>
+                        </div>
+                        <p class="eco-card-desc">Sistema integral de Control de Plagas e IPM (Integrated Pest Management) con registro de proveedores con licencia NOM-256-SSA1/COFEPRIS, programación automática de fumigaciones periódicas (mensual/bimestral), grid geoespacial de estaciones de cebo y trampas (caja rodenticida, trampa adhesiva, lámpara UV, trampa de feromonas) con alertas de inspección vencida (&gt;14 días), registro de avistamientos de fauna nociva con severidad progresiva (aislado/recurrente/infestación), activación automática de zona de exclusión sanitaria que bloquea preparación de alimentos en áreas afectadas hasta fumigación certificada + 48h monitoreo con cero avistamientos, auditoría de barreras estructurales anti-plagas (burletes &lt;6mm, mosquiteros, sellos de tuberías, cubiertas de coladeras, cortinas de tiras en andén) y sellado criptográfico SHA-256 con plena eficacia probatoria ante COFEPRIS, Distintivo H y tribunales mercantiles.</p>
+                    </div>
+                    <div class="eco-card-badges">
+                        <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">🪳 Sprint 86 · Control de Plagas & IPM</span>
+                        <span style="background: rgba(59, 130, 246, 0.15); color: #2563eb; padding: 3px 10px; border-radius: 9999px;">💰 +$39,205 MXN/mes por sucursal</span>
+                        <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ NOM-251 Num. 5.9 · NOM-256 · Distintivo H</span>
+                    </div>
+                </div>
+                <div class="feature-module eco-card" data-category="sanidad">
+                    <div>
+                        <div class="eco-card-header">
+                            <div class="eco-card-icon">🗑️</div>
+                            <div class="eco-card-meta">
+                                <span class="eco-card-category">🛡️ Inocuidad NOM-251 / Distintivo H</span>
+                                <h4 class="eco-card-title">Smart KDS Food Waste Tracking, HACCP Waste Disposal Guard & Food Spoilage Early-Warning Engine™</h4>
+                            </div>
+                        </div>
+                        <div class="eco-card-desc">
+                            <ul style="list-style: none; padding-left: 0; margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+                                <li>✓ Registro instantáneo de mermas con cálculo automático de costo en MXN</li>
+                                <li>🚥 Food Spoilage Early-Warning: semáforo de riesgo SAFE / MONITOR / ELEVATED / CRITICAL / DISCARD IMMEDIATE</li>
+                                <li>🚫 HACCP Waste Disposal Guard: valida método de disposición legal (prohíbe vertido en drenaje de biológicos)</li>
+                                <li>🔗 Trazabilidad tri-hash SHA-256 por evento (registro → disposición → auditoría) ante SEMARNAT y COFEPRIS</li>
+                                <li>📊 Dashboard diario de mermas: top 3 items, categorías, tasa % vs baseline 3%</li>
+                                <li>💰 Unit Economics: +$72,100 MXN/mes bruto por sucursal | Payback 0.63 días</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="eco-card-badges">
+                        <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">🗑️ Sprint 87 · Control de Mermas</span>
+                        <span style="background: rgba(59, 130, 246, 0.15); color: #2563eb; padding: 3px 10px; border-radius: 9999px;">💰 ROI 4,710% | Payback 15.1 h</span>
+                        <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ NOM-161-SEMARNAT | NOM-251 Num. 5.4/5.10 | Distintivo H | LGPGIR Art. 19</span>
+                    </div>
+                </div>
             </div>
             </div> <!-- /ecosystemDetailsDrawer -->
         </div>
@@ -2897,7 +2940,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados. v1.9.72</p>
+            <p>© 2026 ComandaFlow AI · Desarrollado por MasFast OS · Todos los derechos reservados. v1.9.74</p>
             <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">
                 Plataforma de comercio conversacional y logística inteligente para restaurantes en México.
             </p>
@@ -2925,7 +2968,7 @@
             } else {
                 drawer.style.display = 'none';
                 if (arrow) arrow.textContent = '▼';
-                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (58 Módulos Avanzados)';
+                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (61 Módulos Avanzados)';
             }
         }
         window.toggleDetailedEcosystem = toggleDetailedEcosystem;
