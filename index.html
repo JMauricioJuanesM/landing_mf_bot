@@ -1491,7 +1491,7 @@
             <div class="ecosystem-toggle-wrapper">
                 <button type="button" id="toggleEcosystemBtn" class="ecosystem-toggle-btn" onclick="toggleDetailedEcosystem()">
                     <span class="toggle-btn-icon">🔬</span>
-                    <span id="toggleEcosystemText" class="toggle-btn-text">Ver Arquitectura Técnica Completa (55 Módulos Avanzados)</span>
+                    <span id="toggleEcosystemText" class="toggle-btn-text">Ver Arquitectura Técnica Completa (56 Módulos Avanzados)</span>
                     <span id="toggleEcosystemArrow" class="toggle-btn-arrow">▼</span>
                 </button>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 10px;">
@@ -2527,6 +2527,24 @@
                                     <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">💰 $12,500 MXN/mes en prevención de brechas</span>
                     </div>
                 </div>
+
+                <div class="eco-card" data-category="enterprise">
+                    <div>
+                        <div class="eco-card-header">
+                            <div class="eco-card-icon">👥</div>
+                            <div class="eco-card-meta">
+                                <span class="eco-card-category">🚀 FinTech & Enterprise</span>
+                                <h4 class="eco-card-title">Smart Staff Shift Scheduling, Real-Time Labor Cost Engine, Demand-Based Optimal Staffing & LFT Compliance Guard™</h4>
+                            </div>
+                        </div>
+                        <p class="eco-card-desc">Generación automática de turnos semanales basada en proyección de demanda (1 BOH por cada $8,000 MXN de GMV, 1 FOH por cada $12,000 MXN). Motor de cumplimiento laboral LFT Art. 58-68 con compuerta de jornada máxima (Diurna 8h, Mixta 7.5h, Nocturna 7h), acumulador semanal de 48h, descanso obligatorio de 30 min tras 6h continuas, guardián de horas extras al 200-300% con límite de 3h/día y 3 veces/semana, validación de alta IMSS, reloj digital de entrada/salida con geovalla, dashboard de costo laboral en tiempo real vs GMV (target 16-22%) y firma criptográfica SHA-256 para trazabilidad auditoria ante PROFEDET, STPS y Juntas de Conciliación.</p>
+                    </div>
+                    <div class="eco-card-badges">
+                        <span style="background: rgba(168, 85, 247, 0.15); color: #9333ea; padding: 3px 10px; border-radius: 9999px;">👥 Sprint 82 · Staffing & Labor</span>
+                                    <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">💰 +$204,850 MXN/mes por sucursal</span>
+                                    <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ LFT Art. 58-69 · IMSS Ley Art. 12</span>
+                    </div>
+                </div>
             </div>
             </div> <!-- /ecosystemDetailsDrawer -->
         </div>
@@ -2854,7 +2872,7 @@
             } else {
                 drawer.style.display = 'none';
                 if (arrow) arrow.textContent = '▼';
-                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (55 Módulos Avanzados)';
+                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (56 Módulos Avanzados)';
             }
         }
         window.toggleDetailedEcosystem = toggleDetailedEcosystem;
