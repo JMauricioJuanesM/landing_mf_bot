@@ -1503,9 +1503,9 @@
             <div id="ecosystemDetailsDrawer" class="ecosystem-details-drawer" style="display: none;">
                 <!-- Category Filter Tabs -->
             <div class="ecosystem-tabs">
-                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (55)</button>
+                <button class="eco-tab active" onclick="filterEcosystem('all', this)">🔘 Todos (57)</button>
                 <button class="eco-tab" onclick="filterEcosystem('kds', this)">🍳 Cocina & KDS (9)</button>
-                <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (11)</button>
+                <button class="eco-tab" onclick="filterEcosystem('sanidad', this)">🛡️ Inocuidad NOM-251 (12)</button>
                 <button class="eco-tab" onclick="filterEcosystem('almacen', this)">📦 Almacén & Mermas (8)</button>
                 <button class="eco-tab" onclick="filterEcosystem('sala', this)">🍽️ Sala & Mostrador (6)</button>
                 <button class="eco-tab" onclick="filterEcosystem('delivery', this)">🛵 Delivery & Despacho (13)</button>
@@ -2545,6 +2545,24 @@
                                     <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ LFT Art. 58-69 · IMSS Ley Art. 12</span>
                     </div>
                 </div>
+
+                <div class="eco-card" data-category="sanidad">
+                    <div>
+                        <div class="eco-card-header">
+                            <div class="eco-card-icon">🍖</div>
+                            <div class="eco-card-meta">
+                                <span class="eco-card-category">🛡️ Inocuidad NOM-251</span>
+                                <h4 class="eco-card-title">Smart Cooking Core Temperature Verification, CCP2 Thermal Lethality Kill Step & Bluetooth Thermopen Probe Telemetry Guard™</h4>
+                            </div>
+                        </div>
+                        <p class="eco-card-desc">Verificación algorítmica obligatoria de temperatura interna en centro térmico (CCP2) bajo NOM-251 Num. 5.7 y Distintivo H Num. 5.8: Aves y carnes rellenas (&gt;=74°C / 15s), carnes molidas y cerdo (&gt;=69°C / 15s), res y pescados (&gt;=63°C / 15s), y recalentados (&gt;=74°C). Bloqueo programático de botón "Bump" en estaciones Grill/Fryer/Oven del KDS ante riesgo de patógenos (Salmonella, E. coli, Listeria), cálculo automático de déficit térmico y minutos adicionales de cocción, integración con sondas inalámbricas Bluetooth BLE Thermopen, validación diaria de calibración en punto de hielo (0°C ± 1.0°C), confirmación de desinfección con alcohol al 70% previa a inserción y sellado inmutable SHA-256 (Cód. Comercio Arts. 89-94) para validez probatoria absoluta ante COFEPRIS y PROFECO.</p>
+                    </div>
+                    <div class="eco-card-badges">
+                        <span style="background: rgba(239, 68, 68, 0.15); color: #dc2626; padding: 3px 10px; border-radius: 9999px;">🍖 Sprint 83 · Inocuidad Térmica CCP2</span>
+                        <span style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 3px 10px; border-radius: 9999px;">💰 +$107,200 MXN/mes por sucursal</span>
+                        <span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 3px 10px; border-radius: 9999px;">⚖️ NOM-251 Num. 5.7 · Distintivo H Num. 5.8</span>
+                    </div>
+                </div>
             </div>
             </div> <!-- /ecosystemDetailsDrawer -->
         </div>
@@ -2872,7 +2890,7 @@
             } else {
                 drawer.style.display = 'none';
                 if (arrow) arrow.textContent = '▼';
-                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (56 Módulos Avanzados)';
+                if (text) text.textContent = 'Ver Arquitectura Técnica Completa (57 Módulos Avanzados)';
             }
         }
         window.toggleDetailedEcosystem = toggleDetailedEcosystem;

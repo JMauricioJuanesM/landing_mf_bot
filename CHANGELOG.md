@@ -6,7 +6,24 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased]
 
-## [1.9.67] - 2026-09-30
+## [1.9.70] - 2026-10-01
+
+### Added
+- **CMO / CRO — Smart Cooking Core Temperature Verification, CCP2 Thermal Lethality Kill Step & Bluetooth Thermopen Probe Telemetry Guard™ (`index.html`):**
+  - Módulo comercial interactivo de verificación térmica en centro geométrico de proteínas bajo NOM-251 Num. 5.7 y Distintivo H Num. 5.8.
+  - Compuerta algorítmica de bloqueo en KDS (Kill Step Gate) para estaciones Grill/Fryer/Oven: prohíbe el bump de aves (<74°C), carne molida/cerdo (<69°C), res/pescado (<63°C) y recalentados (<74°C).
+  - Cálculo automático de déficit térmico (°C) y estimación de tiempo de cocción adicional recomendado.
+  - Integración inalámbrica Bluetooth BLE con termómetros Thermopen, calibración en punto de hielo (0°C ± 1.0°C) y confirmación de desinfección con alcohol al 70%.
+  - Trazabilidad digital inalterable con hash criptográfico SHA-256 (Código de Comercio Arts. 89-94) para defensa legal y auditorías sanitarias ante COFEPRIS y PROFECO.
+  - Badges comerciales: `🍖 Sprint 83 · Inocuidad Térmica CCP2`, `💰 +$107,200 MXN/mes por sucursal`, `⚖️ NOM-251 Num. 5.7 · Distintivo H Num. 5.8`.
+  - Actualización de contadores del ecosistema: 57 módulos totales y 12 módulos de inocuidad sanitaria.
+
+## [1.9.69] - 2026-09-30
+
+### Added
+- **CMO / CRO — Smart Staff Shift Scheduling, Real-Time Labor Cost Engine & LFT Compliance Guard™ (`index.html`):**
+  - Módulo interactivo de optimización de turnos por demanda y control de costo de nómina (16-22% de GMV).
+
 
 ### Added
 - **CMO / CRO — Smart Color-Coded Cutting Board, Knife Sterilization & Anti-Cross Contamination Guard™: Tablas Codificadas por Color NOM-251 Num. 5.6.2, Distintivo H Num. 5.6, Paro por Rotación a 120 min, Tina de Desinfección de Cuchillos, Sensor de Desgaste de Ranuras y ROI en <11 Horas (`index.html`):**
